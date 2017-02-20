@@ -38,11 +38,11 @@ public class ManagerService {
             return false;
         }
     }
-    //添加消控员
+    //添加销控员
     public Salectrl addSalectrl(Salectrl salectrl){
         return salectrlRepository.save(salectrl);
     }
-    //删除消控员
+    //删除销控员
     public boolean deleteSalectrl(Long id){
         try{
             salectrlRepository.delete(id);
