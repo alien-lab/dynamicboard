@@ -3,7 +3,6 @@ package com.alienlab.dynamicboard.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.ZonedDateTime;
 
 /**
  * 客户

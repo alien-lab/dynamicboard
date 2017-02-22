@@ -7,7 +7,7 @@ import javax.persistence.*;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
+@Table(name = "tb_staff_info")
 public class StaffInfo {
     private Long id;
     private String staffName;//姓名

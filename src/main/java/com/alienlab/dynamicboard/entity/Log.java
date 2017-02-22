@@ -2,14 +2,13 @@ package com.alienlab.dynamicboard.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.ZonedDateTime;
 
 /**
  * 销控日志
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
+@Table(name = "tb_log")
 public class Log {
     private Long id;
     private Timestamp logTime;//日志时间

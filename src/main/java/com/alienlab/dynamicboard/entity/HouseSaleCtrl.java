@@ -3,14 +3,13 @@ package com.alienlab.dynamicboard.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.ZonedDateTime;
 
 /**
  * 房源销控
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
+@Table(name = "tb_house_salectrl")
 public class HouseSaleCtrl implements Serializable {
     private Long id;
     private House house;//房号
