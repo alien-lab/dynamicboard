@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
+@Table(name = "tb_house")
 public class House {
     private Long id;
     private String houseNo;//房号
@@ -37,7 +37,7 @@ public class House {
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "")
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -46,7 +46,7 @@ public class House {
         this.id = id;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "houseno")
     public String getHouseNo() {
         return houseNo;
     }
@@ -55,7 +55,7 @@ public class House {
         this.houseNo = houseNo;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "housesquare")
     public float getHouseSquare() {
         return houseSquare;
     }
@@ -64,7 +64,7 @@ public class House {
         this.houseSquare = houseSquare;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "housestyle")
     public String getHouseStyle() {
         return houseStyle;
     }
@@ -73,7 +73,7 @@ public class House {
         this.houseStyle = houseStyle;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "unitprice")
     public float getUnitPrice() {
         return unitPrice;
     }
@@ -82,7 +82,7 @@ public class House {
         this.unitPrice = unitPrice;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "totalprice")
     public float getTotalPrice() {
         return totalPrice;
     }
@@ -91,7 +91,7 @@ public class House {
         this.totalPrice = totalPrice;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "housestatus")
     public String getHouseStatus() {
         return houseStatus;
     }
@@ -99,8 +99,9 @@ public class House {
     public void setHouseStatus(String houseStatus) {
         this.houseStatus = houseStatus;
     }
-    @Basic
-    @Column(name = "")
+
+    @ManyToOne
+    @JoinColumn(name="buliding")
     public Building getBuliding() {
         return buliding;
     }
@@ -109,7 +110,7 @@ public class House {
         this.buliding = buliding;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "unitno")
     public String getUnitNo() {
         return unitNo;
     }
@@ -118,7 +119,7 @@ public class House {
         this.unitNo = unitNo;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "floorno")
     public String getFloorNo() {
         return floorNo;
     }
@@ -126,8 +127,8 @@ public class House {
     public void setFloorNo(String floorNo) {
         this.floorNo = floorNo;
     }
-    @Basic
-    @Column(name = "")
+    @ManyToOne
+    @JoinColumn(name="premise")
     public Premise getPremise() {
         return premise;
     }
@@ -136,20 +137,5 @@ public class House {
         this.premise = premise;
     }
 
-    @Override
-    public String toString() {
-        return "House{" +
-                "id=" + id +
-                ", houseNo='" + houseNo + '\'' +
-                ", houseSquare=" + houseSquare +
-                ", houseStyle='" + houseStyle + '\'' +
-                ", unitPrice=" + unitPrice +
-                ", totalPrice=" + totalPrice +
-                ", houseStatus='" + houseStatus + '\'' +
-                ", buliding='" + buliding + '\'' +
-                ", unitNo='" + unitNo + '\'' +
-                ", floorNo='" + floorNo + '\'' +
-                ", premise='" + premise + '\'' +
-                '}';
-    }
+
 }

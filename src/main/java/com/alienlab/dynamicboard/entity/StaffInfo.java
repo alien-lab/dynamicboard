@@ -14,7 +14,7 @@ public class StaffInfo {
     private String staffPhone;//号码
     private Integer staffGarde;//权限等级
     private String staffStatus;//账户状态
-    private Long openid;
+    private String openid;
     private String nickName;
     private String icon;
     private Premise premise;//所属楼盘
@@ -22,19 +22,10 @@ public class StaffInfo {
     public StaffInfo() {
     }
 
-    public StaffInfo(String staffName, String staffPhone, Integer staffGarde, String staffStatus, Long openid, String nickName, String icon, Premise premise) {
-        this.staffName = staffName;
-        this.staffPhone = staffPhone;
-        this.staffGarde = staffGarde;
-        this.staffStatus = staffStatus;
-        this.openid = openid;
-        this.nickName = nickName;
-        this.icon = icon;
-        this.premise = premise;
-    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "")
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -43,7 +34,7 @@ public class StaffInfo {
         this.id = id;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "staffname")
     public String getStaffName() {
         return staffName;
     }
@@ -52,7 +43,7 @@ public class StaffInfo {
         this.staffName = staffName;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "staffphone")
     public String getStaffPhone() {
         return staffPhone;
     }
@@ -61,7 +52,7 @@ public class StaffInfo {
         this.staffPhone = staffPhone;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "staffgrade")
     public Integer getStaffGarde() {
         return staffGarde;
     }
@@ -70,7 +61,7 @@ public class StaffInfo {
         this.staffGarde = staffGarde;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "staffstatus")
     public String getStaffStatus() {
         return staffStatus;
     }
@@ -79,16 +70,16 @@ public class StaffInfo {
         this.staffStatus = staffStatus;
     }
     @Basic
-    @Column(name = "")
-    public Long getOpenid() {
+    @Column(name = "openid")
+    public String getOpenid() {
         return openid;
     }
 
-    public void setOpenid(Long openid) {
+    public void setOpenid(String openid) {
         this.openid = openid;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "nickname")
     public String getNickName() {
         return nickName;
     }
@@ -97,7 +88,7 @@ public class StaffInfo {
         this.nickName = nickName;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "icon")
     public String getIcon() {
         return icon;
     }
@@ -105,8 +96,8 @@ public class StaffInfo {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-    @Basic
-    @Column(name = "")
+    @ManyToOne
+    @JoinColumn(name = "premise")
     public Premise getPremise() {
         return premise;
     }
@@ -115,18 +106,4 @@ public class StaffInfo {
         this.premise = premise;
     }
 
-    @Override
-    public String toString() {
-        return "StaffInfo{" +
-                "id=" + id +
-                ", staffName='" + staffName + '\'' +
-                ", staffPhone='" + staffPhone + '\'' +
-                ", staffGarde=" + staffGarde +
-                ", staffStatus='" + staffStatus + '\'' +
-                ", openid=" + openid +
-                ", nickName='" + nickName + '\'' +
-                ", icon='" + icon + '\'' +
-                ", premise='" + premise + '\'' +
-                '}';
-    }
 }

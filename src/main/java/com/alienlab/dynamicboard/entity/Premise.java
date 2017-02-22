@@ -1,14 +1,15 @@
 package com.alienlab.dynamicboard.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 楼盘
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
-public class Premise {
+@Table(name = "tb_premise")
+public class Premise implements Serializable{
     private Long id;
     private String premiseName;//楼盘名称
     private String premiseAddress;//楼盘地点

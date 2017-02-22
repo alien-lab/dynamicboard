@@ -1,20 +1,22 @@
 package com.alienlab.dynamicboard.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 /**
  * 客户
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
-public class Customer {
+@Table(name = "tb_customer")
+public class Customer implements Serializable{
     private Long id;
     private String customerName;//客户姓名
     private String customerPhone;//联系方式
     private String customerSex;//性别
-    private Long openid;
+    private String openid;
     private String nickname;
     private String icon;
     private Timestamp bindTime;//绑定时间
@@ -22,18 +24,10 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String customerName, String customerPhone, String customerSex, Long openid, String nickname, String icon, Timestamp bindTime) {
-        this.customerName = customerName;
-        this.customerPhone = customerPhone;
-        this.customerSex = customerSex;
-        this.openid = openid;
-        this.nickname = nickname;
-        this.icon = icon;
-        this.bindTime = bindTime;
-    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "")
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -42,7 +36,7 @@ public class Customer {
         this.id = id;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "customername")
     public String getCustomerName() {
         return customerName;
     }
@@ -51,7 +45,7 @@ public class Customer {
         this.customerName = customerName;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "customerphone")
     public String getCustomerPhone() {
         return customerPhone;
     }
@@ -60,7 +54,7 @@ public class Customer {
         this.customerPhone = customerPhone;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "customersex")
     public String getCustomerSex() {
         return customerSex;
     }
@@ -69,16 +63,16 @@ public class Customer {
         this.customerSex = customerSex;
     }
     @Basic
-    @Column(name = "")
-    public Long getOpenid() {
+    @Column(name = "openid")
+    public String getOpenid() {
         return openid;
     }
 
-    public void setOpenid(Long openid) {
+    public void setOpenid(String openid) {
         this.openid = openid;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "nickname")
     public String getNickname() {
         return nickname;
     }
@@ -87,7 +81,7 @@ public class Customer {
         this.nickname = nickname;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "icon")
     public String getIcon() {
         return icon;
     }
@@ -96,7 +90,7 @@ public class Customer {
         this.icon = icon;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "bindtime")
     public Timestamp getBindTime() {
         return bindTime;
     }
@@ -105,17 +99,5 @@ public class Customer {
         this.bindTime = bindTime;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", customerName='" + customerName + '\'' +
-                ", customerPhone='" + customerPhone + '\'' +
-                ", customerSex='" + customerSex + '\'' +
-                ", openid=" + openid +
-                ", nickname='" + nickname + '\'' +
-                ", icon='" + icon + '\'' +
-                ", bindTime=" + bindTime +
-                '}';
-    }
+
 }

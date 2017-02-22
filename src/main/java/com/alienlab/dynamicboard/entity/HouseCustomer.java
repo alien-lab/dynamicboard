@@ -1,31 +1,25 @@
 package com.alienlab.dynamicboard.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 
 /**
  * 房源-客户
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
-public class HouseCustomer {
+@Table(name = "tb_house_customer")
+public class HouseCustomer implements Serializable {
     private Long id;
-    private String houseNo;//房源号
-    private String customerNo;//客户号
+    private House house;//房源号
+    private Customer customer;//客户号
     private Timestamp operateTime;//操作时间
 
-    public HouseCustomer() {
-    }
-
-    public HouseCustomer(String houseNo, String customerNo, Timestamp operateTime) {
-        this.houseNo = houseNo;
-        this.customerNo = customerNo;
-        this.operateTime = operateTime;
-    }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "")
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -33,41 +27,32 @@ public class HouseCustomer {
     public void setId(Long id) {
         this.id = id;
     }
-    @Basic
-    @Column(name = "")
-    public String getHouseNo() {
-        return houseNo;
+
+    @ManyToOne
+    @JoinColumn(name="house")
+    public House getHouse() {
+        return house;
     }
 
-    public void setHouseNo(String houseNo) {
-        this.houseNo = houseNo;
-    }
-    @Basic
-    @Column(name = "")
-    public String getCustomerNo() {
-        return customerNo;
+    public void setHouse(House house) {
+        this.house = house;
     }
 
-    public void setCustomerNo(String customerNo) {
-        this.customerNo = customerNo;
+    @ManyToOne
+    @JoinColumn(name="customer")
+    public Customer getCustomer() {
+        return customer;
     }
-    @Basic
-    @Column(name = "")
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     public Timestamp getOperateTime() {
         return operateTime;
     }
 
     public void setOperateTime(Timestamp operateTime) {
         this.operateTime = operateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "HouseCustomer{" +
-                "id=" + id +
-                ", houseNo='" + houseNo + '\'' +
-                ", customerNo='" + customerNo + '\'' +
-                ", operateTime=" + operateTime +
-                '}';
     }
 }

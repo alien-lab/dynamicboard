@@ -1,14 +1,15 @@
 package com.alienlab.dynamicboard.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 楼栋
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
-public class Building {
+@Table(name = "tb_building")
+public class Building implements Serializable {
     private Long id;
     private String buildingName;//楼栋名
     private String buildingNo;//楼栋号
@@ -32,7 +33,7 @@ public class Building {
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "")
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -41,7 +42,7 @@ public class Building {
         this.id = id;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "buildingname")
     public String getBuildingName() {
         return buildingName;
     }
@@ -50,7 +51,7 @@ public class Building {
         this.buildingName = buildingName;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "buildingno")
     public String getBuildingNo() {
         return buildingNo;
     }
@@ -59,7 +60,7 @@ public class Building {
         this.buildingNo = buildingNo;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "floornu")
     public Integer getFloorNu() {
         return floorNu;
     }
@@ -68,7 +69,7 @@ public class Building {
         this.floorNu = floorNu;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "unitnu")
     public Integer getUnitNu() {
         return unitNu;
     }
@@ -77,7 +78,7 @@ public class Building {
         this.unitNu = unitNu;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "unithousenu")
     public Integer getUnitHouseNu() {
         return unitHouseNu;
     }
@@ -86,7 +87,7 @@ public class Building {
         this.unitHouseNu = unitHouseNu;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "buildingstatus")
     public String getBuildingStatus() {
         return buildingStatus;
     }
@@ -94,8 +95,9 @@ public class Building {
     public void setBuildingStatus(String buildingStatus) {
         this.buildingStatus = buildingStatus;
     }
-    @Basic
-    @Column(name = "")
+
+    @ManyToOne
+    @JoinColumn(name="premise")
     public Premise getPremise() {
         return premise;
     }
