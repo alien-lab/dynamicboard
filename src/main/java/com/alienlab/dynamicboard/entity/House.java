@@ -37,7 +37,7 @@ public class House {
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "")
     public Long getId() {
         return id;
     }
@@ -46,7 +46,7 @@ public class House {
         this.id = id;
     }
     @Basic
-    @Column(name = "houseno")
+    @Column(name = "")
     public String getHouseNo() {
         return houseNo;
     }
@@ -55,7 +55,7 @@ public class House {
         this.houseNo = houseNo;
     }
     @Basic
-    @Column(name = "housesquare")
+    @Column(name = "")
     public float getHouseSquare() {
         return houseSquare;
     }
@@ -64,7 +64,7 @@ public class House {
         this.houseSquare = houseSquare;
     }
     @Basic
-    @Column(name = "housestyle")
+    @Column(name = "")
     public String getHouseStyle() {
         return houseStyle;
     }
@@ -73,7 +73,7 @@ public class House {
         this.houseStyle = houseStyle;
     }
     @Basic
-    @Column(name = "unitprice")
+    @Column(name = "")
     public float getUnitPrice() {
         return unitPrice;
     }
@@ -82,7 +82,7 @@ public class House {
         this.unitPrice = unitPrice;
     }
     @Basic
-    @Column(name = "totalprice")
+    @Column(name = "")
     public float getTotalPrice() {
         return totalPrice;
     }
@@ -91,7 +91,7 @@ public class House {
         this.totalPrice = totalPrice;
     }
     @Basic
-    @Column(name = "housestatus")
+    @Column(name = "")
     public String getHouseStatus() {
         return houseStatus;
     }
@@ -100,7 +100,7 @@ public class House {
         this.houseStatus = houseStatus;
     }
     @Basic
-    @Column(name = "building")
+    @Column(name = "")
     public Building getBuliding() {
         return buliding;
     }
@@ -109,7 +109,7 @@ public class House {
         this.buliding = buliding;
     }
     @Basic
-    @Column(name = "unitno")
+    @Column(name = "")
     public String getUnitNo() {
         return unitNo;
     }
@@ -118,7 +118,7 @@ public class House {
         this.unitNo = unitNo;
     }
     @Basic
-    @Column(name = "floorno")
+    @Column(name = "")
     public String getFloorNo() {
         return floorNo;
     }
@@ -127,7 +127,7 @@ public class House {
         this.floorNo = floorNo;
     }
     @Basic
-    @Column(name = "premise")
+    @Column(name = "")
     public Premise getPremise() {
         return premise;
     }

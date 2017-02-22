@@ -33,7 +33,7 @@ public class HouseSaleCtrl {
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "")
     public Long getId() {
         return id;
     }
@@ -42,7 +42,7 @@ public class HouseSaleCtrl {
         this.id = id;
     }
     @Basic
-    @Column(name = "houseno")
+    @Column(name = "")
     public String getHouseNo() {
         return houseNo;
     }
@@ -51,7 +51,7 @@ public class HouseSaleCtrl {
         this.houseNo = houseNo;
     }
     @Basic
-    @Column(name = "salerstatusstaff")
+    @Column(name = "")
     public String getSalerStatusStaff() {
         return salerStatusStaff;
     }
@@ -60,7 +60,7 @@ public class HouseSaleCtrl {
         this.salerStatusStaff = salerStatusStaff;
     }
     @Basic
-    @Column(name = "salerstatus")
+    @Column(name = "")
     public String getSalerStatus() {
         return salerStatus;
     }
@@ -69,7 +69,7 @@ public class HouseSaleCtrl {
         this.salerStatus = salerStatus;
     }
     @Basic
-    @Column(name = "salerstatustime")
+    @Column(name = "")
     public Timestamp getSalerStatusTime() {
         return salerStatusTime;
     }
@@ -78,7 +78,7 @@ public class HouseSaleCtrl {
         this.salerStatusTime = salerStatusTime;
     }
     @Basic
-    @Column(name = "salectrlstatusstaff")
+    @Column(name = "")
     public String getSalectrlStatusStaff() {
         return salectrlStatusStaff;
     }
@@ -87,7 +87,7 @@ public class HouseSaleCtrl {
         this.salectrlStatusStaff = salectrlStatusStaff;
     }
     @Basic
-    @Column(name = "salectrlstatus")
+    @Column(name = "")
     public String getSalectrlStatus() {
         return salectrlStatus;
     }
@@ -96,7 +96,7 @@ public class HouseSaleCtrl {
         this.salectrlStatus = salectrlStatus;
     }
     @Basic
-    @Column(name = "salectrlstatustime")
+    @Column(name = "")
     public Timestamp getSalectrlStatusTime() {
         return salectrlStatusTime;
     }

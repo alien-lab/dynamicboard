@@ -32,7 +32,7 @@ public class Building {
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "")
     public Long getId() {
         return id;
     }
@@ -41,7 +41,7 @@ public class Building {
         this.id = id;
     }
     @Basic
-    @Column(name = "buildingname")
+    @Column(name = "")
     public String getBuildingName() {
         return buildingName;
     }
@@ -50,7 +50,7 @@ public class Building {
         this.buildingName = buildingName;
     }
     @Basic
-    @Column(name = "buildingno")
+    @Column(name = "")
     public String getBuildingNo() {
         return buildingNo;
     }
@@ -59,7 +59,7 @@ public class Building {
         this.buildingNo = buildingNo;
     }
     @Basic
-    @Column(name = "floornu")
+    @Column(name = "")
     public Integer getFloorNu() {
         return floorNu;
     }
@@ -68,7 +68,7 @@ public class Building {
         this.floorNu = floorNu;
     }
     @Basic
-    @Column(name = "unitnu")
+    @Column(name = "")
     public Integer getUnitNu() {
         return unitNu;
     }
@@ -77,7 +77,7 @@ public class Building {
         this.unitNu = unitNu;
     }
     @Basic
-    @Column(name = "unithousenu")
+    @Column(name = "")
     public Integer getUnitHouseNu() {
         return unitHouseNu;
     }
@@ -86,7 +86,7 @@ public class Building {
         this.unitHouseNu = unitHouseNu;
     }
     @Basic
-    @Column(name = "buildingstatus")
+    @Column(name = "")
     public String getBuildingStatus() {
         return buildingStatus;
     }
@@ -95,7 +95,7 @@ public class Building {
         this.buildingStatus = buildingStatus;
     }
     @Basic
-    @Column(name = "premise")
+    @Column(name = "")
     public Premise getPremise() {
         return premise;
     }

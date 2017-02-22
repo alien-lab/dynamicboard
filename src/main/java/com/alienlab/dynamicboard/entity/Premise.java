@@ -33,7 +33,7 @@ public class Premise {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "")
     public Long getId() {
         return id;
     }
@@ -42,7 +42,7 @@ public class Premise {
         this.id = id;
     }
     @Basic
-    @Column(name = "premisename")
+    @Column(name = "")
     public String getPremiseName() {
         return premiseName;
     }
@@ -51,7 +51,7 @@ public class Premise {
         this.premiseName = premiseName;
     }
     @Basic
-    @Column(name = "premiseaddress")
+    @Column(name = "")
     public String getPremiseAddress() {
         return premiseAddress;
     }
@@ -60,7 +60,7 @@ public class Premise {
         this.premiseAddress = premiseAddress;
     }
     @Basic
-    @Column(name = "buildingNu")
+    @Column(name = "")
     public Integer getBuildingNu() {
         return buildingNu;
     }
@@ -69,7 +69,7 @@ public class Premise {
         this.buildingNu = buildingNu;
     }
     @Basic
-    @Column(name = "premisesquare")
+    @Column(name = "")
     public float getPremiseSquare() {
         return premiseSquare;
     }
@@ -78,7 +78,7 @@ public class Premise {
         this.premiseSquare = premiseSquare;
     }
     @Basic
-    @Column(name = "premisefar")
+    @Column(name = "")
     public float getPremiseFar() {
         return premiseFar;
     }
@@ -87,7 +87,7 @@ public class Premise {
         this.premiseFar = premiseFar;
     }
     @Basic
-    @Column(name = "premisegsp")
+    @Column(name = "")
     public float getPremiseGsp() {
         return premiseGsp;
     }
@@ -96,7 +96,7 @@ public class Premise {
         this.premiseGsp = premiseGsp;
     }
     @Basic
-    @Column(name = "premisephone")
+    @Column(name = "")
     public String getPremisePhone() {
         return premisePhone;
     }

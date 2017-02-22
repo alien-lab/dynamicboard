@@ -34,7 +34,7 @@ public class StaffInfo {
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "")
     public Long getId() {
         return id;
     }
@@ -43,7 +43,7 @@ public class StaffInfo {
         this.id = id;
     }
     @Basic
-    @Column(name = "staffname")
+    @Column(name = "")
     public String getStaffName() {
         return staffName;
     }
@@ -52,7 +52,7 @@ public class StaffInfo {
         this.staffName = staffName;
     }
     @Basic
-    @Column(name = "staffphone")
+    @Column(name = "")
     public String getStaffPhone() {
         return staffPhone;
     }
@@ -61,7 +61,7 @@ public class StaffInfo {
         this.staffPhone = staffPhone;
     }
     @Basic
-    @Column(name = "staffgrade")
+    @Column(name = "")
     public Integer getStaffGarde() {
         return staffGarde;
     }
@@ -70,7 +70,7 @@ public class StaffInfo {
         this.staffGarde = staffGarde;
     }
     @Basic
-    @Column(name = "staffstatus")
+    @Column(name = "")
     public String getStaffStatus() {
         return staffStatus;
     }
@@ -79,7 +79,7 @@ public class StaffInfo {
         this.staffStatus = staffStatus;
     }
     @Basic
-    @Column(name = "openid")
+    @Column(name = "")
     public Long getOpenid() {
         return openid;
     }
@@ -88,7 +88,7 @@ public class StaffInfo {
         this.openid = openid;
     }
     @Basic
-    @Column(name = "nickname")
+    @Column(name = "")
     public String getNickName() {
         return nickName;
     }
@@ -97,7 +97,7 @@ public class StaffInfo {
         this.nickName = nickName;
     }
     @Basic
-    @Column(name = "icon")
+    @Column(name = "")
     public String getIcon() {
         return icon;
     }
@@ -106,7 +106,7 @@ public class StaffInfo {
         this.icon = icon;
     }
     @Basic
-    @Column(name = "premise")
+    @Column(name = "")
     public Premise getPremise() {
         return premise;
     }

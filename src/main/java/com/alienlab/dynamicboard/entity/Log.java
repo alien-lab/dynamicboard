@@ -27,7 +27,7 @@ public class Log {
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "")
     public Long getId() {
         return id;
     }
@@ -36,7 +36,7 @@ public class Log {
         this.id = id;
     }
     @Basic
-    @Column(name = "logtime")
+    @Column(name = "")
     public Timestamp getLogTime() {
         return logTime;
     }
@@ -45,7 +45,7 @@ public class Log {
         this.logTime = logTime;
     }
     @Basic
-    @Column(name = "staff")
+    @Column(name = "")
     public String getStaff() {
         return staff;
     }
@@ -54,7 +54,7 @@ public class Log {
         this.staff = staff;
     }
     @Basic
-    @Column(name = "house")
+    @Column(name = "")
     public String getHouse() {
         return house;
     }
@@ -63,7 +63,7 @@ public class Log {
         this.house = house;
     }
     @Basic
-    @Column(name = "housestatus")
+    @Column(name = "")
     public String getHousestatus() {
         return housestatus;
     }

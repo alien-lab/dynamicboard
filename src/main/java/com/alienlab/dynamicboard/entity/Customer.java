@@ -33,7 +33,7 @@ public class Customer {
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "")
     public Long getId() {
         return id;
     }
@@ -42,7 +42,7 @@ public class Customer {
         this.id = id;
     }
     @Basic
-    @Column(name = "customername")
+    @Column(name = "")
     public String getCustomerName() {
         return customerName;
     }
@@ -51,7 +51,7 @@ public class Customer {
         this.customerName = customerName;
     }
     @Basic
-    @Column(name = "customerphone")
+    @Column(name = "")
     public String getCustomerPhone() {
         return customerPhone;
     }
@@ -60,7 +60,7 @@ public class Customer {
         this.customerPhone = customerPhone;
     }
     @Basic
-    @Column(name = "customersex")
+    @Column(name = "")
     public String getCustomerSex() {
         return customerSex;
     }
@@ -69,7 +69,7 @@ public class Customer {
         this.customerSex = customerSex;
     }
     @Basic
-    @Column(name = "openid")
+    @Column(name = "")
     public Long getOpenid() {
         return openid;
     }
@@ -78,7 +78,7 @@ public class Customer {
         this.openid = openid;
     }
     @Basic
-    @Column(name = "nickname")
+    @Column(name = "")
     public String getNickname() {
         return nickname;
     }
@@ -87,7 +87,7 @@ public class Customer {
         this.nickname = nickname;
     }
     @Basic
-    @Column(name = "icon")
+    @Column(name = "")
     public String getIcon() {
         return icon;
     }
@@ -96,7 +96,7 @@ public class Customer {
         this.icon = icon;
     }
     @Basic
-    @Column(name = "bindtime")
+    @Column(name = "")
     public Timestamp getBindTime() {
         return bindTime;
     }

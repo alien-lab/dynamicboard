@@ -25,7 +25,7 @@ public class HouseCustomer {
     }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "")
     public Long getId() {
         return id;
     }
@@ -34,7 +34,7 @@ public class HouseCustomer {
         this.id = id;
     }
     @Basic
-    @Column(name = "houseno")
+    @Column(name = "")
     public String getHouseNo() {
         return houseNo;
     }
@@ -43,7 +43,7 @@ public class HouseCustomer {
         this.houseNo = houseNo;
     }
     @Basic
-    @Column(name = "customerno")
+    @Column(name = "")
     public String getCustomerNo() {
         return customerNo;
     }
@@ -52,7 +52,7 @@ public class HouseCustomer {
         this.customerNo = customerNo;
     }
     @Basic
-    @Column(name = "operatetime")
+    @Column(name = "")
     public Timestamp getOperateTime() {
         return operateTime;
     }

@@ -27,7 +27,7 @@ public class HouseStyle {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "")
     public Long getId() {
         return id;
     }
@@ -37,7 +37,7 @@ public class HouseStyle {
     }
 
     @Basic
-    @Column(name = "hscode")
+    @Column(name = "")
     public String getHsCode() {
         return hsCode;
     }
@@ -47,7 +47,7 @@ public class HouseStyle {
     }
 
     @Basic
-    @Column(name = "hsname")
+    @Column(name = "")
     public String getHsName() {
         return hsName;
     }
@@ -57,7 +57,7 @@ public class HouseStyle {
     }
 
     @Basic
-    @Column(name = "hsintroduction")
+    @Column(name = "")
     public String getHsIntroduction() {
         return hsIntroduction;
     }
@@ -67,7 +67,7 @@ public class HouseStyle {
     }
 
     @Basic
-    @Column(name = "hspicture")
+    @Column(name = "")
     public String getHsPicture() {
         return hsPicture;
     }
