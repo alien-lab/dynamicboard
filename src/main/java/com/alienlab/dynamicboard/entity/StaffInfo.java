@@ -17,12 +17,12 @@ public class StaffInfo {
     private Long openid;
     private String nickName;
     private String icon;
-    private String premise;//所属楼盘
+    private Premise premise;//所属楼盘
 
     public StaffInfo() {
     }
 
-    public StaffInfo(String staffName, String staffPhone, Integer staffGarde, String staffStatus, Long openid, String nickName, String icon, String premise) {
+    public StaffInfo(String staffName, String staffPhone, Integer staffGarde, String staffStatus, Long openid, String nickName, String icon, Premise premise) {
         this.staffName = staffName;
         this.staffPhone = staffPhone;
         this.staffGarde = staffGarde;
@@ -107,11 +107,11 @@ public class StaffInfo {
     }
     @Basic
     @Column(name = "premise")
-    public String getPremise() {
+    public Premise getPremise() {
         return premise;
     }
 
-    public void setPremise(String premise) {
+    public void setPremise(Premise premise) {
         this.premise = premise;
     }
 

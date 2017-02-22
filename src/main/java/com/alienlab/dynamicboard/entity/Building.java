@@ -16,12 +16,12 @@ public class Building {
     private Integer unitNu;//单元数
     private Integer unitHouseNu;//每单元户数
     private String buildingStatus;//楼栋状态（已售罄、未开盘、热卖中）
-    private String premise;//所属楼盘
+    private Premise premise;//所属楼盘
 
     public Building() {
     }
 
-    public Building(String buildingName, String buildingNo, Integer floorNu, Integer unitNu, Integer unitHouseNu, String buildingStatus, String premise) {
+    public Building(String buildingName, String buildingNo, Integer floorNu, Integer unitNu, Integer unitHouseNu, String buildingStatus, Premise premise) {
         this.buildingName = buildingName;
         this.buildingNo = buildingNo;
         this.floorNu = floorNu;
@@ -96,11 +96,11 @@ public class Building {
     }
     @Basic
     @Column(name = "premise")
-    public String getPremise() {
+    public Premise getPremise() {
         return premise;
     }
 
-    public void setPremise(String premise) {
+    public void setPremise(Premise premise) {
         this.premise = premise;
     }
 

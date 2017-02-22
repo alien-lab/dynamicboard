@@ -15,15 +15,15 @@ public class House {
     private float unitPrice;//单价
     private float totalPrice;//总价
     private String houseStatus;//状态
-    private String buliding;//所属楼栋
+    private Building buliding;//所属楼栋
     private String unitNo;//单元号
     private String floorNo;//楼层号
-    private String premise;//所属楼盘
+    private Premise premise;//所属楼盘
 
     public House() {
     }
 
-    public House(String houseNo, float houseSquare, String houseStyle, float unitPrice, float totalPrice, String houseStatus, String buliding, String unitNo, String floorNo, String premise) {
+    public House(String houseNo, float houseSquare, String houseStyle, float unitPrice, float totalPrice, String houseStatus, Building buliding, String unitNo, String floorNo, Premise premise) {
         this.houseNo = houseNo;
         this.houseSquare = houseSquare;
         this.houseStyle = houseStyle;
@@ -101,11 +101,11 @@ public class House {
     }
     @Basic
     @Column(name = "building")
-    public String getBuliding() {
+    public Building getBuliding() {
         return buliding;
     }
 
-    public void setBuliding(String buliding) {
+    public void setBuliding(Building buliding) {
         this.buliding = buliding;
     }
     @Basic
@@ -128,11 +128,11 @@ public class House {
     }
     @Basic
     @Column(name = "premise")
-    public String getPremise() {
+    public Premise getPremise() {
         return premise;
     }
 
-    public void setPremise(String premise) {
+    public void setPremise(Premise premise) {
         this.premise = premise;
     }
 

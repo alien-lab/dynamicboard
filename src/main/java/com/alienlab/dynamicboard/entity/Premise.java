@@ -7,8 +7,8 @@ import javax.persistence.*;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "premiseinfo", schema = "dynamicboard")
-public class PremiseInfo {
+@Table(name = "premise", schema = "dynamicboard")
+public class Premise {
     private Long id;
     private String premiseName;//楼盘名称
     private String premiseAddress;//楼盘地点
@@ -18,10 +18,10 @@ public class PremiseInfo {
     private float premiseGsp;//绿化率
     private String premisePhone;//售楼处电话
 
-    public PremiseInfo() {
+    public Premise() {
     }
 
-    public PremiseInfo(String premiseName, String premiseAddress, Integer buildingNu, float premiseSquare, float premiseFar, float premiseGsp, String premisePhone) {
+    public Premise(String premiseName, String premiseAddress, Integer buildingNu, float premiseSquare, float premiseFar, float premiseGsp, String premisePhone) {
         this.premiseName = premiseName;
         this.premiseAddress = premiseAddress;
         this.buildingNu = buildingNu;
@@ -107,7 +107,7 @@ public class PremiseInfo {
 
     @Override
     public String toString() {
-        return "PremiseInfo{" +
+        return "Premise{" +
                 "id=" + id +
                 ", premiseName='" + premiseName + '\'' +
                 ", premiseAddress='" + premiseAddress + '\'' +
