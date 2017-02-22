@@ -7,7 +7,7 @@ import javax.persistence.*;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "housestyle")
+@Table(name = "")
 public class HouseStyle {
     private Long id;
     private String hsCode;//户型代码

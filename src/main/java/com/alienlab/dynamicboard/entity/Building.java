@@ -7,7 +7,7 @@ import javax.persistence.*;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "building")
+@Table(name = "")
 public class Building {
     private Long id;
     private String buildingName;//楼栋名

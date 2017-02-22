@@ -8,7 +8,7 @@ import java.sql.Timestamp;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "housecustomer")
+@Table(name = "")
 public class HouseCustomer {
     private Long id;
     private String houseNo;//房源号

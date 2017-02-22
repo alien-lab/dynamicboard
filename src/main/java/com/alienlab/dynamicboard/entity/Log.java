@@ -8,7 +8,7 @@ import java.sql.Timestamp;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "log")
+@Table(name = "")
 public class Log {
     private Long id;
     private Timestamp logTime;//日志时间

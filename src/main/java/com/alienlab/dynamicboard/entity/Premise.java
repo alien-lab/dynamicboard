@@ -7,7 +7,7 @@ import javax.persistence.*;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "premise", schema = "dynamicboard")
+@Table(name = "")
 public class Premise {
     private Long id;
     private String premiseName;//楼盘名称
