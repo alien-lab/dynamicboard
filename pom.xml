@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>dynamicboard</name>
-	<description>Demo project for Spring Boot</description>
+	<description>动态销控程序</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

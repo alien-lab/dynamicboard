@@ -14,16 +14,12 @@ public class HouseStyle {
     private String hsName;//户型名称
     private String hsIntroduction;//户型介绍
     private String hsPicture;//户型图
+    private Premise premise;//所属楼盘
 
     public HouseStyle() {
     }
 
-    public HouseStyle(String hsCode, String hsName, String hsIntroduction, String hsPicture) {
-        this.hsCode = hsCode;
-        this.hsName = hsName;
-        this.hsIntroduction = hsIntroduction;
-        this.hsPicture = hsPicture;
-    }
+
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -76,14 +72,13 @@ public class HouseStyle {
         this.hsPicture = hsPicture;
     }
 
-    @Override
-    public String toString() {
-        return "HouseStyle{" +
-                "id=" + id +
-                ", hsCode='" + hsCode + '\'' +
-                ", hsName='" + hsName + '\'' +
-                ", hsIntroduction='" + hsIntroduction + '\'' +
-                ", hsPicture='" + hsPicture + '\'' +
-                '}';
+    @ManyToOne
+    @JoinColumn(name="premise")
+    public Premise getPremise() {
+        return premise;
+    }
+
+    public void setPremise(Premise premise) {
+        this.premise = premise;
     }
 }

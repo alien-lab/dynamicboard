@@ -14,7 +14,7 @@ public class StaffInfo {
     private String staffPhone;//号码
     private Integer staffGarde;//权限等级
     private String staffStatus;//账户状态
-    private Long openid;
+    private String openid;
     private String nickName;
     private String icon;
     private Premise premise;//所属楼盘
@@ -22,16 +22,7 @@ public class StaffInfo {
     public StaffInfo() {
     }
 
-    public StaffInfo(String staffName, String staffPhone, Integer staffGarde, String staffStatus, Long openid, String nickName, String icon, Premise premise) {
-        this.staffName = staffName;
-        this.staffPhone = staffPhone;
-        this.staffGarde = staffGarde;
-        this.staffStatus = staffStatus;
-        this.openid = openid;
-        this.nickName = nickName;
-        this.icon = icon;
-        this.premise = premise;
-    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
@@ -80,11 +71,11 @@ public class StaffInfo {
     }
     @Basic
     @Column(name = "openid")
-    public Long getOpenid() {
+    public String getOpenid() {
         return openid;
     }
 
-    public void setOpenid(Long openid) {
+    public void setOpenid(String openid) {
         this.openid = openid;
     }
     @Basic
@@ -105,8 +96,8 @@ public class StaffInfo {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-    @Basic
-    @Column(name = "premise")
+    @ManyToOne
+    @JoinColumn(name = "premise")
     public Premise getPremise() {
         return premise;
     }
@@ -115,18 +106,4 @@ public class StaffInfo {
         this.premise = premise;
     }
 
-    @Override
-    public String toString() {
-        return "StaffInfo{" +
-                "id=" + id +
-                ", staffName='" + staffName + '\'' +
-                ", staffPhone='" + staffPhone + '\'' +
-                ", staffGarde=" + staffGarde +
-                ", staffStatus='" + staffStatus + '\'' +
-                ", openid=" + openid +
-                ", nickName='" + nickName + '\'' +
-                ", icon='" + icon + '\'' +
-                ", premise='" + premise + '\'' +
-                '}';
-    }
 }

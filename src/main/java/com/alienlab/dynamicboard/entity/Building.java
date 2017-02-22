@@ -1,14 +1,15 @@
 package com.alienlab.dynamicboard.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 楼栋
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
-public class Building {
+@Table(name = "tb_building")
+public class Building implements Serializable {
     private Long id;
     private String buildingName;//楼栋名
     private String buildingNo;//楼栋号
@@ -94,8 +95,9 @@ public class Building {
     public void setBuildingStatus(String buildingStatus) {
         this.buildingStatus = buildingStatus;
     }
-    @Basic
-    @Column(name = "premise")
+
+    @ManyToOne
+    @JoinColumn(name="premise")
     public Premise getPremise() {
         return premise;
     }

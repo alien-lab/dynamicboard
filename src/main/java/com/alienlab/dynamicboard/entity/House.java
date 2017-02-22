@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "")
+@Table(name = "tb_house")
 public class House {
     private Long id;
     private String houseNo;//房号
@@ -99,8 +99,9 @@ public class House {
     public void setHouseStatus(String houseStatus) {
         this.houseStatus = houseStatus;
     }
-    @Basic
-    @Column(name = "building")
+
+    @ManyToOne
+    @JoinColumn(name="buliding")
     public Building getBuliding() {
         return buliding;
     }
@@ -126,8 +127,8 @@ public class House {
     public void setFloorNo(String floorNo) {
         this.floorNo = floorNo;
     }
-    @Basic
-    @Column(name = "premise")
+    @ManyToOne
+    @JoinColumn(name="premise")
     public Premise getPremise() {
         return premise;
     }
@@ -136,20 +137,5 @@ public class House {
         this.premise = premise;
     }
 
-    @Override
-    public String toString() {
-        return "House{" +
-                "id=" + id +
-                ", houseNo='" + houseNo + '\'' +
-                ", houseSquare=" + houseSquare +
-                ", houseStyle='" + houseStyle + '\'' +
-                ", unitPrice=" + unitPrice +
-                ", totalPrice=" + totalPrice +
-                ", houseStatus='" + houseStatus + '\'' +
-                ", buliding='" + buliding + '\'' +
-                ", unitNo='" + unitNo + '\'' +
-                ", floorNo='" + floorNo + '\'' +
-                ", premise='" + premise + '\'' +
-                '}';
-    }
+
 }
