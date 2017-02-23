@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 public class Log {
     private Long id;
     private Timestamp logTime;//日志时间
-    private StaffInfo staff;//操作员工
+    private Staff staff;//操作员工
     private House house;//操作房源
     private String housestatus;//状态
 
@@ -40,11 +40,11 @@ public class Log {
     }
     @ManyToOne
     @JoinColumn(name = "staff")
-    public StaffInfo getStaff() {
+    public Staff getStaff() {
         return staff;
     }
 
-    public void setStaff(StaffInfo staff) {
+    public void setStaff(Staff staff) {
         this.staff = staff;
     }
     @ManyToOne

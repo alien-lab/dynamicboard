@@ -11,7 +11,7 @@ public class House {
     private Long id;
     private String houseNo;//房号
     private float houseSquare;//面积
-    private String houseStyle;//户型
+    private HouseStyle houseStyle;//户型
     private float unitPrice;//单价
     private float totalPrice;//总价
     private String houseStatus;//状态
@@ -23,18 +23,6 @@ public class House {
     public House() {
     }
 
-    public House(String houseNo, float houseSquare, String houseStyle, float unitPrice, float totalPrice, String houseStatus, Building buliding, String unitNo, String floorNo, Premise premise) {
-        this.houseNo = houseNo;
-        this.houseSquare = houseSquare;
-        this.houseStyle = houseStyle;
-        this.unitPrice = unitPrice;
-        this.totalPrice = totalPrice;
-        this.houseStatus = houseStatus;
-        this.buliding = buliding;
-        this.unitNo = unitNo;
-        this.floorNo = floorNo;
-        this.premise = premise;
-    }
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
@@ -63,13 +51,13 @@ public class House {
     public void setHouseSquare(float houseSquare) {
         this.houseSquare = houseSquare;
     }
-    @Basic
-    @Column(name = "housestyle")
-    public String getHouseStyle() {
+    @ManyToOne
+    @JoinColumn(name = "housestyle")
+    public HouseStyle getHouseStyle() {
         return houseStyle;
     }
 
-    public void setHouseStyle(String houseStyle) {
+    public void setHouseStyle(HouseStyle houseStyle) {
         this.houseStyle = houseStyle;
     }
     @Basic

@@ -13,10 +13,10 @@ import java.sql.Timestamp;
 public class HouseSaleCtrl implements Serializable {
     private Long id;
     private House house;//房号
-    private StaffInfo salerStatusStaff;//销售员状态操作员工
+    private Staff salerStatusStaff;//销售员状态操作员工
     private String salerStatus;//销售员状态
     private Timestamp salerStatusTime;//销售员状态操作时间
-    private StaffInfo salectrlStatusStaff;//后台状态操作员工
+    private Staff salectrlStatusStaff;//后台状态操作员工
     private String salectrlStatus;//后台状态
     private Timestamp salectrlStatusTime;//后台状态操作时间
 
@@ -45,11 +45,11 @@ public class HouseSaleCtrl implements Serializable {
     }
     @ManyToOne
     @JoinColumn(name = "salerstatusstaff")
-    public StaffInfo getSalerStatusStaff() {
+    public Staff getSalerStatusStaff() {
         return salerStatusStaff;
     }
 
-    public void setSalerStatusStaff(StaffInfo salerStatusStaff) {
+    public void setSalerStatusStaff(Staff salerStatusStaff) {
         this.salerStatusStaff = salerStatusStaff;
     }
     @Basic
@@ -72,11 +72,11 @@ public class HouseSaleCtrl implements Serializable {
     }
     @ManyToOne
     @JoinColumn(name = "salectrlstatusstaff")
-    public StaffInfo getSalectrlStatusStaff() {
+    public Staff getSalectrlStatusStaff() {
         return salectrlStatusStaff;
     }
 
-    public void setSalectrlStatusStaff(StaffInfo salectrlStatusStaff) {
+    public void setSalectrlStatusStaff(Staff salectrlStatusStaff) {
         this.salectrlStatusStaff = salectrlStatusStaff;
     }
     @Basic

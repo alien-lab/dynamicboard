@@ -7,8 +7,8 @@ import javax.persistence.*;
  * Created by Administrator on 2017/2/22.
  */
 @Entity
-@Table(name = "tb_staff_info")
-public class StaffInfo {
+@Table(name = "tb_staff")
+public class Staff {
     private Long id;
     private String staffName;//姓名
     private String staffPhone;//号码
@@ -19,7 +19,7 @@ public class StaffInfo {
     private String icon;
     private Premise premise;//所属楼盘
 
-    public StaffInfo() {
+    public Staff() {
     }
 
 
