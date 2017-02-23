@@ -1,0 +1,54 @@
+{
+  "name": "Angle",
+  "version": "0.0.0",
+  "authors": [
+    "@themicon_co"
+  ],
+  "description": "Angle - Bootstrap Admin App + AngularJS",
+  "main": "index.html",
+  "keywords": [
+    "bootstrap",
+    "angular",
+    "admin",
+    "theme",
+    "dashboard"
+  ],
+  "license": "http://support.wrapbootstrap.com/knowledge_base/topics/usage-licenses",
+  "homepage": "http://themicon.co",
+  "private": true,
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "angular-loading-bar": "0.8.0",
+    "angular-translate": "2.9.2",
+    "angular-ui-router": "0.2.18",
+    "angular": "1.5.0",
+    "angular-route": "1.5.0",
+    "angular-bootstrap": "1.1.2",
+    "angular-cookies": "1.5.0",
+    "angular-translate-loader-url": "2.9.2",
+    "angular-translate-loader-static-files": "2.9.2",
+    "angular-translate-storage-local": "2.9.2",
+    "angular-translate-storage-cookie": "2.9.2",
+    "angular-animate": "1.5.0",
+    "angular-mocks": "1.5.0",
+    "angular-ui-utils": "3.0.0",
+    "fontawesome": "4.5.0",
+    "oclazyload": "1.0.9",
+    "ngstorage": "0.3.10",
+    "jquery": "2.2.1",
+    "modernizr": "https://modernizr.com/download?backgroundsize-bgpositionshorthand-bgpositionxy-bgrepeatspace_bgrepeatround-bgsizecover-borderradius-cssanimations-csscalc-csstransforms-csstransforms3d-csstransitions-flexboxtweener-fontface-inlinesvg-localstorage-multiplebgs-preserve3d-sessionstorage-smil-svgclippaths-svgfilters-svgforeignobject-todataurljpeg_todataurlpng_todataurlwebp-setclasses&q=background.zip",
+    "angular-sanitize": "1.5.0",
+    "angular-resource": "1.5.0",
+    "simple-line-icons": "2.2.3",
+    "angular-touch": "1.5.0",
+    "jquery.browser": "master"
+  },
+  "resolutions": {
+    "angular": "1.5.0",
+    "angular-translate": "2.9.2",
+    "angular-translate-storage-cookie": "2.9.2",
+    "angular-cookies": "1.5.0"
+  }
+}
