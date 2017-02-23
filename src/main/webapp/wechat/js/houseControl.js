@@ -11,7 +11,7 @@
             floorcount:30,
             unitcount:3,
             floorhousecount:4,
-            houses:[]
+            houses:[[]]
         }
 
         function house(houseno,area,price,type){
@@ -24,19 +24,20 @@
         genHouse();
         $scope.building=building;
         function genHouse(){
-            for(var i=0;i<building.floorhousecount;i++){
-                for(var j=0;j<building.unitcount;j++){
-                    for(var k=0;k<building.floorcount;k++){
-                        var no=(j+1)+'-'+(k+1)+"-"+(i+1);
-                        var h=new house(
-                            no,
-                            30*(i+1),
-                            10000+(Math.abs(k-15)*100),
-                            'A'+i
-                        );
-                        building.houses.push(h);
-                    }
+            for(var i=0;i<building.floorcount;i++){
+                var floorhouse=[];
+                for(var j=0;j<building.unitcount*building.floorhousecount;j++){
+                    var no=(i+1)+'-'+(j+1);
+                    var h=new house(
+                        no,
+                        30*((j%4)+1),
+                        10000+(Math.abs(i-15)*100),
+                        'A'+(j%4)
+                    );
+                    floorhouse.push(h);
+
                 }
+                building.houses.push(floorhouse);
             }
         }
 

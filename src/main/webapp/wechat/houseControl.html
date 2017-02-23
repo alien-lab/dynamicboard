@@ -7,17 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="../vendor/angularjs/angular.min.js"></script>
     <title>Title</title>
+    <style>
+        .house{
+            list-style: none;
+            border:1px solid #eee;
+            pading:0;
+            margin:0;
+        }
+    </style>
 </head>
 <body ng-app="house" ng-controller="testController">
-<div ng-repeat="house in building.houses">
-    <ul>
-        <li>{{house.no}}</li>
-        <li>{{house.area}}</li>
-        <li>{{house.price}}</li>
-        <li>{{house.type}}</li>
-        <li>{{house.totalprice}}</li>
-    </ul>
-</div>
+<ul  ng-repeat="house in building.houses" style="white-space:nowrap;clear:both;margin:0;padding:0;">
+    <li style="display:inline-block;min-width:100px;" ng-repeat="h in building.houses[$index]">
+        <ul class="house">
+            <li>{{h.no}}</li>
+            <li>{{h.area}}</li>
+            <li>{{h.price}}</li>
+            <li>{{h.type}}</li>
+            <li>{{h.totalprice}}</li>
+        </ul>
+    </li>
+
+</ul>
+
 <script src="js/houseControl.js"></script>
 </body>
 </html>
