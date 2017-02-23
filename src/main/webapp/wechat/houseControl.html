@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../vendor/angularjs/angular.min.js"></script>
+    <title>Title</title>
+</head>
+<body ng-app="house" ng-controller="testController">
+<div ng-repeat="house in building.houses">
+    <ul>
+        <li>{{house.no}}</li>
+        <li>{{house.area}}</li>
+        <li>{{house.price}}</li>
+        <li>{{house.type}}</li>
+        <li>{{house.totalprice}}</li>
+    </ul>
+</div>
+<script src="js/houseControl.js"></script>
+</body>
+</html>
