@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * 房源-客户
+ * 房源预约-客户
  * Created by Administrator on 2017/2/22.
  */
 @Entity

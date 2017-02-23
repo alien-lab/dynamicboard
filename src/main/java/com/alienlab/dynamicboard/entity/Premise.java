@@ -34,7 +34,7 @@ public class Premise implements Serializable{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "")
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -43,7 +43,7 @@ public class Premise implements Serializable{
         this.id = id;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "premisename")
     public String getPremiseName() {
         return premiseName;
     }
@@ -52,7 +52,7 @@ public class Premise implements Serializable{
         this.premiseName = premiseName;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "premiseaddress")
     public String getPremiseAddress() {
         return premiseAddress;
     }
@@ -61,7 +61,7 @@ public class Premise implements Serializable{
         this.premiseAddress = premiseAddress;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "buildingnu")
     public Integer getBuildingNu() {
         return buildingNu;
     }
@@ -70,7 +70,7 @@ public class Premise implements Serializable{
         this.buildingNu = buildingNu;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "premisesquare")
     public float getPremiseSquare() {
         return premiseSquare;
     }
@@ -79,7 +79,7 @@ public class Premise implements Serializable{
         this.premiseSquare = premiseSquare;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "premisefar")
     public float getPremiseFar() {
         return premiseFar;
     }
@@ -88,7 +88,7 @@ public class Premise implements Serializable{
         this.premiseFar = premiseFar;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "premisegsp")
     public float getPremiseGsp() {
         return premiseGsp;
     }
@@ -97,7 +97,7 @@ public class Premise implements Serializable{
         this.premiseGsp = premiseGsp;
     }
     @Basic
-    @Column(name = "")
+    @Column(name = "premisephone")
     public String getPremisePhone() {
         return premisePhone;
     }
@@ -106,17 +106,4 @@ public class Premise implements Serializable{
         this.premisePhone = premisePhone;
     }
 
-    @Override
-    public String toString() {
-        return "Premise{" +
-                "id=" + id +
-                ", premiseName='" + premiseName + '\'' +
-                ", premiseAddress='" + premiseAddress + '\'' +
-                ", buildingNu=" + buildingNu +
-                ", premiseSquare=" + premiseSquare +
-                ", premiseFar=" + premiseFar +
-                ", premiseGsp=" + premiseGsp +
-                ", premisePhone='" + premisePhone + '\'' +
-                '}';
-    }
 }

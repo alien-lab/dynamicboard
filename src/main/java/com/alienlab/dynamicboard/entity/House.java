@@ -15,7 +15,7 @@ public class House {
     private float unitPrice;//单价
     private float totalPrice;//总价
     private String houseStatus;//状态
-    private Building buliding;//所属楼栋
+    private Building building;//所属楼栋
     private String unitNo;//单元号
     private String floorNo;//楼层号
     private Premise premise;//所属楼盘
@@ -89,13 +89,13 @@ public class House {
     }
 
     @ManyToOne
-    @JoinColumn(name="buliding")
-    public Building getBuliding() {
-        return buliding;
+    @JoinColumn(name="building")
+    public Building getBuilding() {
+        return building;
     }
 
-    public void setBuliding(Building buliding) {
-        this.buliding = buliding;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
     @Basic
     @Column(name = "unitno")

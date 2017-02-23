@@ -14,16 +14,15 @@ public class HouseStyle {
     private String hsName;//户型名称
     private String hsIntroduction;//户型介绍
     private String hsPicture;//户型图
+    private float hsSquare;//户型面积
     private Premise premise;//所属楼盘
 
     public HouseStyle() {
     }
 
-
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "")
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -33,7 +32,7 @@ public class HouseStyle {
     }
 
     @Basic
-    @Column(name = "")
+    @Column(name = "hscode")
     public String getHsCode() {
         return hsCode;
     }
@@ -43,7 +42,7 @@ public class HouseStyle {
     }
 
     @Basic
-    @Column(name = "")
+    @Column(name = "hsname")
     public String getHsName() {
         return hsName;
     }
@@ -53,7 +52,7 @@ public class HouseStyle {
     }
 
     @Basic
-    @Column(name = "")
+    @Column(name = "hsintroduction")
     public String getHsIntroduction() {
         return hsIntroduction;
     }
@@ -63,13 +62,23 @@ public class HouseStyle {
     }
 
     @Basic
-    @Column(name = "")
+    @Column(name = "hspicture")
     public String getHsPicture() {
         return hsPicture;
     }
 
     public void setHsPicture(String hsPicture) {
         this.hsPicture = hsPicture;
+    }
+
+    @Basic
+    @Column(name = "hssquare")
+    public float getHsSquare() {
+        return hsSquare;
+    }
+
+    public void setHsSquare(float hsSquare) {
+        this.hsSquare = hsSquare;
     }
 
     @ManyToOne

@@ -23,7 +23,6 @@ public class Customer implements Serializable{
     public Customer() {
     }
 
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
@@ -97,6 +96,5 @@ public class Customer implements Serializable{
     public void setBindTime(Timestamp bindTime) {
         this.bindTime = bindTime;
     }
-
 
 }

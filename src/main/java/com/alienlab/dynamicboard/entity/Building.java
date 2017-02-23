@@ -106,17 +106,4 @@ public class Building implements Serializable {
         this.premise = premise;
     }
 
-    @Override
-    public String toString() {
-        return "Building{" +
-                "id=" + id +
-                ", buildingName='" + buildingName + '\'' +
-                ", buildingNo='" + buildingNo + '\'' +
-                ", floorNu=" + floorNu +
-                ", unitNu=" + unitNu +
-                ", unitHouseNu=" + unitHouseNu +
-                ", buildingStatus='" + buildingStatus + '\'' +
-                ", premise='" + premise + '\'' +
-                '}';
-    }
 }
