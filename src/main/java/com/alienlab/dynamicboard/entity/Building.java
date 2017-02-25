@@ -20,6 +20,7 @@ public class Building implements Serializable {
     private Premise premise;//所属楼盘
 
     public Building() {
+
     }
 
     public Building(String buildingName, String buildingNo, Integer floorNu, Integer unitNu, Integer unitHouseNu, String buildingStatus, Premise premise) {
