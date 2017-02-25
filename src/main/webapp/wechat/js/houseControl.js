@@ -26,16 +26,17 @@
         function genHouse(){
             for(var i=0;i<building.floorcount;i++){
                 var floorhouse=[];
-                for(var j=0;j<building.unitcount*building.floorhousecount;j++){
-                    var no=(i+1)+'-'+(j+1);
-                    var h=new house(
-                        no,
-                        30*((j%4)+1),
-                        10000+(Math.abs(i-15)*100),
-                        'A'+(j%4)
-                    );
-                    floorhouse.push(h);
-
+                for(var j=0;j<building.unitcount;j++){
+                    for (var k=0;k<building.floorhousecount;k++){
+                        var no=(i+1).toString()+(j+1).toString()+(k+1).toString();
+                        var h=new house(
+                            no,
+                            30*(((j+1)*(k+1)%4)+1),
+                            10000+(Math.abs(i-15)*100),
+                            'A'+((j+1)*(k+1)%4)
+                        );
+                        floorhouse.push(h);
+                    }
                 }
                 building.houses.push(floorhouse);
             }

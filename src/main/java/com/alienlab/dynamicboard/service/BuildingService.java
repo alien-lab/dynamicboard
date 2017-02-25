@@ -7,7 +7,6 @@ import com.alienlab.dynamicboard.repository.HouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,16 +20,25 @@ public class BuildingService {
     private HouseRepository houseRepository;
     //添加楼栋
     public Building addBuilding(Building building){
-        List<House> houses = new ArrayList<>();
-        for (int i=0;i<building.getUnitNu()*building.getUnitHouseNu();i++){
-            House house = new House();
-            houseRepository.save(house);
+        for (int i=0;i<building.getFloorNu();i++){
+            for (int j=0;j<building.getUnitNu();j++){
+                for (int k=0;k<building.getUnitHouseNu();k++){
+                    String houseNo = building.getBuildingNo()+"-"+String.valueOf(i+1)+String.valueOf(j+1)+String.valueOf(k+1);
+                    House house = new House(houseNo,building,String.valueOf(j+1),String.valueOf(i+1),building.getPremise());
+                    houseRepository.save(house);
+                }
+            }
         }
         return buildingRepository.save(building);
     }
     //删除楼栋
     public boolean deleteBuilding(Long id){
         try{
+            Building building = buildingRepository.getOne(id);
+            List<House> houses= houseRepository.findByBuilding(building);
+            for (House house:houses){
+                houseRepository.delete(house);
+            }
             buildingRepository.delete(id);
             return true;
         }catch (Exception e){

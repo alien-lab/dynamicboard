@@ -23,6 +23,14 @@ public class House {
     public House() {
     }
 
+    public House(String houseNo, Building building, String unitNo, String floorNo, Premise premise) {
+        this.houseNo = houseNo;
+        this.building = building;
+        this.unitNo = unitNo;
+        this.floorNo = floorNo;
+        this.premise = premise;
+    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
