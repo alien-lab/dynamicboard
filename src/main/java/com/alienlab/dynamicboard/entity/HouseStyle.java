@@ -20,6 +20,15 @@ public class HouseStyle {
     public HouseStyle() {
     }
 
+    public HouseStyle(String hsCode, String hsName, String hsIntroduction, String hsPicture, float hsSquare, Premise premise) {
+        this.hsCode = hsCode;
+        this.hsName = hsName;
+        this.hsIntroduction = hsIntroduction;
+        this.hsPicture = hsPicture;
+        this.hsSquare = hsSquare;
+        this.premise = premise;
+    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
@@ -53,8 +62,8 @@ public class HouseStyle {
 
     @Basic
     @Column(name = "hsintroduction")
-    public String getHsIntroduction() {
-        return hsIntroduction;
+    public String getHsIntroduction(String hsIntroduction) {
+        return this.hsIntroduction;
     }
 
     public void setHsIntroduction(String hsIntroduction) {
@@ -63,8 +72,8 @@ public class HouseStyle {
 
     @Basic
     @Column(name = "hspicture")
-    public String getHsPicture() {
-        return hsPicture;
+    public String getHsPicture(String hsPicture) {
+        return this.hsPicture;
     }
 
     public void setHsPicture(String hsPicture) {
@@ -89,5 +98,18 @@ public class HouseStyle {
 
     public void setPremise(Premise premise) {
         this.premise = premise;
+    }
+
+    @Override
+    public String toString() {
+        return "HouseStyle{" +
+                "id=" + id +
+                ", hsCode='" + hsCode + '\'' +
+                ", hsName='" + hsName + '\'' +
+                ", hsIntroduction='" + hsIntroduction + '\'' +
+                ", hsPicture='" + hsPicture + '\'' +
+                ", hsSquare=" + hsSquare +
+                ", premise=" + premise +
+                '}';
     }
 }

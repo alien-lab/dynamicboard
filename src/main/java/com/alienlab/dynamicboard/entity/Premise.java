@@ -15,14 +15,14 @@ public class Premise implements Serializable{
     private String premiseAddress;//楼盘地点
     private Integer buildingNu;//楼栋数
     private float premiseSquare;//面积
-    private float premiseFar;//容积率
-    private float premiseGsp;//绿化率
+    private double premiseFar;//容积率
+    private double premiseGsp;//绿化率
     private String premisePhone;//售楼处电话
 
     public Premise() {
     }
 
-    public Premise(String premiseName, String premiseAddress, Integer buildingNu, float premiseSquare, float premiseFar, float premiseGsp, String premisePhone) {
+    public Premise(String premiseName, String premiseAddress, Integer buildingNu, float premiseSquare, double premiseFar, double premiseGsp, String premisePhone) {
         this.premiseName = premiseName;
         this.premiseAddress = premiseAddress;
         this.buildingNu = buildingNu;
@@ -80,20 +80,20 @@ public class Premise implements Serializable{
     }
     @Basic
     @Column(name = "premisefar")
-    public float getPremiseFar() {
+    public double getPremiseFar() {
         return premiseFar;
     }
 
-    public void setPremiseFar(float premiseFar) {
+    public void setPremiseFar(double premiseFar) {
         this.premiseFar = premiseFar;
     }
     @Basic
     @Column(name = "premisegsp")
-    public float getPremiseGsp() {
+    public double getPremiseGsp() {
         return premiseGsp;
     }
 
-    public void setPremiseGsp(float premiseGsp) {
+    public void setPremiseGsp(double premiseGsp) {
         this.premiseGsp = premiseGsp;
     }
     @Basic
@@ -106,4 +106,17 @@ public class Premise implements Serializable{
         this.premisePhone = premisePhone;
     }
 
+    @Override
+    public String toString() {
+        return "Premise{" +
+                "id=" + id +
+                ", premiseName='" + premiseName + '\'' +
+                ", premiseAddress='" + premiseAddress + '\'' +
+                ", buildingNu=" + buildingNu +
+                ", premiseSquare=" + premiseSquare +
+                ", premiseFar=" + premiseFar +
+                ", premiseGsp=" + premiseGsp +
+                ", premisePhone='" + premisePhone + '\'' +
+                '}';
+    }
 }

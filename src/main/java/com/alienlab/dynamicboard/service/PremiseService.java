@@ -2,14 +2,12 @@ package com.alienlab.dynamicboard.service;
 
 import com.alienlab.dynamicboard.entity.Building;
 import com.alienlab.dynamicboard.entity.House;
+import com.alienlab.dynamicboard.entity.HouseStyle;
 import com.alienlab.dynamicboard.entity.Premise;
-import com.alienlab.dynamicboard.repository.BuildingRepository;
-import com.alienlab.dynamicboard.repository.HouseRepository;
-import com.alienlab.dynamicboard.repository.PremiseRepository;
+import com.alienlab.dynamicboard.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +21,15 @@ public class PremiseService {
     private BuildingRepository buildingRepository;
     @Autowired
     private HouseRepository houseRepository;
+    @Autowired
+    private HouseStyleRepository houseStyleRepository;
+    @Autowired
+    private Pre_BuiRepository pre_buiRepository;
+    @Autowired
+    private Pre_HouRepository pre_houRepository;
+    @Autowired
+    private Pre_HouStyRepository pre_houStyRepository;
+
     //添加楼盘
     public Premise addPremise(Premise premise){
         return premiseRepository.save(premise);
@@ -31,13 +38,17 @@ public class PremiseService {
     public boolean deletePremise(Long id){
         try{
             Premise premise = premiseRepository.findOne(id);
+            List<House> houses = houseRepository.findByPremise(premise);
+            for (House house:houses){
+                houseRepository.delete(house);
+            }
             List<Building> buildings = buildingRepository.findByPremise(premise);
             for (Building building:buildings){
                 buildingRepository.delete(building);
             }
-            List<House> houses = houseRepository.findByPremise(premise);
-            for (House house:houses){
-                houseRepository.delete(house);
+            List<HouseStyle> houseStyles = houseStyleRepository.findByPremise(premise);
+            for (HouseStyle houseStyle:houseStyles){
+                houseStyleRepository.delete(houseStyle);
             }
             premiseRepository.delete(id);
             return true;
@@ -56,6 +67,6 @@ public class PremiseService {
     }
     //根据id查楼盘
     public Premise getPremiseById(Long id){
-        return premiseRepository.getOne(id);
+        return premiseRepository.findOne(id);
     }
 }

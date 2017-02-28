@@ -20,6 +20,7 @@ public class BuildingService {
     private HouseRepository houseRepository;
     //添加楼栋
     public Building addBuilding(Building building){
+        Building savebuilding = buildingRepository.save(building);
         for (int i=0;i<building.getFloorNu();i++){
             for (int j=0;j<building.getUnitNu();j++){
                 for (int k=0;k<building.getUnitHouseNu();k++){
@@ -29,7 +30,7 @@ public class BuildingService {
                 }
             }
         }
-        return buildingRepository.save(building);
+        return savebuilding;
     }
     //删除楼栋
     public boolean deleteBuilding(Long id){

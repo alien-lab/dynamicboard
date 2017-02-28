@@ -22,7 +22,6 @@ public class Building implements Serializable {
     public Building() {
 
     }
-
     public Building(String buildingName, String buildingNo, Integer floorNu, Integer unitNu, Integer unitHouseNu, String buildingStatus, Premise premise) {
         this.buildingName = buildingName;
         this.buildingNo = buildingNo;
@@ -32,6 +31,7 @@ public class Building implements Serializable {
         this.buildingStatus = buildingStatus;
         this.premise = premise;
     }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
@@ -107,4 +107,17 @@ public class Building implements Serializable {
         this.premise = premise;
     }
 
+    @Override
+    public String toString() {
+        return "Building{" +
+                "id=" + id +
+                ", buildingName='" + buildingName + '\'' +
+                ", buildingNo='" + buildingNo + '\'' +
+                ", floorNu=" + floorNu +
+                ", unitNu=" + unitNu +
+                ", unitHouseNu=" + unitHouseNu +
+                ", buildingStatus='" + buildingStatus + '\'' +
+                ", premise=" + premise +
+                '}';
+    }
 }

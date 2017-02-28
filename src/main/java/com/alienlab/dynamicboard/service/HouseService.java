@@ -37,7 +37,7 @@ public class HouseService {
         return houseRepository.findAll();
     }
     //根据id查询一个房源详情
-    public House getOne(Long id){
+    public House getHouseById(Long id){
         return houseRepository.findOne(id);
     }
 }
