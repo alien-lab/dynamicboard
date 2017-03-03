@@ -1,3 +1,26 @@
 [
-
+  {
+    "text": "动态销控",
+    "heading": "true"
+  },
+  {
+    "text": "楼盘管理",
+    "sref": "dynamicboard.premise",
+    "icon": "fa fa-smile-o"
+  },
+  {
+    "text": "楼栋管理",
+    "sref": "dynamicboard.building",
+    "icon": "fa fa-smile-o"
+  },
+  {
+    "text": "房源管理",
+    "sref": "dynamicboard.house",
+    "icon": "fa fa-smile-o"
+  },
+  {
+    "text": "户型管理",
+    "sref": "dynamicboard.housestyle",
+    "icon": "fa fa-smile-o"
+  }
 ]

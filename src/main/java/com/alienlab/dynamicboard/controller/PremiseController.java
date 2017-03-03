@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Administrator on 2017/2/25.
  */
 @RestController
-@RequestMapping("/premise")
+@RequestMapping(value = "/premise")
 public class PremiseController {
     @Autowired
     private PremiseService premiseService;
@@ -100,9 +100,6 @@ public class PremiseController {
     @RequestMapping(value = "/getAll",method = RequestMethod.GET)
     public String getAll(){
         List<Premise> premises = premiseService.getAll();
-        ExecResult er = new ExecResult();
-        er.setResult(true);
-        er.setData((JSON) JSON.toJSON(premises));
-        return er.toString();
+        return JSON.toJSONString(premises);
     }
 }

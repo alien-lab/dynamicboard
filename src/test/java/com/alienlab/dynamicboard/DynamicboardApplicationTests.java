@@ -55,12 +55,12 @@ public class DynamicboardApplicationTests {
 //		houseService.addHouse(house);
 //	}
 	//查所有楼盘
-//	public void TestGetAllPremise(){
-//		List<Premise> premises = premiseService.getAll();
-//		for (Premise premise:premises){
-//			System.out.println(premise);
-//		}
-//	}
+	public void TestGetAllPremise(){
+		List<Premise> premises = premiseService.getAll();
+		for (Premise premise:premises){
+			System.out.println(premise);
+		}
+	}
 	//查询所有楼栋
 //	public void TestGetAllBuilding(){
 //		List<Building> buildings = buildingService.getAll();
@@ -131,9 +131,9 @@ public class DynamicboardApplicationTests {
 //		buildingService.deleteBuilding((long) 4);
 //	}
 	//根据id删除户型
-	public void TestDeleteHouseStyle(){
-		houseStyleService.deleteHouseStyle((long) 5);
-	}
+//	public void TestDeleteHouseStyle(){
+//		houseStyleService.deleteHouseStyle((long) 5);
+//	}
 	//根据id删除房源
 //	public void TestDeleteHouse(){
 //		houseService.deleteHouse((long) 40);

@@ -1,20 +1,28 @@
 /**
  * Created by Administrator on 2017/2/23.
  */
-(function () {
+(function(){
     'use strict';
-    var premiseModule=angular.module("dynamicboard.premise",[]);
-    premiseModule.factory("premiseDescinstance",function(){return {}});
+    var premiseModule=angular.module("dynamicboard.premise",['ui.router']);
+    premiseModule.factory("premiseInstance",function(){return {}});
     premiseModule.config(["$stateProvider",function($stateProvider){
         $stateProvider.state('dynamicboard.premise', {
             url: '/premise',
-            title: '楼盘管理',
-            templateUrl: "dynamicboard/premise/premise.html",
+            title: '动态销控楼盘管理',
+            templateUrl:"dynamicboard/premise/premise.html",
             controller:"premiseController"
         });
     }]);
     premiseModule.controller("premiseController",["$scope","premiseService","$uibModal",function ($scope,premiseService,$uibModal) {
         $scope.pagetitle="楼盘管理";
+        //显示所有楼盘
+        premiseService.getAllPremise(function (data) {
+            console.log("aaaaa");
+            $scope.premise_data=data;
+            console.log(data);
+        });
+        //添加楼盘模态框
+        $scope.showAddPremise = showAddPremise;
         function showAddPremise(){
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -39,11 +47,11 @@
             })
         }
     }]);
-    premiseModule.controller("addPremiseController",["$scope","premiseService","premiseDescinstance","$uibModalInstance",function($scope,premiseService,premiseDescinstance,$uibModalInstance){
+    premiseModule.controller("addPremiseController",["$scope","premiseService","$uibModalInstance",function($scope,premiseService,$uibModalInstance){
         $scope.pagetitle = "添加楼盘";
         $scope.save = function save(premise) {
             $scope.loading = true;
-            premiseService.addPremise($scope.form,function(data) {
+            premiseService.addPremise(premise,function(data) {
                 $scope.loading = false;
                 if(data.result >0) {
                     $uibModalInstance.close(data);
@@ -54,12 +62,24 @@
                     }
                 }
             });
-        }
+        };
         $scope.cancel = function cancel(flag){
             $uibModalInstance.dismiss('cancel');
         }
     }]);
     premiseModule.service("premiseService",["$http",function ($http) {
+        this.getAllPremise=function(callback){
+            console.log("aaaaa");
+            $http({
+                url:'/premise/getAll',
+                method:'GET'
+            }).then(function(data){
+                console.log("aaaaa");
+                callback(data.data);
+                console.log("aaaaa");
+                console.log(data.data);
+            });
+        };
         this.addPremise = function (premise,callback) {
             $http({
                 url:"/premise/addPremise",
@@ -68,15 +88,17 @@
             }).then(function (response) {
                 callback(response.date);
             });
-        }
-        this.deletePremise = function (premiseId,callback) {
-            $http({
-                url:"/premise/deletePremise/"+premiseId,
-                method:"DELETE",
-                data:"id"
-            }).then(function (response) {
-                callback(response.date);
-            });
-        }
+        };
+        // this.deletePremise = function (premiseId,callback) {
+        //     $http({
+        //         url:"/premise/deletePremise/"+premiseId,
+        //         method:"DELETE",
+        //         data:{
+        //             id:premiseId
+        //         }
+        //     }).then(function (response) {
+        //         callback(response.date);
+        //     });
+        // }
     }]);
-})
+})();
