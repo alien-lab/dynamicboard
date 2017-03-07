@@ -102,4 +102,10 @@ public class PremiseController {
         List<Premise> premises = premiseService.getAll();
         return JSON.toJSONString(premises);
     }
+    //根据premiseName查询楼盘
+    @RequestMapping(value = "/getByPremiseName/{premiseName}",method = RequestMethod.GET)
+    public String getPremiseByPremiseName(@PathVariable("premiseName")String premiseName){
+        Premise premise = premiseService.getPremiseByPremiseName(premiseName);
+        return JSON.toJSONString(premise);
+    }
 }

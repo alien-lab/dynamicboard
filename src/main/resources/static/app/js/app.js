@@ -29,7 +29,8 @@
             'dynamicboard.premise',
             'dynamicboard.building',
             'dynamicboard.house',
-            'dynamicboard.housestyle'
+            'dynamicboard.housestyle',
+            "housestyle.desc"
         ]);
 })();
 

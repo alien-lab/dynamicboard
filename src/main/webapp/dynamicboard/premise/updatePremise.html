@@ -2,7 +2,7 @@
     <h3 class="modal-title">{{pagetitle}}</h3>
 </div>
 <div class="modal-body">
-    <form role="form" name="addPremiseform" novalidate="novalidate">
+    <form role="form" name="updatePremiseform" novalidate="novalidate">
         <div class="form-group col-md-12">
             <label>楼盘名称</label>
             <input type="text" class="form-control" placeholder="请输入楼盘名称" ng-model="form.premiseName" name="premiseName" id="input-premiseName" required />
@@ -13,19 +13,19 @@
         </div>
         <div class="form-group col-md-12">
             <label>楼栋数</label>
-            <input type="number" class="form-control" placeholder="请输入楼栋数" ng-model="form.buildingNu" name="buildingNu" id="input-buildingNu" required />
+            <input type="text" class="form-control" placeholder="请输入楼栋数" ng-model="form.buildingNu" name="buildingNu" id="input-buildingNu" required />
         </div>
         <div class="form-group col-md-12">
             <label>面积</label>
-            <input type="number" class="form-control" placeholder="请输入面积" ng-model="form.premiseSquare" name="premiseSquare" id="input-premiseSquare" required />
+            <input type="text" class="form-control" placeholder="请输入面积" ng-model="form.premiseSquare" name="premiseSquare" id="input-premiseSquare" required />
         </div>
         <div class="form-group col-md-12">
             <label>容积率</label>
-            <input type="number" class="form-control" placeholder="请输入容积率" ng-model="form.premiseFar" name="premiseFar" id="input-premiseFar" required />
+            <input type="text" class="form-control" placeholder="请输入容积率" ng-model="form.premiseFar" name="premiseFar" id="input-premiseFar" required />
         </div>
         <div class="form-group col-md-12">
             <label>绿化率</label>
-            <input type="number" class="form-control" placeholder="请输入绿化率" ng-model="form.premiseGsp" name="premiseGsp" id="input-premiseGsp" required />
+            <input type="text" class="form-control" placeholder="请输入绿化率" ng-model="form.premiseGsp" name="premiseGsp" id="input-premiseGsp" required />
         </div>
         <div class="form-group col-md-12">
             <label>售楼处电话</label>
@@ -35,6 +35,6 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="addPremiseform.$invalid" ng-click="save()">保存</button>
+    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="updatePremiseform.$invalid" ng-click="save()">保存</button>
     <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
 </div>

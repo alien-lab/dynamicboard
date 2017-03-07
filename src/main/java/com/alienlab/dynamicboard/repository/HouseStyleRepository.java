@@ -14,4 +14,5 @@ import java.util.List;
 @Repository
 public interface HouseStyleRepository extends JpaRepository<HouseStyle,Long>{
     public List<HouseStyle> findByPremise(Premise premise);
+    public HouseStyle findByHsName(String hsName);
 }
