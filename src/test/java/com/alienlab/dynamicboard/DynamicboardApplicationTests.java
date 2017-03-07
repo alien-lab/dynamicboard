@@ -129,7 +129,7 @@ public class DynamicboardApplicationTests {
 	//根据id删除楼栋
 //	public void TestDeleteBuilding(){
 //		buildingService.deleteBuilding((long) 4);
-//	}
+//	};
 	//根据id删除户型
 //	public void TestDeleteHouseStyle(){
 //		houseStyleService.deleteHouseStyle((long) 5);
