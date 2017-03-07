@@ -112,4 +112,10 @@ public class HouseStyleController {
         er.setData((JSON) JSON.toJSON(houseStyles));
         return er.toString();
     }
+    //根据hsName查询户型
+    @RequestMapping(value = "/getByHsName/{hsName}",method = RequestMethod.GET)
+    public String getHouseStyleByHsName(@PathVariable("hsName") String hsName){
+        HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName(hsName);
+        return JSON.toJSONString(houseStyle);
+    }
 }

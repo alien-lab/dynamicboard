@@ -13,4 +13,5 @@ import java.util.List;
 @Repository
 public interface BuildingRepository extends JpaRepository<Building,Long>{
     public List<Building> findByPremise(Premise premise);
+    public Building findByBuildingName(String buildingName);
 }

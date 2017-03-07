@@ -2,6 +2,7 @@ package com.alienlab.dynamicboard.service;
 
 import com.alienlab.dynamicboard.entity.Building;
 import com.alienlab.dynamicboard.entity.House;
+import com.alienlab.dynamicboard.entity.Premise;
 import com.alienlab.dynamicboard.repository.BuildingRepository;
 import com.alienlab.dynamicboard.repository.HouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,11 @@ public class BuildingService {
     }
     //修改楼栋信息
     public Building updateBuilding(Building building){
+        Premise premise = building.getPremise();
+        List<House> houses = houseRepository.findByBuilding(building);
+        for (House house:houses){
+            house.setPremise(premise);
+        }
         return buildingRepository.save(building);
     }
     //查所有楼栋
@@ -58,5 +64,9 @@ public class BuildingService {
     //根据id查楼栋
     public Building getBuildingById(Long id){
         return buildingRepository.findOne(id);
+    }
+    //根据buildingName楼栋
+    public Building getBuildingByBuildingName(String buildingName){
+        return buildingRepository.findByBuildingName(buildingName);
     }
 }

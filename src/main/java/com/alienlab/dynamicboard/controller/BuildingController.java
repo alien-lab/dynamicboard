@@ -41,9 +41,8 @@ public class BuildingController {
             building.setUnitNu(form.getInteger("unitNu"));
             building.setUnitHouseNu(form.getInteger("unitHouseNu"));
             building.setBuildingStatus(form.getString("buildingStatus"));
-            JSONObject premiseJSON = form.getJSONObject("premise");
-            Long id = premiseJSON.getLong("id");
-            Premise premise = premiseService.getPremiseById(id);
+            String premiseName = form.getString("premise");
+            Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             building.setPremise(premise);
             Building result = buildingService.addBuilding(building);
             if (result == null){
@@ -87,9 +86,8 @@ public class BuildingController {
             building.setUnitNu(form.getInteger("unitNu"));
             building.setUnitHouseNu(form.getInteger("unitHouseNu"));
             building.setBuildingStatus(form.getString("buildingStatus"));
-            JSONObject premiseJSON = form.getJSONObject("premise");
-            Long premiseId = premiseJSON.getLong("id");
-            Premise premise = premiseService.getPremiseById(premiseId);
+            String premiseName = form.getString("premise");
+            Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             building.setPremise(premise);
             Building result = buildingService.updateBuilding(building);
             if (result == null){
@@ -113,5 +111,11 @@ public class BuildingController {
         er.setResult(true);
         er.setData((JSON) JSON.toJSON(buildings));
         return er.toString();
+    }
+    //根据buildingName查询楼栋
+    @RequestMapping(value = "/getByBuildingName/{buildingName}",method = RequestMethod.GET)
+    public String getBuildingByBuildingName(@PathVariable("buildingName") String buildingName){
+        Building building = buildingService.getBuildingByBuildingName(buildingName);
+        return JSON.toJSONString(building);
     }
 }

@@ -30,7 +30,7 @@ public class DynamicboardApplicationTests {
 	@Test
 	//添加楼盘测试
 //	public void TestAddPremise() {
-//		Premise premise = new Premise("测试楼盘1","南京",15,200,0.8,0.6,"15711111112");
+//		Premise premise = new Premise("测试楼盘2","南京",15,200,0.8,0.6,"15711111112");
 //		premiseService.addPremise(premise);
 //		System.out.println(premise);
 //	}
@@ -55,12 +55,12 @@ public class DynamicboardApplicationTests {
 //		houseService.addHouse(house);
 //	}
 	//查所有楼盘
-	public void TestGetAllPremise(){
-		List<Premise> premises = premiseService.getAll();
-		for (Premise premise:premises){
-			System.out.println(premise);
-		}
-	}
+//	public void TestGetAllPremise(){
+//		List<Premise> premises = premiseService.getAll();
+//		for (Premise premise:premises){
+//			System.out.println(premise);
+//		}
+//	}
 	//查询所有楼栋
 //	public void TestGetAllBuilding(){
 //		List<Building> buildings = buildingService.getAll();
@@ -124,7 +124,7 @@ public class DynamicboardApplicationTests {
 //	}
 	//根据id删除楼盘
 //	public void TestDeletePremise(){
-//		premiseService.deletePremise((long) 4);
+//		premiseService.deletePremise((long) 6);
 //	}
 	//根据id删除楼栋
 //	public void TestDeleteBuilding(){
@@ -135,7 +135,22 @@ public class DynamicboardApplicationTests {
 //		houseStyleService.deleteHouseStyle((long) 5);
 //	}
 	//根据id删除房源
-//	public void TestDeleteHouse(){
-//		houseService.deleteHouse((long) 40);
+	public void TestDeleteHouse(){
+		houseService.deleteHouse((long) 141);
+	}
+	//根据premiseName查楼盘
+//	public void TestGetPremiseByPremiseName(){
+//	    Premise premise = premiseService.getPremiseByPremiseName("1");
+//		System.out.println(premise);
+//	}
+	//根据hsName查户型
+//	public void TestGetHouseStyleByHsName(){
+//		HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName("1");
+//		System.out.println(houseStyle);
+//	}
+	//根据buildingName楼栋
+//	public void TestGetBuildingByBuildingName(){
+//		Building building = buildingService.getBuildingByBuildingName("2");
+//		System.out.println(building);
 //	}
 }

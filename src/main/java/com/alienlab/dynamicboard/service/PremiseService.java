@@ -38,16 +38,24 @@ public class PremiseService {
     public boolean deletePremise(Long id){
         try{
             Premise premise = premiseRepository.findOne(id);
-            List<House> houses = houseRepository.findByPremise(premise);
-            for (House house:houses){
+            List<House> housesByPremise = houseRepository.findByPremise(premise);
+            for (House house:housesByPremise){
                 houseRepository.delete(house);
             }
             List<Building> buildings = buildingRepository.findByPremise(premise);
             for (Building building:buildings){
+                List<House> housesByBuilding = houseRepository.findByBuilding(building);
+                for (House house:housesByBuilding){
+                    houseRepository.delete(house);
+                }
                 buildingRepository.delete(building);
             }
             List<HouseStyle> houseStyles = houseStyleRepository.findByPremise(premise);
             for (HouseStyle houseStyle:houseStyles){
+                List<House> housesByHouseStyle = houseRepository.findByHouseStyle(houseStyle);
+                for (House house:housesByHouseStyle){
+                    houseRepository.delete(house);
+                }
                 houseStyleRepository.delete(houseStyle);
             }
             premiseRepository.delete(id);
@@ -68,5 +76,9 @@ public class PremiseService {
     //根据id查楼盘
     public Premise getPremiseById(Long id){
         return premiseRepository.findOne(id);
+    }
+    //根据楼盘名查楼盘
+    public Premise getPremiseByPremiseName(String premiseName) {
+        return premiseRepository.findByPremiseName(premiseName);
     }
 }

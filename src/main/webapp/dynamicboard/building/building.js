@@ -13,25 +13,280 @@
             controller:"buildingController"
         });
     }]);
-    buildingModule.controller("buildingController",["$scope","buildingService","$uibModal",function ($scope,buildingService,$uibModal) {
+    buildingModule.controller("buildingController",["$scope","buildingService","buildingInstance","$uibModal",function ($scope,buildingService,buildingInstance,$uibModal) {
         $scope.pagetitle="楼栋管理";
-        //显示所有楼盘
+        //显示所有楼栋
         buildingService.getAllBuilding(function (data) {
             $scope.building_data=data;
             console.log(data);
-        })
+        });
+        //全选
+        $scope.selectAll = function selectAll(){
+            for(var i=0; i<$scope.building_data.length; i++) {
+                if($scope.$isselectall) {
+                    $scope.building_data[i].$isselected = true;
+                } else {
+                    $scope.building_data[i].$isselected = false;
+                }
+            }
+        };
+        //添加楼栋模态框
+        $scope.showAddBuilding = showAddBuilding;
+        function showAddBuilding(){
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'dynamicboard/building/addBuilding.html',
+                controller: 'addBuildingController',
+                bindToController: true,
+                size: "lg",
+                backdrop: false
+            });
+            modalInstance.result.then(function (data) {
+                //添加保存成功
+                console.log("正常关闭添加楼栋模态框");
+                var building = data;
+                $scope.building_data.push(building);
+            }, function() {
+                console.log("取消添加楼栋");
+            })
+        }
+        //修改楼栋模态框
+        $scope.showUpdateBuilding = showUpdateBuilding;
+        function showUpdateBuilding(building) {
+            buildingInstance.modify = building;
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'dynamicboard/building/updateBuilding.html',
+                controller: 'updateBuildingController',
+                bindToController: true,
+                size: "lg",
+                backdrop: false
+            });
+            modalInstance.result.then(function() {
+                //修改保存成功
+                console.log("正常关闭修改楼栋模态框");
+            }, function() {
+                console.log("取消修改楼栋");
+            })
+        }
+        //删除当前楼栋
+        $scope.deleteBuilding = deleteBuilding;
+        function deleteBuilding(buildingId){
+            var promitInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'system/common/promit.html',
+                controller:function($scope,$uibModalInstance){
+                    $scope.title="操作确认";
+                    $scope.text="确认删除该楼栋吗？";
+                    $scope.cancel=function(){
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                    $scope.save=function(){
+                        $uibModalInstance.close("ok");
+                    };
+                },
+                backdrop:true
+            });
+            promitInstance.result.then(function(){
+                buildingService.deleteBuilding(buildingId,function(data){
+                    if(data != null) {
+                        for(var i=0;i<$scope.building_data.length;i++) {
+                            if($scope.building_data[i].id == buildingId) {
+                                //刷新楼栋页面
+                                $scope.building_data.splice(i,1);
+                                break;
+                            }
+                        }
+                    }
+                });
+            });
+        }
+        //批量删除楼栋
+        $scope.getSelects = function() {
+            var selects = [];
+            for(var i=0;i<$scope.building_data.length;i++) {
+                if($scope.building_data[i].$isselected) {
+                    selects.push($scope.building_data[i]);
+                }
+            }
+            return selects;
+        };
+        $scope.deleteBuildings = deleteBuildings;
+        function deleteBuildings() {
+            if($scope.getSelects().length == 0) {
+                console.log("还没选择需要删除的楼栋");
+                return;
+            }
+            var promitInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'system/common/promit.html',
+                controller: function($scope,$uibModalInstance){
+                    $scope.title="操作确认";
+                    $scope.text="确认删除该楼栋吗？";
+                    $scope.cancel=function(){
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                    $scope.save=function(){
+                        $uibModalInstance.close("ok");
+                    };
+                },
+                backdrop:true
+            });
+            promitInstance.result.then(function(){
+                var deletedBuildingId = [];
+                for(var i=0;i<$scope.building_data.length;i++) {
+                    if($scope.building_data[i].$isselected) {
+                        buildingService.deleteBuilding($scope.building_data[i].id,function(data,buildingId){
+                            if(data!=null) {
+                                deletedBuildingId.push(buildingId);
+                                for(var k=0;k<$scope.building_data.length;k++) {
+                                    for(var j=0;j<deletedBuildingId.length;j++) {
+                                        if($scope.building_data[k].id == deletedBuildingId[j]) {
+                                            $scope.building_data.splice(k,1);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }]);
+    buildingModule.controller("addBuildingController",["$scope","buildingService","$uibModalInstance",function($scope,buildingService,$uibModalInstance){
+        $scope.pagetitle = "添加楼栋";
+        $scope.building_statuss = ["已售罄","未开盘","热卖中"];
+        $scope.premise_names = [];
+        buildingService.getAllPremise(function (data) {
+            $scope.premise_data=data;
+            for (var i=0;i<$scope.premise_data.length;i++){
+                $scope.premise_names.push($scope.premise_data[i].premiseName);
+            }
+        });
+        //保存添加
+        $scope.save = function save() {
+            console.log($scope.form);//所需的数据
+            buildingService.addBuilding($scope.form,function(data) {
+                if(data != null) {
+                    console.log("添加成功");
+                    $uibModalInstance.close(data);
+                } else {
+                    console.log("添加失败");
+                    $scope.error = {
+                        haserror: true,
+                        errormsg: "添加失败，您可以再试一次！"
+                    }
+                }
+            });
+        };
+        //取消添加
+        $scope.cancel = function cancel(){
+            $uibModalInstance.dismiss('cancel');
+        }
+    }]);
+    buildingModule.controller("updateBuildingController",["$scope","buildingService","$uibModalInstance","buildingInstance",function($scope,buildingService,$uibModalInstance,buildingInstance){
+        $scope.pagetitle = "修改楼栋信息";
+        $scope.building_statuss = ["已售罄","未开盘","热卖中"];
+        $scope.premise_names = [];
+        buildingService.getAllPremise(function (data) {
+            $scope.premise_data=data;
+            for (var i=0;i<$scope.premise_data.length;i++){
+                $scope.premise_names.push($scope.premise_data[i].premiseName);
+            }
+        });
+        $scope.form = buildingInstance.modify;
+        $scope.form.premise = $scope.form.premise.premiseName;
+        //保存修改
+        $scope.save = function save() {
+            buildingService.getByPremiseName($scope.form.premise,function (data) {
+                $scope.premise = data;
+                $scope.form.premise = $scope.premise;
+                console.log($scope.form.premise);
+            });
+            buildingService.updateBuilding($scope.form,function(data) {
+                console.log($scope.form);
+                if(data != null) {
+                    $uibModalInstance.close(data);
+                } else {
+                    $scope.error = {
+                        haserror: true,
+                        errormsg : "修改失败，您可以再试一次！"
+                    }
+                }
+            });
+        };
+        //取消修改
+        $scope.cancel=function cancel(){
+            $uibModalInstance.dismiss('cancel');
+        }
     }]);
     buildingModule.service("buildingService",["$http",function ($http) {
+        //获取所有楼栋
         this.getAllBuilding=function(callback){
-            console.log("aaaaa");
             $http({
                 url:'/building/getAll',
                 method:'GET'
             }).then(function(data){
-                console.log("aaaaa");
-                callback(data.data);
-                console.log("aaaaa");
-                console.log(data.data);
+                callback(data.data.data);
+                console.log(data.data.data);
+            });
+        };
+        //获得所有楼盘
+        this.getAllPremise=function(callback){
+            $http({
+                url:'/premise/getAll',
+                method:'GET'
+            }).then(function(response){
+                callback(response.data);
+                console.log(response.data);
+            });
+        };
+        //添加楼栋
+        this.addBuilding = function (building,callback) {
+            $http({
+                url:"/building/addBuilding",
+                method:"POST",
+                data:building
+            }).then(function (response) {
+                callback(response.data.data);
+                console.log(response.data.data);
+            });
+        };
+        //修改楼栋信息
+        this.updateBuilding = function (building,callback) {
+            $http({
+                url:"/building/updateBuilding",
+                method:"POST",
+                data:building
+            }).then(function (response) {
+                callback(response.data.data);
+                console.log(response.data.data);
+            });
+        };
+        //删除当前楼栋
+        this.deleteBuilding = function (buildingId,callback) {
+            $http({
+                url:"/building/deleteBuilding/"+buildingId,
+                method:"DELETE",
+                data:{
+                    id:buildingId
+                }
+            }).then(function (response) {
+                callback(response.data,buildingId);
+                console.log(response.data,buildingId);
+            });
+        };
+        //根据premiseName查询楼盘
+        this.getByPremiseName = function (premiseName,callback) {
+            $http({
+                url:"/premise/getByPremiseName/"+premiseName,
+                method:"GET",
+                data:{
+                    premiseName:premiseName
+                }
+            }).then(function (response) {
+                callback(response.data);
+                console.log(response.data);
             });
         }
     }]);
