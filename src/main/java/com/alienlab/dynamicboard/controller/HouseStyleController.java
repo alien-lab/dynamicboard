@@ -38,11 +38,12 @@ public class HouseStyleController {
             houseStyle.setHsCode(form.getString("hsCode"));
             houseStyle.setHsName(form.getString("hsName"));
             houseStyle.setHsIntroduction(form.getString("hsIntroduction"));
+            System.out.println(form.getString("hsIntroduction"));
             houseStyle.setHsPicture(form.getString("hsPicture"));
+            System.out.println(form.getString("hsPicture"));
             houseStyle.setHsSquare(form.getFloatValue("hsSquare"));
-            JSONObject premiseJSON = form.getJSONObject("Premise");
-            Long id = premiseJSON.getLong("id");
-            Premise premise = premiseService.getPremiseById(id);
+            String premiseName = form.getString("premise");
+            Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             houseStyle.setPremise(premise);
             HouseStyle result = houseStyleService.addHouseStyle(houseStyle);
             if (result == null){

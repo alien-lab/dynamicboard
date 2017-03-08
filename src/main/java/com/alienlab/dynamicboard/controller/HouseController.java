@@ -13,6 +13,7 @@ import com.alienlab.dynamicboard.service.HouseStyleService;
 import com.alienlab.dynamicboard.service.PremiseService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,7 +75,7 @@ public class HouseController {
     }
     //删除房源
     @RequestMapping(value = "/deleteHouse/{id}",method = RequestMethod.DELETE)
-    public String deleteHouse(Long id){
+    public String deleteHouse(@PathVariable("id") Long id){
         try{
             if (houseService.deleteHouse(id)){
                 return new ExecResult(true,"房源删除成功").toString();

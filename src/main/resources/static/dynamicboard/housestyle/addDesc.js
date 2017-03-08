@@ -20,9 +20,6 @@
             link: function (scope, element, attr, ctrl) {
                 scope.loading=false;//是否显示loading
                 scope.image=null;//当前图片
-                scope.text="";//当前文本
-                scope.link=null;//当前链接
-                scope.label=null;//当前标签
                 scope.$watch("image",function(newvalue,oldvalue){
                     if(scope.image!=null){
                         scope.type='image';
@@ -39,7 +36,7 @@
             }
         }
     }]);
-    desc_module.directive("imagepreview",[function(){
+    desc_module.directive("imagepreview1",[function(){
         return {
             scope: {
                 fileread: "="

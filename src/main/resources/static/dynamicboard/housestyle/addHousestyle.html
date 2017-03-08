@@ -1,12 +1,3 @@
-<!--<script>-->
-    <!--var myDropzone = new Dropzone("div#mydropzone", {-->
-        <!--url: "vendor/dropzone/upload.php",-->
-        <!--paramName: "file",-->
-        <!--maxFilesize: 5, // MB-->
-        <!--maxFiles: 5,-->
-        <!--acceptedFiles: ".jpg,.png,.gif"-->
-    <!--});-->
-<!--</script>-->
 <div class="modal-header">
     <h3 class="modal-title">{{pagetitle}}</h3>
 </div>
@@ -35,33 +26,21 @@
             <textarea class="form-control note-editor note-editor-margin"
                       rows="5" name="hsIntroduction" ng-model="form.hsIntroduction" id="hsIntroduction"></textarea>
         </div>
-        <!--<input type="file" imagepreview fileread="image.file"-->
-               <!--id="imageloader" style="display:none;" ng-model="form.hsPicture" multiple/>-->
-        <!--<div class="form-group col-md-12" ng-if="type=='unknow'">-->
-            <!--<label>户型图</label>-->
-            <!--<img class="img-rounded thumb64 center-block" src="app/img/addimage.jpg" onclick="imageloader.click()"/>-->
-        <!--</div>-->
-        <!--&lt;!&ndash;如果选择图片，预览图片&ndash;&gt;-->
-        <!--<div class="form-group col-md-12" ng-if="image!=null">-->
-            <!--<img ng-src="{{image.file}}" class="img-rounded center-block" style="width: 256px;height: 160px;" onclick="imageloader.click()"/>-->
-            <!--&lt;!&ndash;<input type="file" imagepreview fileread="image.file"&ndash;&gt;-->
-            <!--&lt;!&ndash;id="imageloader2" style="display:none;"/>&ndash;&gt;-->
-            <!--&lt;!&ndash;<img src="app/img/addimage.jpg" class="img-rounded thumb64 center-block" onclick="imageloader2.click()"/>&ndash;&gt;-->
-        <!--</div>-->
-
-
-        <!--<div class="form-group col-md-12">-->
-            <!--<label>户型图</label>-->
+        <div class="form-group col-md-12">
+            <label>户型图</label>
+            <input type="file" imagepreview fileread="image.file"
+                   id="imageloader" style="display:none;" ng-model="form.hsPicture" multiple/>
+        </div>
+        <div class="form-group col-md-12" ng-if="image==null">
+            <img class="img-rounded thumb64 center-block" src="app/img/addimage.jpg" onclick="imageloader.click()"/>
+        </div>
+        <!--如果选择图片，预览图片-->
+        <div class="form-group col-md-12" ng-if="image!=null">
+            <img ng-src="{{image.file}}" class="img-rounded center-block" style="width: 256px;height: 160px;" onclick="imageloader.click()"/>
             <!--<input type="file" imagepreview fileread="image.file"-->
-                   <!--id="imageloader" style="display: none;" multiple />-->
-            <!--<img class="img-rounded" ng-src="{{image.file}}" onclick="imageloader.click()"/>-->
-        <!--</div>-->
-        <add-desc descid="descid" item="additem"></add-desc>
-        <!--<div class="form-group col-md-12 ">-->
-            <!--<label>户型图</label>-->
-            <!--<div id="mydropzone" class="dropzone" ng-model="form.hsPicture" name="hsPicture"></div>-->
-            <!--<input type="file" name="file" ng-model="form.hsPicture">-->
-        <!--</div>-->
+            <!--id="imageloader2" style="display:none;"/>-->
+            <!--<img src="app/img/addimage.jpg" class="img-rounded thumb64 center-block" onclick="imageloader2.click()"/>-->
+        </div>
         <div style="clear:both;"></div>
     </form>
 </div>

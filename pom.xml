@@ -7,7 +7,6 @@
 	<artifactId>dynamicboard</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-
 	<name>dynamicboard</name>
 	<description>动态销控程序</description>
 
@@ -69,7 +68,6 @@
 			<version>1.0.20</version>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -78,6 +76,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

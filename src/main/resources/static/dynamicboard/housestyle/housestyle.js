@@ -15,6 +15,7 @@
     }]);
     housestyleModule.controller("housestyleController",["$scope","housestyleService","$uibModal",function ($scope,housestyleService,$uibModal) {
         $scope.pagetitle="户型管理";
+        $scope.image=null;//当前图片
         //显示所有户型
         housestyleService.getAllHousestyle(function (data) {
             $scope.housestyle_data=data;
@@ -35,7 +36,8 @@
                 //添加保存成功
                 console.log("正常关闭添加户型模态框");
                 var housestyle = data;
-                $scope.premise_data.push(housestyle);
+                $scope.housestyle_data.push(housestyle);
+                console.log($scope.housestyle_data);
             }, function() {
                 console.log("取消添加户型");
             })
@@ -52,6 +54,7 @@
         });
         //保存添加
         $scope.save = function save() {
+            $scope.form.hsPicture = $scope.image.file;
             console.log($scope.form);//所需的数据
             housestyleService.addHousestyle($scope.form,function(data) {
                 if(data != null) {
@@ -103,5 +106,25 @@
                 console.log(response.data.data);
             });
         };
+    }]);
+    housestyleModule.directive("imagepreview",[function(){
+        return {
+            scope: {
+                fileread: "="
+            },
+            link: function (scope, element, attributes) {
+                element.bind("change", function (changeEvent) {
+                    var reader = new FileReader();
+                    console.log("changeEvent",changeEvent);
+                    reader.onload = function (loadEvent) {
+                        scope.$apply(function () {
+                            scope.fileread = loadEvent.target.result;
+                            //scope.fileinfo=changeEvent.target.files[0];
+                        });
+                    };
+                    reader.readAsDataURL(changeEvent.target.files[0]);
+                });
+            }
+        }
     }]);
 })();
