@@ -41,7 +41,8 @@ public class BuildingController {
             building.setUnitNu(form.getInteger("unitNu"));
             building.setUnitHouseNu(form.getInteger("unitHouseNu"));
             building.setBuildingStatus(form.getString("buildingStatus"));
-            String premiseName = form.getString("premise");
+            JSONObject premiseJSON = form.getJSONObject("premise");
+            String premiseName = premiseJSON.getString("premiseName");
             Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             building.setPremise(premise);
             Building result = buildingService.addBuilding(building);
@@ -72,9 +73,9 @@ public class BuildingController {
             return new ExecResult(false,"楼栋删除异常").toString();
         }
     }
-    //修改楼栋信息
-    @RequestMapping(value = "/updateBuilding",method = RequestMethod.POST)
-    public String updateBuilding(HttpServletRequest request){
+    //新修改楼栋信息
+    @RequestMapping(value = "/newUpdateBuilding",method = RequestMethod.POST)
+    public String newUpdateBuilding(HttpServletRequest request){
         try {
             String jsonBody = IOUtils.toString(request.getInputStream(),"UTF-8");
             JSONObject form = JSONObject.parseObject(jsonBody);
@@ -86,10 +87,45 @@ public class BuildingController {
             building.setUnitNu(form.getInteger("unitNu"));
             building.setUnitHouseNu(form.getInteger("unitHouseNu"));
             building.setBuildingStatus(form.getString("buildingStatus"));
-            String premiseName = form.getString("premise");
+            JSONObject premiseJSON = form.getJSONObject("premise");
+            System.out.println(premiseJSON);
+            String premiseName = premiseJSON.getString("premiseName");
             Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             building.setPremise(premise);
-            Building result = buildingService.updateBuilding(building);
+            Building result = buildingService.newUpdateBuilding(building);
+            if (result == null){
+                return new ExecResult(false,"楼栋修改失败").toString();
+            }else {
+                ExecResult er = new ExecResult();
+                er.setResult(true);
+                er.setData((JSON) JSON.toJSON(building));
+                return er.toString();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ExecResult(false,"楼栋修改异常").toString();
+        }
+    }
+    //旧修改楼栋信息
+    @RequestMapping(value = "/oldUpdateBuilding",method = RequestMethod.POST)
+    public String oldUpdateBuilding(HttpServletRequest request){
+        try {
+            String jsonBody = IOUtils.toString(request.getInputStream(),"UTF-8");
+            JSONObject form = JSONObject.parseObject(jsonBody);
+            Long buildingId = form.getLong("id");
+            Building building = buildingService.getBuildingById(buildingId);
+            building.setBuildingName(form.getString("buildingName"));
+            building.setBuildingNo(form.getString("buildingNo"));
+            building.setFloorNu(form.getInteger("floorNu"));
+            building.setUnitNu(form.getInteger("unitNu"));
+            building.setUnitHouseNu(form.getInteger("unitHouseNu"));
+            building.setBuildingStatus(form.getString("buildingStatus"));
+            JSONObject premiseJSON = form.getJSONObject("premise");
+            System.out.println(premiseJSON);
+            String premiseName = premiseJSON.getString("premiseName");
+            Premise premise = premiseService.getPremiseByPremiseName(premiseName);
+            building.setPremise(premise);
+            Building result = buildingService.oldUpdateBuilding(building);
             if (result == null){
                 return new ExecResult(false,"楼栋修改失败").toString();
             }else {

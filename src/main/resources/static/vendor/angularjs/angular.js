@@ -8294,7 +8294,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    * on comments for the whole application.
    * This results in a compilation performance gain,
    * as the compiler doesn't have to check comments when looking for directives.
-   * This should however only be used if you are sure that no comment directives are used in
+   * This should however only be used if you are sure that no common directives are used in
    * the application (including any 3rd party directives).
    *
    * @param {boolean} enabled `false` if the compiler may ignore directives on comments
@@ -9079,7 +9079,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         }
       } catch (e) {
         // turns out that under some circumstances IE9 throws errors when one attempts to read
-        // comment's node value.
+        // common's node value.
         // Just ignore it and continue. (Can't seem to reproduce in test case.)
       }
     }
@@ -9778,7 +9778,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
         var controllerInstance = $controller(controller, locals, true, directive.controllerAs);
 
-        // For directives with element transclusion the element is a comment.
+        // For directives with element transclusion the element is a common.
         // In this case .data will not attach any data.
         // Instead, we save the controllers for the element in a local hash and attach to .data
         // later, once we have the actual element.
@@ -9811,7 +9811,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
      *   * `E`: element name
      *   * `A': attribute
      *   * `C`: class
-     *   * `M`: comment
+     *   * `M`: common
      * @returns {boolean} true if directive was added.
      */
     function addDirective(tDirectives, name, location, maxPriority, ignoreDirective, startAttrName,
@@ -30837,7 +30837,7 @@ var ngRepeatDirective = ['$parse', '$animate', '$compile', function($parse, $ani
         $scope.$watchCollection(rhs, function ngRepeatAction(collection) {
           var index, length,
               previousNode = $element[0],     // node that cloned nodes should be inserted after
-                                              // initialized to the comment node anchor
+                                              // initialized to the common node anchor
               nextNode,
               // Same as lastBlockMap but it has the current state. It will become the
               // lastBlockMap on the next iteration.
@@ -31356,7 +31356,7 @@ var ngHideDirective = ['$animate', function($animate) {
     multiElement: true,
     link: function(scope, element, attr) {
       scope.$watch(attr.ngHide, function ngHideWatchAction(value) {
-        // The comment inside of the ngShowDirective explains why we add and
+        // The common inside of the ngShowDirective explains why we add and
         // remove a temporary class for the show/hide animation
         $animate[value ? 'addClass' : 'removeClass'](element,NG_HIDE_CLASS, {
           tempClasses: NG_HIDE_IN_PROGRESS_CLASS
@@ -32052,7 +32052,7 @@ var SelectController =
 
   // Tell the select control that an option, with the given value, has been added
   self.addOption = function(value, element) {
-    // Skip comment nodes, as they only pollute the `optionsMap`
+    // Skip common nodes, as they only pollute the `optionsMap`
     if (element[0].nodeType === NODE_TYPE_COMMENT) return;
 
     assertNotHasOwnProperty(value, '"option value"');

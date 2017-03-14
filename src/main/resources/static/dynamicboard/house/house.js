@@ -114,7 +114,7 @@
         $scope.deleteHouses = deleteHouses;
         function deleteHouses() {
             if($scope.getSelects().length == 0) {
-                console.log("还没选择需要删除的楼房源");
+                console.log("还没选择需要删除的房源");
                 return;
             }
             var promitInstance = $uibModal.open({
@@ -152,6 +152,105 @@
                 }
             });
         }
+        //批量修改房源户型
+        $scope.showUpdateHouseStyles = showUpdateHouseStyles;
+        function showUpdateHouseStyles() {
+            if($scope.getSelects().length == 0) {
+                console.log("还没选择需要修改的房源");
+                return;
+            }
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'dynamicboard/house/updateHouseStyles.html',
+                controller: 'updateHouseStylesController',
+                bindToController: true,
+                size: "sm",
+                backdrop: false,
+                resolve: {
+                    selects : function() {
+                        var selects = [];
+                        for(var i=0;i<$scope.house_data.length;i++) {
+                            if($scope.house_data[i].$isselected) {
+                                selects.push($scope.house_data[i]);
+                            }
+                        }
+                        return selects;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {
+                //修改保存成功
+                console.log("正常关闭批量修改户型模态框");
+            }, function() {
+                console.log("取消批量修改户型");
+            })
+        }
+        //批量修改房源单价
+        $scope.showUpdateUnitPrices = showUpdateUnitPrices;
+        function showUpdateUnitPrices() {
+            if($scope.getSelects().length == 0) {
+                console.log("还没选择需要修改的房源");
+                return;
+            }
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'dynamicboard/house/updateUnitPrices.html',
+                controller: 'updateUnitPricesController',
+                bindToController: true,
+                size: "sm",
+                backdrop: false,
+                resolve: {
+                    selects : function() {
+                        var selects = [];
+                        for(var i=0;i<$scope.house_data.length;i++) {
+                            if($scope.house_data[i].$isselected) {
+                                selects.push($scope.house_data[i]);
+                            }
+                        }
+                        return selects;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {
+                //修改保存成功
+                console.log("正常关闭批量修改单价模态框");
+            }, function() {
+                console.log("取消批量修改单价");
+            })
+        }
+        //批量修改房源状态
+        $scope.showUpdateHouseStatuss = showUpdateHouseStatuss;
+        function showUpdateHouseStatuss() {
+            if($scope.getSelects().length == 0) {
+                console.log("还没选择需要修改的房源");
+                return;
+            }
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'dynamicboard/house/updateHouseStatuss.html',
+                controller: 'updateHouseStatussController',
+                bindToController: true,
+                size: "sm",
+                backdrop: false,
+                resolve: {
+                    selects : function() {
+                        var selects = [];
+                        for(var i=0;i<$scope.house_data.length;i++) {
+                            if($scope.house_data[i].$isselected) {
+                                selects.push($scope.house_data[i]);
+                            }
+                        }
+                        return selects;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {
+                //修改保存成功
+                console.log("正常关闭批量修改单价模态框");
+            }, function() {
+                console.log("取消批量修改单价");
+            })
+        }
     }]);
     houseModule.controller("addHouseController",["$scope","houseService","$uibModalInstance",function($scope,houseService,$uibModalInstance){
         $scope.pagetitle = "添加房源";
@@ -179,6 +278,18 @@
         });
         //保存添加
         $scope.save = function save() {
+            houseService.getByPremiseName($scope.form.premise,function (data) {
+                $scope.premise = data;
+                $scope.form.premise = $scope.premise;
+            });
+            houseService.getByBuildingName($scope.form.building,function (data) {
+                $scope.building = data;
+                $scope.form.building = $scope.building;
+            });
+            houseService.getByHsName($scope.form.houseStyle,function (data) {
+                $scope.houseStyle = data;
+                $scope.form.houseStyle = $scope.houseStyle;
+            });
             console.log($scope.form);//所需的数据
             houseService.addHouse($scope.form,function(data) {
                 if(data != null) {
@@ -198,7 +309,7 @@
             $uibModalInstance.dismiss('cancel');
         }
     }]);
-    houseModule.controller("updateHouseController",["$scope","houseService","$uibModalInstance","houseInstance",function($scope,houseService,$uibModalInstance,houseInstance){
+    houseModule.controller("updateHouseController",["$scope","houseService","$uibModalInstance","houseInstance","$window",function($scope,houseService,$uibModalInstance,houseInstance,$window){
         $scope.pagetitle = "修改房源信息";
         $scope.house_statuss = ["可售","意向","认购","成交","抵押","退房","销控"];
         $scope.premise_names = [];
@@ -223,23 +334,20 @@
             }
         });
         $scope.form = houseInstance.modify;
-        $scope.form.premise = $scope.form.premise.premiseName;
         console.log($scope.form);
-        $scope.form.houseStyle = $scope.form.houseStyle.hsName;
-        $scope.form.building = $scope.form.building.buildingName;
         //保存修改
         $scope.save = function save() {
-            houseService.getByPremiseName($scope.form.premise,function (data) {
+            houseService.getByPremiseName($scope.form.premise.premiseName,function (data) {
                 $scope.premise = data;
                 $scope.form.premise = $scope.premise;
                 console.log($scope.form.premise);
             });
-            houseService.getByHsName($scope.form.houseStyle,function (data) {
+            houseService.getByHsName($scope.form.houseStyle.hsName,function (data) {
                 $scope.houseStyle = data;
                 $scope.form.houseStyle = $scope.houseStyle;
                 console.log($scope.form.houseStyle);
             });
-            houseService.getByBuildingName($scope.form.building,function (data) {
+            houseService.getByBuildingName($scope.form.building.buildingName,function (data) {
                 $scope.building = data;
                 $scope.form.building = $scope.building;
                 console.log($scope.form.building);
@@ -248,6 +356,7 @@
                 console.log($scope.form);
                 if(data != null) {
                     $uibModalInstance.close(data);
+                    $window.location.reload();//刷新页面
                 } else {
                     $scope.error = {
                         haserror: true,
@@ -255,6 +364,98 @@
                     }
                 }
             });
+        };
+        //取消修改
+        $scope.cancel=function cancel(){
+            $uibModalInstance.dismiss('cancel');
+        }
+    }]);
+    houseModule.controller("updateHouseStylesController",["$scope","houseService","$uibModalInstance","selects",function ($scope,houseService,$uibModalInstance,selects) {
+        $scope.pagetitle = "批量修改户型";
+        $scope.housestyle_names = [];
+        $scope.selects = selects;
+        console.log($scope.selects);
+        //显示所有房源
+        houseService.getAllHouse(function (data) {
+            $scope.house_data=data;
+        });
+        houseService.getAllHousestyle(function (data) {
+            $scope.housestyle_data=data;
+            for (var i=0;i<$scope.housestyle_data.length;i++){
+                $scope.housestyle_names.push($scope.housestyle_data[i].hsName);
+            }
+        });
+        //保存修改
+        $scope.save = function save() {
+            houseService.getByHsName($scope.form.houseStyle.hsName,function (data) {
+                $scope.houseStyle = data;
+                $scope.form.houseStyle = $scope.houseStyle;
+                console.log($scope.form.houseStyle);
+            });
+            for(var i=0;i<$scope.selects.length;i++) {
+                $scope.selects[i].houseStyle = $scope.form.houseStyle;
+                houseService.updateHouse($scope.selects[i],function(data){
+                    if(data!=null) {
+                        $uibModalInstance.close(data);
+                    } else {
+                        $scope.error = {
+                            haserror: true,
+                            errormsg : "修改失败，您可以再试一次！"
+                        }
+                    }
+                });
+            }
+        };
+        //取消修改
+        $scope.cancel=function cancel(){
+            $uibModalInstance.dismiss('cancel');
+        }
+    }]);
+    houseModule.controller("updateUnitPricesController",["$scope","houseService","$uibModalInstance","selects",function ($scope,houseService,$uibModalInstance,selects) {
+        $scope.pagetitle = "批量修改单价";
+        $scope.selects = selects;
+        console.log($scope.selects);
+        //保存修改
+        $scope.save = function save() {
+            for(var i=0;i<$scope.selects.length;i++) {
+                $scope.selects[i].unitPrice = $scope.form.unitPrice;
+                houseService.updateHouse($scope.selects[i],function(data){
+                    if(data!=null) {
+                        $uibModalInstance.close(data);
+                    } else {
+                        $scope.error = {
+                            haserror: true,
+                            errormsg : "修改失败，您可以再试一次！"
+                        }
+                    }
+                });
+            }
+        };
+        //取消修改
+        $scope.cancel=function cancel(){
+            $uibModalInstance.dismiss('cancel');
+        }
+    }]);
+    houseModule.controller("updateHouseStatussController",["$scope","houseService","$uibModalInstance","selects",function ($scope,houseService,$uibModalInstance,selects) {
+        $scope.pagetitle = "批量修改状态";
+        $scope.house_statuss = ["可售","意向","认购","成交","抵押","退房","销控"];
+        $scope.selects = selects;
+        console.log($scope.selects);
+        //保存修改
+        $scope.save = function save() {
+            for(var i=0;i<$scope.selects.length;i++) {
+                $scope.selects[i].houseStatus = $scope.form.houseStatus;
+                houseService.updateHouse($scope.selects[i],function(data){
+                    if(data!=null) {
+                        $uibModalInstance.close(data);
+                    } else {
+                        $scope.error = {
+                            haserror: true,
+                            errormsg : "修改失败，您可以再试一次！"
+                        }
+                    }
+                });
+            }
         };
         //取消修改
         $scope.cancel=function cancel(){

@@ -40,4 +40,8 @@ public class HouseService {
     public House getHouseById(Long id){
         return houseRepository.findOne(id);
     }
+    //批量修改户型
+    public House updateHouseStyles(House house){
+        return houseRepository.save(house);
+    }
 }

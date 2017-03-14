@@ -10,7 +10,7 @@
 
     desc_module.directive("addDesc",["descService","$filter","$http",function(descService,$filter,$http){
         return {
-            restrict: 'EA', //E = element, A = attribute, C = class, M = comment
+            restrict: 'EA', //E = element, A = attribute, C = class, M = common
             scope: {
                 model: '@', //选择模式
                 descid: "=",  //被选中的产品

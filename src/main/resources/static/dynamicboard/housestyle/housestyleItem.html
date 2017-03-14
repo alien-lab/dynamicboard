@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{pagetitle}}</h3>
+</div>
+<div class="modal-body">
+    <form role="form" name="housestyleItemform" novalidate="novalidate" action="" method="post" enctype="multipart/form-data">
+        <div class="form-group col-md-12">
+            <label>户型介绍</label><br/><br/>
+            <label ng-model="form.hsIntroduction" value="{{form.hsIntroduction}}">{{form.hsIntroduction}}</label>
+        </div>
+        <div class="form-group col-md-12">
+            <label>户型图</label><br/><br/>
+            <img class="img-rounded thumb64 center-block" src="{{form.hsPicture}}"/>
+        </div>
+        <div style="clear:both;"></div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="housestyleItemform.$invalid" ng-click="save()">确定</button>
+    <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
+</div>

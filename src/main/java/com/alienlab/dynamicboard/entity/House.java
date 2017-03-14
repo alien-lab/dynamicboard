@@ -16,27 +16,19 @@ public class House {
     private double totalPrice;//总价
     private String houseStatus;//状态
     private Building building;//所属楼栋
-    private String unitNo;//单元号
-    private String floorNo;//楼层号
+    private Integer unitNo;//单元号
+    private Integer floorNo;//楼层号
     private Premise premise;//所属楼盘
 
     public House() {
     }
 
-    public House(String houseNo, Building building, String unitNo, String floorNo, Premise premise) {
+    public House(String houseNo, HouseStyle houseStyle, float houseSquare, double unitPrice, String houseStatus, Building building, Integer unitNo, Integer floorNo, Premise premise) {
         this.houseNo = houseNo;
-        this.building = building;
-        this.unitNo = unitNo;
-        this.floorNo = floorNo;
-        this.premise = premise;
-    }
-
-    public House(String houseNo, float houseSquare, HouseStyle houseStyle, double unitPrice, double totalPrice, String houseStatus, Building building, String unitNo, String floorNo, Premise premise) {
-        this.houseNo = houseNo;
-        this.houseSquare = houseSquare;
         this.houseStyle = houseStyle;
+        this.houseSquare = houseSquare;
         this.unitPrice = unitPrice;
-        this.totalPrice = totalPrice;
+        this.totalPrice = this.unitPrice*this.houseSquare;
         this.houseStatus = houseStatus;
         this.building = building;
         this.unitNo = unitNo;
@@ -120,20 +112,20 @@ public class House {
     }
     @Basic
     @Column(name = "unitno")
-    public String getUnitNo() {
+    public Integer getUnitNo() {
         return unitNo;
     }
 
-    public void setUnitNo(String unitNo) {
+    public void setUnitNo(Integer unitNo) {
         this.unitNo = unitNo;
     }
     @Basic
     @Column(name = "floorno")
-    public String getFloorNo() {
+    public Integer getFloorNo() {
         return floorNo;
     }
 
-    public void setFloorNo(String floorNo) {
+    public void setFloorNo(Integer floorNo) {
         this.floorNo = floorNo;
     }
     @ManyToOne
@@ -157,8 +149,8 @@ public class House {
                 ", totalPrice=" + totalPrice +
                 ", houseStatus='" + houseStatus + '\'' +
                 ", building=" + building +
-                ", unitNo='" + unitNo + '\'' +
-                ", floorNo='" + floorNo + '\'' +
+                ", unitNo=" + unitNo +
+                ", floorNo=" + floorNo +
                 ", premise=" + premise +
                 '}';
     }

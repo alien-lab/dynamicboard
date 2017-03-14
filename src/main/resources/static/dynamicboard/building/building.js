@@ -165,6 +165,11 @@
         });
         //保存添加
         $scope.save = function save() {
+            buildingService.getByPremiseName($scope.form.premise.premiseName,function (data) {
+                $scope.premise = data;
+                $scope.form.premise = $scope.premise;
+                console.log($scope.form.premise);
+            });
             console.log($scope.form);//所需的数据
             buildingService.addBuilding($scope.form,function(data) {
                 if(data != null) {
@@ -184,7 +189,7 @@
             $uibModalInstance.dismiss('cancel');
         }
     }]);
-    buildingModule.controller("updateBuildingController",["$scope","buildingService","$uibModalInstance","buildingInstance",function($scope,buildingService,$uibModalInstance,buildingInstance){
+    buildingModule.controller("updateBuildingController",["$scope","buildingService","$uibModalInstance","buildingInstance","$uibModal",function($scope,buildingService,$uibModalInstance,buildingInstance,$uibModal){
         $scope.pagetitle = "修改楼栋信息";
         $scope.building_statuss = ["已售罄","未开盘","热卖中"];
         $scope.premise_names = [];
@@ -195,25 +200,58 @@
             }
         });
         $scope.form = buildingInstance.modify;
-        $scope.form.premise = $scope.form.premise.premiseName;
+        var oldform = angular.copy($scope.form);
         //保存修改
         $scope.save = function save() {
-            buildingService.getByPremiseName($scope.form.premise,function (data) {
+            buildingService.getByPremiseName($scope.form.premise.premiseName,function (data) {
                 $scope.premise = data;
                 $scope.form.premise = $scope.premise;
                 console.log($scope.form.premise);
             });
-            buildingService.updateBuilding($scope.form,function(data) {
-                console.log($scope.form);
-                if(data != null) {
-                    $uibModalInstance.close(data);
-                } else {
-                    $scope.error = {
-                        haserror: true,
-                        errormsg : "修改失败，您可以再试一次！"
+            console.log(oldform);
+            console.log($scope.form);
+            if ((oldform.floorNu != $scope.form.floorNu)||(oldform.unitNu != $scope.form.unitNu)||(oldform.unitHouseNu !=$scope.form.unitHouseNu)){
+                var promitInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'system/common/promit.html',
+                    controller:function($scope,$uibModalInstance){
+                        $scope.title="操作确认";
+                        $scope.text="楼层数或单元数或单元户数有改动，确认修改会为您重新生成房源。";
+                        $scope.cancel=function(){
+                            $uibModalInstance.dismiss('cancel');
+                        };
+                        $scope.save=function(){
+                            $uibModalInstance.close("ok");
+                        };
+                    },
+                    backdrop:true
+                });
+                promitInstance.result.then(function(){
+                    buildingService.newUpdateBuilding($scope.form,function(data) {
+                        console.log($scope.form);
+                        if(data != null) {
+                            $uibModalInstance.close(data);
+                        } else {
+                            $scope.error = {
+                                haserror: true,
+                                errormsg : "修改失败，您可以再试一次！"
+                            }
+                        }
+                    });
+                });
+            }else{
+                buildingService.oldUpdateBuilding($scope.form,function(data) {
+                    console.log($scope.form);
+                    if(data != null) {
+                        $uibModalInstance.close(data);
+                    } else {
+                        $scope.error = {
+                            haserror: true,
+                            errormsg : "修改失败，您可以再试一次！"
+                        }
                     }
-                }
-            });
+                });
+            }
         };
         //取消修改
         $scope.cancel=function cancel(){
@@ -252,10 +290,21 @@
                 console.log(response.data.data);
             });
         };
-        //修改楼栋信息
-        this.updateBuilding = function (building,callback) {
+        //新修改楼栋信息
+        this.newUpdateBuilding = function (building,callback) {
             $http({
-                url:"/building/updateBuilding",
+                url:"/building/newUpdateBuilding",
+                method:"POST",
+                data:building
+            }).then(function (response) {
+                callback(response.data.data);
+                console.log(response.data.data);
+            });
+        };
+        //旧修改楼栋信息
+        this.oldUpdateBuilding = function (building,callback) {
+            $http({
+                url:"/building/oldUpdateBuilding",
                 method:"POST",
                 data:building
             }).then(function (response) {

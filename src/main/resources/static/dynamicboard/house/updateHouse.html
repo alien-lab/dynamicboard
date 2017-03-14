@@ -8,22 +8,14 @@
             <input type="text" class="form-control" placeholder="请输入房号" ng-model="form.houseNo" name="houseNo" id="input-houseNo" required />
         </div>
         <div class="form-group col-md-12">
-            <label>面积</label>
-            <input type="number" class="form-control" placeholder="请输入面积" ng-model="form.houseSquare" name="houseSquare" id="input-houseSquare" required />
-        </div>
-        <div class="form-group col-md-12">
             <label>户型</label>
-            <select class="dropdown form-control" ng-model="form.houseStyle">
+            <select class="dropdown form-control" ng-model="form.houseStyle.hsName">
                 <option ng-repeat="housestyle_name in housestyle_names" value="{{housestyle_name}}">{{housestyle_name}}</option>
             </select>
         </div>
         <div class="form-group col-md-12">
             <label>单价</label>
             <input type="number" class="form-control" placeholder="请输入单价" ng-model="form.unitPrice" name="unitPrice" id="input-unitPrice" required />
-        </div>
-        <div class="form-group col-md-12">
-            <label>总价</label>
-            <input type="number" class="form-control" placeholder="请输入总价" ng-model="form.totalPrice" name="totalPrice" id="input-totalPrice" required />
         </div>
         <div class="form-group col-md-12">
             <label>状态</label>
@@ -33,7 +25,7 @@
         </div>
         <div class="form-group col-md-12">
             <label>所属楼栋</label>
-            <select class="dropdown form-control" ng-model="form.building">
+            <select class="dropdown form-control" ng-model="form.building.buildingName">
                 <option ng-repeat="building_name in building_names" value="{{building_name}}">{{building_name}}</option>
             </select>
         </div>
@@ -47,7 +39,7 @@
         </div>
         <div class="form-group col-md-12">
             <label>所属楼盘</label>
-            <select class="dropdown form-control" ng-model="form.premise">
+            <select class="dropdown form-control" ng-model="form.premise.premiseName">
                 <option ng-repeat="premise_name in premise_names" value="{{premise_name}}">{{premise_name}}</option>
             </select>
         </div>

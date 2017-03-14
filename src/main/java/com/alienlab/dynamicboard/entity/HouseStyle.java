@@ -62,18 +62,17 @@ public class HouseStyle {
 
     @Basic
     @Column(name = "hsintroduction")
-    public String getHsIntroduction(String hsIntroduction) {
-        return this.hsIntroduction;
+    public String getHsIntroduction() {
+        return hsIntroduction;
     }
-
     public void setHsIntroduction(String hsIntroduction) {
         this.hsIntroduction = hsIntroduction;
     }
 
     @Basic
     @Column(name = "hspicture")
-    public String getHsPicture(String hsPicture) {
-        return this.hsPicture;
+    public String getHsPicture() {
+        return hsPicture;
     }
 
     public void setHsPicture(String hsPicture) {

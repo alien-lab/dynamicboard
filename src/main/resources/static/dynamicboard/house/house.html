@@ -13,6 +13,24 @@
             </span>
             删除房源
         </button>
+        <button class="btn btn-labeled btn-primary" type="button" ng-click="showUpdateHouseStyles()" tabindex="0">
+            <span class="btn-label">
+                <i class="fa fa-exclamation"></i>
+            </span>
+            修改户型
+        </button>
+        <button class="btn btn-labeled btn-primary" type="button" ng-click="showUpdateUnitPrices()" tabindex="0">
+            <span class="btn-label">
+                <i class="fa fa-exclamation"></i>
+            </span>
+            修改单价
+        </button>
+        <button class="btn btn-labeled btn-primary" type="button" ng-click="showUpdateHouseStatuss()" tabindex="0">
+            <span class="btn-label">
+                <i class="fa fa-exclamation"></i>
+            </span>
+            修改状态
+        </button>
     </div>
 </div>
 <div class="col-md-12">
@@ -40,7 +58,7 @@
                         <input type="checkbox" pno="{{house.id}}" ng-model="house.$isselected" class="ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" tabindex="0" aria-checked="false" aria-invalid="false" style="">
                     </td>
                     <td>{{house.houseNo}}</td>
-                    <td>{{house.houseSquare}}</td>
+                    <td>{{house.houseStyle.hsSquare}}</td>
                     <td>{{house.houseStyle.hsName}}</td>
                     <td>{{house.unitPrice}}</td>
                     <td>{{house.totalPrice}}</td>

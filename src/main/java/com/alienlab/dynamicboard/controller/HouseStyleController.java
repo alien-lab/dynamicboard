@@ -6,6 +6,7 @@ import com.alienlab.dynamicboard.db.ExecResult;
 import com.alienlab.dynamicboard.entity.HouseStyle;
 import com.alienlab.dynamicboard.entity.Premise;
 import com.alienlab.dynamicboard.service.HouseStyleService;
+import com.alienlab.dynamicboard.service.PicService;
 import com.alienlab.dynamicboard.service.PremiseService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +33,8 @@ public class HouseStyleController {
     private PremiseService premiseService;
     @Autowired
     private HouseStyleService houseStyleService;
+    @Autowired
+    private ServletContext context;
     //添加户型
     @RequestMapping(value = "/addHouseStyle",method = RequestMethod.POST)
     public String addHouseStyle(HttpServletRequest request){
@@ -39,12 +46,17 @@ public class HouseStyleController {
             houseStyle.setHsName(form.getString("hsName"));
             houseStyle.setHsIntroduction(form.getString("hsIntroduction"));
             System.out.println(form.getString("hsIntroduction"));
-            houseStyle.setHsPicture(form.getString("hsPicture"));
-            System.out.println(form.getString("hsPicture"));
+            String picture = form.getString("hsPicture");
+            String path=context.getRealPath("/uploadimages");
+            PicService service=new PicService();
+            String filename=service.base64ToImage(picture,path);
+            System.out.println(filename);
+            houseStyle.setHsPicture(filename);
             houseStyle.setHsSquare(form.getFloatValue("hsSquare"));
             String premiseName = form.getString("premise");
             Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             houseStyle.setPremise(premise);
+            System.out.println(houseStyle);
             HouseStyle result = houseStyleService.addHouseStyle(houseStyle);
             if (result == null){
                 return new ExecResult(false,"户型添加失败").toString();
@@ -79,16 +91,21 @@ public class HouseStyleController {
         try {
             String jsonBody = IOUtils.toString(request.getInputStream(),"UTF-8");
             JSONObject form = JSONObject.parseObject(jsonBody);
+            System.out.println(form.getJSONObject("premise"));
             Long houseStyleId = form.getLong("id");
             HouseStyle houseStyle = houseStyleService.getHouseStyleById(houseStyleId);
             houseStyle.setHsCode(form.getString("hsCode"));
             houseStyle.setHsName(form.getString("hsName"));
             houseStyle.setHsIntroduction(form.getString("hsIntroduction"));
-            houseStyle.setHsPicture(form.getString("hsPicture"));
+            String picture = form.getString("hsPicture");
+            String path=context.getRealPath("/uploadimages");
+            PicService service=new PicService();
+            String filename=service.base64ToImage(picture,path);
+            houseStyle.setHsPicture(filename);
             houseStyle.setHsSquare(form.getFloatValue("hsSquare"));
-            JSONObject premiseJSON = form.getJSONObject("Premise");
-            Long premiseId = premiseJSON.getLong("id");
-            Premise premise = premiseService.getPremiseById(premiseId);
+            JSONObject premiseJSON = form.getJSONObject("premise");
+            String premiseName = premiseJSON.getString("premiseName");
+            Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             houseStyle.setPremise(premise);
             HouseStyle result = houseStyleService.updateHouseStyle(houseStyle);
             if (result == null){

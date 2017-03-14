@@ -23,12 +23,6 @@ public class PremiseService {
     private HouseRepository houseRepository;
     @Autowired
     private HouseStyleRepository houseStyleRepository;
-    @Autowired
-    private Pre_BuiRepository pre_buiRepository;
-    @Autowired
-    private Pre_HouRepository pre_houRepository;
-    @Autowired
-    private Pre_HouStyRepository pre_houStyRepository;
 
     //添加楼盘
     public Premise addPremise(Premise premise){
@@ -71,7 +65,12 @@ public class PremiseService {
     }
     //查看所有楼盘
     public List<Premise> getAll(){
-        return premiseRepository.findAll();
+        List<Premise> premises = premiseRepository.findAll();
+        for (Premise premise:premises){
+            List<Building> buildings = buildingRepository.findByPremise(premise);
+            premise.setBuildingNu(buildings.size());
+        }
+        return premises;
     }
     //根据id查楼盘
     public Premise getPremiseById(Long id){

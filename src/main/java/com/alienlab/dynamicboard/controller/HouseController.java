@@ -43,19 +43,20 @@ public class HouseController {
             String jsonBody = IOUtils.toString(request.getInputStream(),"UTF-8");
             JSONObject form = JSONObject.parseObject(jsonBody);
             House house = new House();
+            System.out.println(form);
             house.setHouseNo(form.getString("houseNo"));
-            house.setHouseSquare(form.getFloatValue("houseSquare"));
             String hsName = form.getString("houseStyle");
             HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName(hsName);
             house.setHouseStyle(houseStyle);
+            house.setHouseSquare(houseStyle.getHsSquare());
             house.setUnitPrice(form.getDoubleValue("unitPrice"));
-            house.setTotalPrice(form.getDoubleValue("totalPrice"));
+            house.setTotalPrice(house.getHouseSquare()*house.getUnitPrice());
             house.setHouseStatus(form.getString("houseStatus"));
             String buildingName = form.getString("building");
             Building building = buildingService.getBuildingByBuildingName(buildingName);
             house.setBuilding(building);
-            house.setUnitNo(form.getString("unitNo"));
-            house.setFloorNo(form.getString("floorNo"));
+            house.setUnitNo(form.getInteger("unitNo"));
+            house.setFloorNo(form.getInteger("floorNo"));
             String premiseName = form.getString("premise");
             Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             house.setPremise(premise);
@@ -93,27 +94,31 @@ public class HouseController {
         try {
             String jsonBody = IOUtils.toString(request.getInputStream(),"UTF-8");
             JSONObject form = JSONObject.parseObject(jsonBody);
+            System.out.println(form);
             Long houseId = form.getLong("id");
             House house = houseService.getHouseById(houseId);
             house.setHouseNo(form.getString("houseNo"));
-            house.setHouseSquare(form.getFloatValue("houseSquare"));
-            String hsName = form.getString("houseStyle");
+            JSONObject houseStyleJSON = form.getJSONObject("houseStyle");
+            String hsName = houseStyleJSON.getString("hsName");
             HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName(hsName);
             house.setHouseStyle(houseStyle);
+            house.setHouseSquare(houseStyle.getHsSquare());
             house.setUnitPrice(form.getDoubleValue("unitPrice"));
-            house.setTotalPrice(form.getDoubleValue("totalPrice"));
+            house.setTotalPrice(house.getHouseSquare()*house.getUnitPrice());
             house.setHouseStatus(form.getString("houseStatus"));
-            String buildingName = form.getString("building");
+            JSONObject buildingJSON = form.getJSONObject("building");
+            String buildingName = buildingJSON.getString("buildingName");
             Building building = buildingService.getBuildingByBuildingName(buildingName);
             house.setBuilding(building);
-            house.setUnitNo(form.getString("unitNo"));
-            house.setFloorNo(form.getString("floorNo"));
-            String premiseName = form.getString("premise");
+            house.setUnitNo(form.getInteger("unitNo"));
+            house.setFloorNo(form.getInteger("floorNo"));
+            JSONObject premiseJSON = form.getJSONObject("premise");
+            String premiseName = premiseJSON.getString("premiseName");
             Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             house.setPremise(premise);
             House result = houseService.updateHouse(house);
             if (result == null){
-                return new ExecResult(false,"房源添加失败").toString();
+                return new ExecResult(false,"房源修改失败").toString();
             }else {
                 ExecResult er = new ExecResult();
                 er.setResult(true);
@@ -122,7 +127,7 @@ public class HouseController {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return new ExecResult(false,"房源添加异常").toString();
+            return new ExecResult(false,"房源修改异常").toString();
         }
     }
     //查询所有房源

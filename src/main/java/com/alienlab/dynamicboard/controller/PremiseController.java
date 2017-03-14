@@ -34,7 +34,7 @@ public class PremiseController {
             Premise premise = new Premise();
             premise.setPremiseName(form.getString("premiseName"));
             premise.setPremiseAddress(form.getString("premiseAddress"));
-            premise.setBuildingNu(form.getInteger("buildingNu"));
+            premise.setBuildingNu(0);
             premise.setPremiseSquare(form.getFloatValue("premiseSquare"));
             premise.setPremiseFar(form.getFloatValue("premiseFar"));
             premise.setPremiseGsp(form.getFloatValue("premiseGsp"));

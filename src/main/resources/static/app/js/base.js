@@ -1504,7 +1504,7 @@ getText = Sizzle.getText = function( elem ) {
 	if ( !nodeType ) {
 		// If no nodeType, this is expected to be an array
 		while ( (node = elem[i++]) ) {
-			// Do not traverse comment nodes
+			// Do not traverse common nodes
 			ret += getText( node );
 		}
 	} else if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
@@ -1521,7 +1521,7 @@ getText = Sizzle.getText = function( elem ) {
 	} else if ( nodeType === 3 || nodeType === 4 ) {
 		return elem.nodeValue;
 	}
-	// Do not include comment or processing instruction nodes
+	// Do not include common or processing instruction nodes
 
 	return ret;
 };
@@ -1910,7 +1910,7 @@ Expr = Sizzle.selectors = {
 		"empty": function( elem ) {
 			// http://www.w3.org/TR/selectors/#empty-pseudo
 			// :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
-			//   but not by others (comment: 8; processing instruction: 7; etc.)
+			//   but not by others (common: 8; processing instruction: 7; etc.)
 			// nodeType < 6 works because attributes (2) do not appear as children
 			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
 				if ( elem.nodeType < 6 ) {
@@ -4092,7 +4092,7 @@ jQuery.event = {
 			special, handlers, type, namespaces, origType,
 			elemData = data_priv.get( elem );
 
-		// Don't attach events to noData or text/comment nodes (but allow plain objects)
+		// Don't attach events to noData or text/common nodes (but allow plain objects)
 		if ( !elemData ) {
 			return;
 		}
@@ -4270,7 +4270,7 @@ jQuery.event = {
 
 		cur = tmp = elem = elem || document;
 
-		// Don't do events on text and comment nodes
+		// Don't do events on text and common nodes
 		if ( elem.nodeType === 3 || elem.nodeType === 8 ) {
 			return;
 		}
@@ -5949,7 +5949,7 @@ jQuery.extend({
 	// Get and set the style property on a DOM Node
 	style: function( elem, name, value, extra ) {
 
-		// Don't set styles on text and comment nodes
+		// Don't set styles on text and common nodes
 		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
 			return;
 		}
@@ -6960,7 +6960,7 @@ jQuery.extend({
 		var hooks, ret,
 			nType = elem.nodeType;
 
-		// don't get/set attributes on text, comment and attribute nodes
+		// don't get/set attributes on text, common and attribute nodes
 		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 			return;
 		}
@@ -7098,7 +7098,7 @@ jQuery.extend({
 		var ret, hooks, notxml,
 			nType = elem.nodeType;
 
-		// Don't get/set properties on text, comment and attribute nodes
+		// Don't get/set properties on text, common and attribute nodes
 		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 			return;
 		}
@@ -7573,7 +7573,7 @@ var
 	 */
 	transports = {},
 
-	// Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
+	// Avoid common-prolog char sequence (#10098); must appease lint and evade compression
 	allTypes = "*/".concat( "*" ),
 
 	// Document location
@@ -9196,7 +9196,7 @@ jQuery.noConflict = function( deep ) {
 };
 
 // Expose jQuery and $ identifiers, even in AMD
-// (#7102#comment:10, https://github.com/jquery/jquery/pull/557)
+// (#7102#common:10, https://github.com/jquery/jquery/pull/557)
 // and CommonJS for browser emulators (#13566)
 if ( typeof noGlobal === strundefined ) {
 	window.jQuery = window.$ = jQuery;
@@ -17571,7 +17571,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             }
           } catch (e) {
             // turns out that under some circumstances IE9 throws errors when one attempts to read
-            // comment's node value.
+            // common's node value.
             // Just ignore it and continue. (Can't seem to reproduce in test case.)
           }
           break;
@@ -18062,8 +18062,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
           var controllerInstance = $controller(controller, locals, true, directive.controllerAs);
 
-          // For directives with element transclusion the element is a comment,
-          // but jQuery .data doesn't support attaching data to comment nodes as it's hard to
+          // For directives with element transclusion the element is a common,
+          // but jQuery .data doesn't support attaching data to common nodes as it's hard to
           // clean up (http://bugs.jquery.com/ticket/8335).
           // Instead, we save the controllers for the element in a local hash and attach to .data
           // later, once we have the actual element.
@@ -18257,7 +18257,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
      *   * `E`: element name
      *   * `A': attribute
      *   * `C`: class
-     *   * `M`: comment
+     *   * `M`: common
      * @returns {boolean} true if directive was added.
      */
     function addDirective(tDirectives, name, location, maxPriority, ignoreDirective, startAttrName,
@@ -36896,7 +36896,7 @@ var ngOptionsDirective = ['$compile', '$parse', function($compile, $parse) {
         var unknownOption_ = unknownOption && unknownOption[0];
 
         // We cannot rely on the extracted empty option being the same as the compiled empty option,
-        // because the compiled empty option might have been replaced by a comment because
+        // because the compiled empty option might have been replaced by a common because
         // it had an "element" transclusion directive on it (such as ngIf)
         if (emptyOption_ || unknownOption_) {
           while (current &&
@@ -37678,7 +37678,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
         $scope.$watchCollection(rhs, function ngRepeatAction(collection) {
           var index, length,
               previousNode = $element[0],     // node that cloned nodes should be inserted after
-                                              // initialized to the comment node anchor
+                                              // initialized to the common node anchor
               nextNode,
               // Same as lastBlockMap but it has the current state. It will become the
               // lastBlockMap on the next iteration.
@@ -38128,7 +38128,7 @@ var ngHideDirective = ['$animate', function($animate) {
     multiElement: true,
     link: function(scope, element, attr) {
       scope.$watch(attr.ngHide, function ngHideWatchAction(value) {
-        // The comment inside of the ngShowDirective explains why we add and
+        // The common inside of the ngShowDirective explains why we add and
         // remove a temporary class for the show/hide animation
         $animate[value ? 'addClass' : 'removeClass'](element,NG_HIDE_CLASS, {
           tempClasses: NG_HIDE_IN_PROGRESS_CLASS
@@ -38715,7 +38715,7 @@ var SelectController =
 
   // Tell the select control that an option, with the given value, has been added
   self.addOption = function(value, element) {
-    // Skip comment nodes, as they only pollute the `optionsMap`
+    // Skip common nodes, as they only pollute the `optionsMap`
     if (element[0].nodeType === NODE_TYPE_COMMENT) return;
 
     assertNotHasOwnProperty(value, '"option value"');
@@ -42658,7 +42658,7 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
           from: calculateAnchorStyles(outAnchor)
         });
 
-        // read the comment within `prepareRegularAnimation` to understand
+        // read the common within `prepareRegularAnimation` to understand
         // why this check is necessary
         return animator.$$willAnimate ? animator : null;
       }
@@ -42679,7 +42679,7 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
           delay: true
         });
 
-        // read the comment within `prepareRegularAnimation` to understand
+        // read the common within `prepareRegularAnimation` to understand
         // why this check is necessary
         return animator.$$willAnimate ? animator : null;
       }
@@ -43438,7 +43438,7 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
       }
 
       // there are situations where a directive issues an animation for
-      // a jqLite wrapper that contains only comment nodes... If this
+      // a jqLite wrapper that contains only common nodes... If this
       // happens then there is no way we can perform an animation
       if (!node) {
         close();
@@ -52746,7 +52746,7 @@ var inertBodyElement;
  *     start: function(tag, attrs) {},
  *     end: function(tag) {},
  *     chars: function(text) {},
- *     comment: function(text) {}
+ *     common: function(text) {}
  * });
  *
  * @param {string} html string
@@ -52851,7 +52851,7 @@ function encodeEntities(value) {
  *     start: function(tag, attrs) {},
  *     end: function(tag) {},
  *     chars: function(text) {},
- *     comment: function(text) {}
+ *     common: function(text) {}
  * }
  */
 function htmlSanitizeWriter(buf, uriValidator) {

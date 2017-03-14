@@ -35,11 +35,11 @@ public class DynamicboardApplicationTests {
 //		System.out.println(premise);
 //	}
 	//添加楼栋测试
-//	public void TestAddBuilding(){
-//		Premise premise = premiseService.getPremiseById((long) 5);
-//		Building building = new Building("测试楼栋","05",3,3,2,"可售",premise);
-//		buildingService.addBuilding(building);
-//	}
+	public void TestAddBuilding(){
+		Premise premise = premiseService.getPremiseById((long) 5);
+		Building building = new Building("测试楼栋","05",3,3,2,"可售",premise);
+		buildingService.addBuilding(building);
+	}
 	//添加户型测试
 //	public void TestAddHouseStyle(){
 //		Premise premise = premiseService.getPremiseById((long) 6);
@@ -51,7 +51,7 @@ public class DynamicboardApplicationTests {
 //		HouseStyle houseStyle = houseStyleService.getHouseStyleById((long) 1);
 //		Building building = buildingService.getBuildingById((long) 3);
 //		Premise premise = premiseService.getPremiseById((long) 1);
-//		House house = new House("01-424",20,houseStyle,30000.00,300000.00,"可售",building,"2","3",premise);
+//		House house = new House("01-424",0,houseStyle,1,"可售",building,2,3,premise);
 //		houseService.addHouse(house);
 //	}
 	//查所有楼盘
@@ -135,9 +135,9 @@ public class DynamicboardApplicationTests {
 //		houseStyleService.deleteHouseStyle((long) 5);
 //	}
 	//根据id删除房源
-	public void TestDeleteHouse(){
-		houseService.deleteHouse((long) 141);
-	}
+//	public void TestDeleteHouse(){
+//		houseService.deleteHouse((long) 141);
+//	}
 	//根据premiseName查楼盘
 //	public void TestGetPremiseByPremiseName(){
 //	    Premise premise = premiseService.getPremiseByPremiseName("1");
