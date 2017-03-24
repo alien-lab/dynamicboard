@@ -13,23 +13,23 @@
         </div>
         <div class="form-group col-md-12">
             <label>楼栋数</label>
-            <input type="text" class="form-control" placeholder="请输入楼栋数" ng-model="form.buildingNu" name="buildingNu" id="input-buildingNu" readOnly="true" required />
+            <input type="number" class="form-control" placeholder="请输入楼栋数" ng-model="form.buildingNu" name="buildingNu" id="input-buildingNu" readOnly="true" required />
         </div>
         <div class="form-group col-md-12">
-            <label>面积</label>
-            <input type="text" class="form-control" placeholder="请输入面积" ng-model="form.premiseSquare" name="premiseSquare" id="input-premiseSquare" required />
+            <label>面积/m<sup>2</sup></label>
+            <input type="number" class="form-control" placeholder="请输入面积" ng-model="form.premiseSquare" name="premiseSquare" id="input-premiseSquare" required />
         </div>
         <div class="form-group col-md-12">
-            <label>容积率</label>
-            <input type="text" class="form-control" placeholder="请输入容积率" ng-model="form.premiseFar" name="premiseFar" id="input-premiseFar" required />
+            <label>容积率/百分比</label>
+            <input type="number" class="form-control" placeholder="请输入容积率（可为空）" ng-model="form.premiseFar" name="premiseFar" id="input-premiseFar" />
         </div>
         <div class="form-group col-md-12">
-            <label>绿化率</label>
-            <input type="text" class="form-control" placeholder="请输入绿化率" ng-model="form.premiseGsp" name="premiseGsp" id="input-premiseGsp" required />
+            <label>绿化率/百分比</label>
+            <input type="number" class="form-control" placeholder="请输入绿化率（可为空）" ng-model="form.premiseGsp" name="premiseGsp" id="input-premiseGsp" />
         </div>
         <div class="form-group col-md-12">
             <label>售楼处电话</label>
-            <input type="text" class="form-control" placeholder="请输入售楼处电话" ng-model="form.premisePhone" name="premisePhone" id="input-premisePhone" required />
+            <input type="text" class="form-control" placeholder="请输入电话号码" ng-model="form.premisePhone" name="premisePhone" id="input-premisePhone" required />
         </div>
         <div style="clear:both;"></div>
     </form>

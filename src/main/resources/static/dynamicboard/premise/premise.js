@@ -77,7 +77,7 @@
                 templateUrl: 'system/common/promit.html',
                 controller:function($scope,$uibModalInstance){
                     $scope.title="操作确认";
-                    $scope.text="确认删除该楼盘吗？";
+                    $scope.text="将一并删除该楼盘下的所有楼栋，确认删除该楼盘吗？";
                     $scope.cancel=function(){
                         $uibModalInstance.dismiss('cancel');
                     };
@@ -122,7 +122,7 @@
                 templateUrl: 'system/common/promit.html',
                 controller: function($scope,$uibModalInstance){
                     $scope.title="操作确认";
-                    $scope.text="确认删除该楼盘吗？";
+                    $scope.text="将一并删除这些楼盘下的所有楼栋，确认删除这些楼盘吗？";
                     $scope.cancel=function(){
                         $uibModalInstance.dismiss('cancel');
                     };

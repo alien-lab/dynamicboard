@@ -40,8 +40,8 @@
                     <td>{{premise.premiseAddress}}</td>
                     <td>{{premise.buildingNu}}</td>
                     <td>{{premise.premiseSquare}}</td>
-                    <td>{{premise.premiseFar}}</td>
-                    <td>{{premise.premiseGsp}}</td>
+                    <td><span ng-if="premise.premiseFar!=0">{{premise.premiseFar}}</span><span ng-if="premise.premiseFar==0">（待录入）</span></td>
+                    <td><span ng-if="premise.premiseGsp!=0">{{premise.premiseGsp}}</span><span ng-if="premise.premiseGsp==0">（待录入）</span></td>
                     <td>{{premise.premisePhone}}</td>
                     <td>
                         <button type="button" class="mb-sm btn btn-primary" ng-click="showUpdatePremise(premise)">更新</button>
