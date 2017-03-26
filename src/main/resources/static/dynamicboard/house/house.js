@@ -13,28 +13,35 @@
             controller:"houseController"
         });
     }]);
-    houseModule.controller("houseController",["$scope","houseService","$uibModal","houseInstance",function ($scope,houseService,$uibModal,houseInstance) {
+    houseModule.value("houseValue",{"buildingName":""});
+    houseModule.controller("houseController",["$scope","houseService","$uibModal","houseInstance","houseValue",function ($scope,houseService,$uibModal,houseInstance,houseValue) {
         $scope.pagetitle="房源管理";
-        //显示所有房源
-        houseService.getAllHouse(function (data) {
-            $scope.house_data=data;
-            console.log(data);
+        $scope.editable = "no";
+        //获得所有楼栋
+        houseService.getAllBuilding(function (data) {
+            $scope.building_data=data;
+            $scope.currentbuilding=$scope.building_data[0];
+            $scope.buildingName=$scope.currentbuilding.buildingName;
+            houseValue.buildingName=$scope.buildingName;
+            houseService.getAllAsTable($scope.buildingName,function (data) {
+                $scope.house_data=data;
+                console.log("初始房源数据："+data);
+            });
         });
-        //全选
-        $scope.selectAll = function selectAll(){
-            for(var i=0; i<$scope.house_data.length; i++) {
-                if($scope.$isselectall) {
-                    $scope.house_data[i].$isselected = true;
-                } else {
-                    $scope.house_data[i].$isselected = false;
-                }
-            }
-        };
+        //下拉框ng-change事件
+        $scope.selectChanged=selectChanged;
+        function selectChanged(buildingName) {
+            houseService.getAllAsTable(buildingName,function (data) {
+                $scope.house_data=data;
+                console.log("下拉框选择楼栋后的房源数据："+data);
+                houseValue.buildingName=buildingName;
+            });
+        }
         //添加房源模态框
         $scope.showAddHouse = showAddHouse;
         function showAddHouse(){
             var modalInstance = $uibModal.open({
-                animation: true,
+                animation: true,//打开时的动画开关
                 templateUrl: 'dynamicboard/house/addHouse.html',
                 controller: 'addHouseController',
                 bindToController: true,
@@ -44,11 +51,47 @@
             modalInstance.result.then(function (data) {
                 //添加保存成功
                 console.log("正常关闭添加房源模态框");
-                var house = data;
-                $scope.house_data.push(house);
+                var newHouses = data;
+                $scope.house_data.splice(0,0,newHouses);//往json数组第一个元素位置添加newHouses数据
+                console.log($scope.house_data);
             }, function() {
                 console.log("取消添加房源");
             })
+        }
+        //区别各种状态
+        $scope.setStatusColor=setStatusColor;
+        function setStatusColor(houseStatus) {
+            if ("不是房源" == houseStatus){
+                return "null";
+            }else if ("可售" == houseStatus){
+                return "green";
+            }else if ("意向" == houseStatus){
+                return "yellow";
+            }else if ("认购" == houseStatus){
+                return "blue";
+            }else if ("成交" == houseStatus){
+                return "pink";
+            }else if ("抵押" == houseStatus){
+                return "black";
+            }else if ("退房" == houseStatus){
+                return "tuifang";
+            }else if ("销控" == houseStatus){
+                return "red";
+            }else if ("已删除" == houseStatus){
+                return "yishan";
+            }else {
+                return "white";
+            }
+        }
+        //切换成可以批量操作
+        $scope.changeEdit=changeEdit;
+        function changeEdit() {
+            $scope.editable="yes";
+        }
+        //切换成不可以批量操作
+        $scope.changeNoEdit=changeNoEdit;
+        function changeNoEdit() {
+            $scope.editable="no";
         }
         //修改房源模态框
         $scope.showUpdateHouse = showUpdateHouse;
@@ -252,40 +295,26 @@
             })
         }
     }]);
-    houseModule.controller("addHouseController",["$scope","houseService","$uibModalInstance",function($scope,houseService,$uibModalInstance){
+    houseModule.controller("addHouseController",["$scope","houseService","$uibModalInstance","houseValue",function($scope,houseService,$uibModalInstance,houseValue){
         $scope.pagetitle = "添加房源";
         $scope.house_statuss = ["可售","意向","认购","成交","抵押","退房","销控"];
-        $scope.premise_names = [];
-        $scope.building_names = [];
+        $scope.buildingName = houseValue.buildingName;
         $scope.housestyle_names = [];
-        houseService.getAllPremise(function (data) {
-            $scope.premise_data=data;
-            for (var i=0;i<$scope.premise_data.length;i++){
-                $scope.premise_names.push($scope.premise_data[i].premiseName);
-            }
-        });
-        houseService.getAllBuilding(function (data) {
-            $scope.building_data=data;
-            for (var i=0;i<$scope.building_data.length;i++){
-                $scope.building_names.push($scope.building_data[i].buildingName);
-            }
-        });
         houseService.getAllHousestyle(function (data) {
-           $scope.housestyle_data=data;
+            $scope.housestyle_data=data;
             for (var i=0;i<$scope.housestyle_data.length;i++){
                 $scope.housestyle_names.push($scope.housestyle_data[i].hsName);
             }
         });
+        console.log($scope.buildingName);
+        houseService.getByBuildingName($scope.buildingName,function (data) {
+            $scope.building=data;
+        });
         //保存添加
         $scope.save = function save() {
-            houseService.getByPremiseName($scope.form.premise,function (data) {
-                $scope.premise = data;
-                $scope.form.premise = $scope.premise;
-            });
-            houseService.getByBuildingName($scope.form.building,function (data) {
-                $scope.building = data;
-                $scope.form.building = $scope.building;
-            });
+            console.log($scope.building);
+            $scope.form.building=$scope.building;
+            $scope.form.premise=$scope.building.premise;
             houseService.getByHsName($scope.form.houseStyle,function (data) {
                 $scope.houseStyle = data;
                 $scope.form.houseStyle = $scope.houseStyle;
@@ -294,6 +323,7 @@
             houseService.addHouse($scope.form,function(data) {
                 if(data != null) {
                     console.log("添加成功");
+                    console.log(data);
                     $uibModalInstance.close(data);
                 } else {
                     console.log("添加失败");
@@ -576,6 +606,19 @@
                 callback(response.data);
                 console.log(response.data);
             });
-        }
+        };
+        //根据BuildingAndFloorNo查房源
+        this.getAllAsTable = function (buildingName,callback) {
+            $http({
+                url:"/house/getAllAsTable/"+buildingName,
+                method:"GET",
+                data:{
+                    buildingName:buildingName
+                }
+            }).then(function (response) {
+                callback(response.data.data);
+                console.log(response.data.data);
+            });
+        };
     }]);
 })();

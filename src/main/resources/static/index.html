@@ -15,9 +15,6 @@
     <link rel="stylesheet" href="app/css/app-rtl.css" data-ng-if="app.layout.isRTL">
     <!-- Themes-->
     <link rel="stylesheet" ng-href="{{app.layout.theme}}" data-ng-if="app.layout.theme">
-    <!-- Dropzone-->
-    <link rel="stylesheet" href="vendor/dropzone/dropzone.css">
-    <script src="vendor/dropzone/dropzone.min.js"></script>
 </head>
 <body data-ng-class="{ 'layout-fixed' : app.layout.isFixed, 'aside-collapsed' : app.layout.isCollapsed, 'layout-boxed' : app.layout.isBoxed, 'layout-fs': app.useFullLayout, 'hidden-footer': app.hiddenFooter, 'layout-h': app.layout.horizontal, 'aside-float': app.layout.isFloat, 'offsidebar-open': app.offsidebarOpen, 'aside-toggled': app.asideToggled}">
 <div data-ui-view="" data-autoscroll="false" class="wrapper"></div>
@@ -27,7 +24,6 @@
 <script src="dynamicboard/building/building.js"></script>
 <script src="dynamicboard/house/house.js"></script>
 <script src="dynamicboard/housestyle/housestyle.js"></script>
-<script src="dynamicboard/housestyle/addDesc.js"></script>
 </body>
 
 </html>

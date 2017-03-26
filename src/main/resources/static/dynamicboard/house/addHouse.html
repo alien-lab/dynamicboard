@@ -24,29 +24,25 @@
             </select>
         </div>
         <div class="form-group col-md-12">
-            <label>所属楼栋</label>
-            <select class="dropdown form-control" ng-model="form.building">
-                <option ng-repeat="building_name in building_names" value="{{building_name}}">{{building_name}}</option>
-            </select>
+            <label>楼层号</label>
+            <input type="number" class="form-control" ng-value="building.floorNu+1" ng-model="form.floorNo" name="floorNo" id="input-floorNo" readOnly="true" required />
         </div>
         <div class="form-group col-md-12">
             <label>单元号</label>
-            <input type="number" class="form-control" placeholder="请输入单元号" ng-model="form.unitNo" name="unitNo" id="input-unitNo" required />
-        </div>
-        <div class="form-group col-md-12">
-            <label>楼层号</label>
-            <input type="number" class="form-control" placeholder="请输入楼层号" ng-model="form.floorNo" name="floorNo" id="input-floorNo" required />
+            <input type="number" class="form-control" placeholder="请输入单元号" ng-model="unitNo" name="unitNo" id="input-unitNo" required />
         </div>
         <div class="form-group col-md-12">
             <label>所属楼盘</label>
-            <select class="dropdown form-control" ng-model="form.premise">
-                <option ng-repeat="premise_name in premise_names" value="{{premise_name}}">{{premise_name}}</option>
-            </select>
+            <input type="text" class="form-control" ng-value="building.premise.premiseName" name="premise" id="input-premise" readOnly="true" required />
+        </div>
+        <div class="form-group col-md-12">
+            <label>所属楼栋</label>
+            <input type="text" class="form-control" ng-value="building.buildingName" name="building" id="input-building" readOnly="true" required />
         </div>
         <div style="clear:both;"></div>
     </form>
 </div>
 <div class="modal-footer">
-    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="addHouseform.$invalid" ng-click="save()">保存</button>
+    <button class="mb-sm btn btn-primary" type="submit" ng-click="save()">保存</button>
     <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
 </div>

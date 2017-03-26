@@ -31,10 +31,11 @@ public class PremiseController {
         try {
             String jsonBody = IOUtils.toString(request.getInputStream(),"UTF-8");
             JSONObject form = JSONObject.parseObject(jsonBody);
+            System.out.println(form);
             Premise premise = new Premise();
             premise.setPremiseName(form.getString("premiseName"));
             premise.setPremiseAddress(form.getString("premiseAddress"));
-            premise.setBuildingNu(0);
+            premise.setBuildingNu(form.getInteger("buildingNu"));
             premise.setPremiseSquare(form.getFloatValue("premiseSquare"));
             premise.setPremiseFar(form.getFloatValue("premiseFar"));
             premise.setPremiseGsp(form.getFloatValue("premiseGsp"));

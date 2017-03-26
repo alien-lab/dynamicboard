@@ -30,7 +30,6 @@
             'dynamicboard.building',
             'dynamicboard.house',
             'dynamicboard.housestyle',
-            "housestyle.desc"
         ]);
 })();
 

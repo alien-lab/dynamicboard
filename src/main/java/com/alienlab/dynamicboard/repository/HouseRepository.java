@@ -17,4 +17,5 @@ public interface HouseRepository extends JpaRepository<House,Long>{
     public List<House> findByPremise(Premise premise);
     public List<House> findByBuilding(Building building);
     public List<House> findByHouseStyle(HouseStyle houseStyle);
+    public List<House> findByBuildingAndFloorNo(Building building,Integer floorNo);
 }

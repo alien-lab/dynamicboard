@@ -52,21 +52,23 @@ public class HouseController {
             house.setUnitPrice(form.getDoubleValue("unitPrice"));
             house.setTotalPrice(house.getHouseSquare()*house.getUnitPrice());
             house.setHouseStatus(form.getString("houseStatus"));
-            String buildingName = form.getString("building");
-            Building building = buildingService.getBuildingByBuildingName(buildingName);
-            house.setBuilding(building);
             house.setUnitNo(form.getInteger("unitNo"));
-            house.setFloorNo(form.getInteger("floorNo"));
-            String premiseName = form.getString("premise");
+            JSONObject premiseJSON = form.getJSONObject("premise");
+            String premiseName = premiseJSON.getString("premiseName");
             Premise premise = premiseService.getPremiseByPremiseName(premiseName);
             house.setPremise(premise);
-            House result = houseService.addHouse(house);
+            JSONObject buildingJSON = form.getJSONObject("building");
+            String buildingName = buildingJSON.getString("buildingName");
+            Building building = buildingService.getBuildingByBuildingName(buildingName);
+            house.setBuilding(building);
+            house.setFloorNo(house.getBuilding().getFloorNu()+1);
+            List<House> result = houseService.addHouse(house);
             if (result == null){
                 return new ExecResult(false,"房源添加失败").toString();
             }else {
                 ExecResult er = new ExecResult();
                 er.setResult(true);
-                er.setData((JSON) JSON.toJSON(house));
+                er.setData((JSON) JSON.toJSON(result));
                 return er.toString();
             }
         } catch (IOException e) {
@@ -138,5 +140,20 @@ public class HouseController {
         er.setResult(true);
         er.setData((JSON) JSON.toJSON(houses));
         return er.toString();
+    }
+    //根据BuildingAndFloorNo查房源
+    @RequestMapping(value = "/getAllAsTable/{buildingName}",method = RequestMethod.GET)
+    public String getAllAsTable(@PathVariable("buildingName") String buildingName){
+        List<List<House>> finalHouses = houseService.getAllAsTable(buildingName);
+        ExecResult er = new ExecResult();
+        er.setResult(true);
+        er.setData((JSON) JSON.toJSON(finalHouses));
+        return er.toString();
+    }
+    //根据HouseStyle查房源
+    @RequestMapping(value = "/getByHouseStyle/{hsName}",method = RequestMethod.GET)
+    public String getByHouseStyle(@PathVariable("hsName") String hsName){
+        List<House> houses = houseService.getHouseByHouseStyle(hsName);
+        return JSON.toJSONString(houses);
     }
 }

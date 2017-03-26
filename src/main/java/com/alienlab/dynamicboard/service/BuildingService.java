@@ -11,6 +11,7 @@ import com.alienlab.dynamicboard.repository.PremiseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,14 +30,32 @@ public class BuildingService {
     //添加楼栋
     public Building addBuilding(Building building){
         Building saveBuilding = buildingRepository.save(building);
-        for (int i=0;i<building.getFloorNu();i++){
-            for (int j=0;j<building.getUnitNu();j++){
-                for (int k=0;k<building.getUnitHouseNu();k++){
-                    String houseNo = building.getBuildingNo()+"-"+String.valueOf(i+1)+String.valueOf(j+1)+String.valueOf(k+1);
-                    House house = new House(houseNo,null,0,0,"销控",building,j+1,i+1,building.getPremise());
-                    houseRepository.save(house);
+        int i,j,k,a,b;
+        List<String> houseNos = new ArrayList<>();
+        List<Integer> unitNos = new ArrayList<>();
+        List<Integer> floorNos = new ArrayList<>();
+        for (i=0;i<building.getFloorNu();i++) {
+            for (a = 0; a < building.getUnitNu() * building.getUnitHouseNu(); a++) {
+                if (a + 1 < 10) {
+                    String houseNo = String.valueOf(i + 1) + "0" + String.valueOf(a + 1);
+                    houseNos.add(houseNo);
+                } else {
+                    String houseNo = String.valueOf(i + 1) + String.valueOf(a + 1);
+                    houseNos.add(houseNo);
                 }
             }
+            for (j=0;j<building.getUnitNu();j++){
+                for (k=0;k<building.getUnitHouseNu();k++){
+                    int unitNo = j+1;
+                    unitNos.add(unitNo);
+                    int floorNo = i+1;
+                    floorNos.add(floorNo);
+                }
+            }
+        }
+        for (b=0;b<building.getFloorNu()*building.getUnitNu()*building.getUnitHouseNu();b++){
+            House house = new House(houseNos.get(b),null,0,0,"销控",building, unitNos.get(b),floorNos.get(b),building.getPremise());
+            houseRepository.save(house);
         }
         return saveBuilding;
     }
@@ -65,14 +84,32 @@ public class BuildingService {
         }catch (Exception e){
             e.printStackTrace();
         }
-        for (int i=0;i<building.getFloorNu();i++){
-            for (int j=0;j<building.getUnitNu();j++){
-                for (int k=0;k<building.getUnitHouseNu();k++){
-                    String houseNo = building.getBuildingNo()+"-"+String.valueOf(i+1)+String.valueOf(j+1)+String.valueOf(k+1);
-                    House house = new House(houseNo,null,0,0,"销控",building,j+1,i+1,building.getPremise());
-                    houseRepository.save(house);
+        int i,j,k,a,b;
+        List<String> houseNos = new ArrayList<>();
+        List<Integer> unitNos = new ArrayList<>();
+        List<Integer> floorNos = new ArrayList<>();
+        for (i=0;i<building.getFloorNu();i++) {
+            for (a = 0; a < building.getUnitNu() * building.getUnitHouseNu(); a++) {
+                if (a + 1 < 10) {
+                    String houseNo = String.valueOf(i + 1) + "0" + String.valueOf(a + 1);
+                    houseNos.add(houseNo);
+                } else {
+                    String houseNo = String.valueOf(i + 1) + String.valueOf(a + 1);
+                    houseNos.add(houseNo);
                 }
             }
+            for (j=0;j<building.getUnitNu();j++){
+                for (k=0;k<building.getUnitHouseNu();k++){
+                    int unitNo = j+1;
+                    unitNos.add(unitNo);
+                    int floorNo = i+1;
+                    floorNos.add(floorNo);
+                }
+            }
+        }
+        for (b=0;b<building.getFloorNu()*building.getUnitNu()*building.getUnitHouseNu();b++){
+            House house = new House(houseNos.get(b),null,0,0,"销控",building, unitNos.get(b),floorNos.get(b),building.getPremise());
+            houseRepository.save(house);
         }
         return buildingRepository.save(building);
     }

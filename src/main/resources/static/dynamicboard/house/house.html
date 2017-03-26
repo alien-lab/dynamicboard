@@ -1,75 +1,158 @@
-<h3>{{pagetitle}}</h3>
+<style>
+    .buildingOption {
+        width: 8%;
+        float: right;
+    }
+    .premiseOption {
+        width: 8%;
+        float: right;
+    }
+    .house,.houseNo,.hsName{
+        border:1px solid #eee;
+        padding:0px;
+        margin:0px;
+    }
+    .house{
+        width: 220px;
+        height: 68px;
+    }
+    .hsName,.rightLeftPanel{
+        float: left;
+        padding:0px;
+        margin-right:5px;
+    }
+    .hsName{
+        text-align: center;
+    }
+    .rightPanel,.rightRightPanel{
+        float: right;
+        padding:0px;
+        margin-right:5px;
+    }
+    .red{
+        background-color: #9a0d0d;
+    }
+    .green{
+        background-color: #0BB20C;
+    }
+    .null{
+        background-color: #0f0f0f;
+    }
+    .black{
+        background-color: #1aacda;
+    }
+</style>
+<h3>房源管理
+    <select class="form-control buildingOption" ng-model="buildingName" ng-change="selectChanged(buildingName)">
+        <option ng-repeat="building in building_data" value="{{building.buildingName}}">{{building.buildingName}}</option>
+    </select>
+    <select class="form-control premiseOption" ng-model="premiseName" ng-change="selectChanged(premiseName)">
+        <option ng-repeat="premise in premise_data" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
+    </select>
+</h3>
 <div class="row">
     <div class="col-md-8">
         <button class="btn btn-labeled btn-success" type="button" ng-click="showAddHouse()" tabindex="0">
             <span class="btn-label">
                 <i class="fa fa-plus"></i>
             </span>
-            新增房源
+            增加顶层
         </button>
-        <button class="btn btn-labeled btn-danger" type="button" ng-click="deleteHouses()" tabindex="0">
+        <button class="btn btn-labeled btn-primary" type="button" ng-click="changeEdit()" tabindex="0" ng-if="editable=='no'">
+            <span class="btn-label">
+                <i class="fa fa-exclamation"></i>
+            </span>
+            进入批量操作
+        </button>
+        <button class="btn btn-labeled btn-primary" type="button" ng-click="changeNoEdit()" tabindex="0" ng-if="editable=='yes'">
+            <span class="btn-label">
+                <i class="fa fa-exclamation"></i>
+            </span>
+            取消批量操作
+        </button>
+        <button class="btn btn-labeled btn-danger" type="button" ng-click="deleteHouses()" tabindex="0" ng-if="editable=='yes'">
             <span class="btn-label">
                 <i class="fa fa-minus"></i>
             </span>
-            删除房源
+            批量删除
         </button>
-        <button class="btn btn-labeled btn-primary" type="button" ng-click="showUpdateHouseStyles()" tabindex="0">
+        <button class="btn btn-labeled btn-primary" type="button" ng-click="showUpdateUnitPrices()" tabindex="0" ng-if="editable=='yes'">
             <span class="btn-label">
                 <i class="fa fa-exclamation"></i>
             </span>
-            修改户型
-        </button>
-        <button class="btn btn-labeled btn-primary" type="button" ng-click="showUpdateUnitPrices()" tabindex="0">
-            <span class="btn-label">
-                <i class="fa fa-exclamation"></i>
-            </span>
-            修改单价
-        </button>
-        <button class="btn btn-labeled btn-primary" type="button" ng-click="showUpdateHouseStatuss()" tabindex="0">
-            <span class="btn-label">
-                <i class="fa fa-exclamation"></i>
-            </span>
-            修改状态
+            批量修改
         </button>
     </div>
 </div>
-<div class="col-md-12">
+<div class="col-md-12" ng-if="editable=='no'">
     <div class="panel-body">
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th><input type="checkbox" id="gridselectall" ng-model="$isselectall" ng-click="selectAll()" class="ng-valid ng-dirty ng-valid-parse ng-empty ng-touched" tabindex="0" aria-checked="false" aria-invalid="false" style=""></th>
-                    <th>房号</th>
-                    <th>面积/m<sup>2</sup></th>
-                    <th>户型</th>
-                    <th>单价</th>
-                    <th>总价</th>
-                    <th>状态</th>
-                    <th>所属楼栋</th>
-                    <th>单元号</th>
-                    <th>楼层号</th>
-                    <th>所属楼盘</th>
-                </tr>
-                </thead>
                 <tbody>
-                <tr ng-repeat="house in house_data">
-                    <td>
-                        <input type="checkbox" pno="{{house.id}}" ng-model="house.$isselected" class="ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" tabindex="0" aria-checked="false" aria-invalid="false" style="">
+                <tr ng-repeat="floorhouses in house_data">
+                    <td>第{{house_data.length-$index}}层</td>
+                    <td ng-repeat="house in house_data[$index]">
+                        <div class="house" ng-click="showUpdateHouse(house)" ng-class="setStatusColor(house.houseStatus)" ng-if="house.houseStatus!='不是房源'&&house.houseStatus!='已删除'">
+                            <div class="houseNo">房号:{{house.houseNo}}</div>
+                            <div style="display:none;">状态:{{house.houseStatus}}</div>
+                            <div>
+                                <div class="hsName col-md-2">户型:<br/>{{house.houseStyle.hsCode}}</div>
+                                <div class="rightPanel col-md-10">
+                                    <div class="rightLeftPanel col-md-6">
+                                        <div>单价:{{house.unitPrice}}元</div>
+                                        <div>面积:{{house.houseSquare}}m<sup>2</sup></div>
+                                    </div>
+                                    <div class="rightRightPanel col-md-6">
+                                        <div>总价:{{house.totalPrice}}元</div>
+                                        <div>单元:{{house.unitNo}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="house" ng-if="house.houseStatus=='不是房源'">
+                            不是房源
+                        </div>
+                        <div class="house" ng-if="house.houseStatus=='已删除'">
+                            已删除
+                        </div>
                     </td>
-                    <td>{{house.houseNo}}</td>
-                    <td>{{house.houseStyle.hsSquare}}</td>
-                    <td>{{house.houseStyle.hsName}}</td>
-                    <td>{{house.unitPrice}}</td>
-                    <td>{{house.totalPrice}}</td>
-                    <td>{{house.houseStatus}}</td>
-                    <td>{{house.building.buildingName}}</td>
-                    <td>{{house.unitNo}}</td>
-                    <td>{{house.floorNo}}</td>
-                    <td>{{house.premise.premiseName}}</td>
-                    <td>
-                        <button type="button" class="mb-sm btn btn-primary" ng-click="showUpdateHouse(house)">更新</button>
-                        <button type="button" class="mb-sm btn btn-danger" ng-click="deleteHouse(house.id)">删除</button>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-md-12" ng-if="editable=='yes'">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <tbody>
+                <tr ng-repeat="floorhouses in house_data">
+                    <td>第{{house_data.length-$index}}层</td>
+                    <td ng-repeat="house in house_data[$index]">
+                        <div class="house" ng-class="setStatusColor(house.houseStatus)" ng-if="house.houseStatus!='不是房源'&&house.houseStatus!='已删除'">
+                            <div class="houseNo">房号:{{house.houseNo}}</div>
+                            <div style="display:none;">状态:{{house.houseStatus}}</div>
+                            <div>
+                                <div class="hsName col-md-2">户型:<br/>{{house.houseStyle.hsCode}}</div>
+                                <div class="rightPanel col-md-10">
+                                    <div class="rightLeftPanel col-md-6">
+                                        <div>单价:{{house.unitPrice}}元</div>
+                                        <div>面积:{{house.houseSquare}}m<sup>2</sup></div>
+                                    </div>
+                                    <div class="rightRightPanel col-md-6">
+                                        <div>总价:{{house.totalPrice}}元</div>
+                                        <div>单元:{{house.unitNo}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="house" ng-if="house.houseStatus=='不是房源'">
+                            不是房源
+                        </div>
+                        <div class="house" ng-if="house.houseStatus=='已删除'">
+                            已删除
+                        </div>
                     </td>
                 </tr>
                 </tbody>

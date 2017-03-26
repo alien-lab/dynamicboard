@@ -44,7 +44,7 @@
             modalInstance.result.then(function (data) {
                 //添加保存成功
                 console.log("正常关闭添加楼栋模态框");
-                var building = data;
+                var  building = data;
                 $scope.building_data.push(building);
             }, function() {
                 console.log("取消添加楼栋");

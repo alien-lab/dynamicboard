@@ -41,17 +41,23 @@ public class HouseStyleController {
         try {
             String jsonBody = IOUtils.toString(request.getInputStream(),"UTF-8");
             JSONObject form = JSONObject.parseObject(jsonBody);
+            System.out.println(form);
             HouseStyle houseStyle = new HouseStyle();
             houseStyle.setHsCode(form.getString("hsCode"));
             houseStyle.setHsName(form.getString("hsName"));
             houseStyle.setHsIntroduction(form.getString("hsIntroduction"));
-            System.out.println(form.getString("hsIntroduction"));
             String picture = form.getString("hsPicture");
-            String path=context.getRealPath("/uploadimages");
-            PicService service=new PicService();
-            String filename=service.base64ToImage(picture,path);
-            System.out.println(filename);
-            houseStyle.setHsPicture(filename);
+            if (picture.equals("（待录入）")){
+                String filename = picture;
+                System.out.println(filename);
+                houseStyle.setHsPicture(filename);
+            }else {
+                String path=context.getRealPath("/uploadimages");
+                PicService service=new PicService();
+                String filename=service.base64ToImage(picture,path);
+                System.out.println(filename);
+                houseStyle.setHsPicture(filename);
+            }
             houseStyle.setHsSquare(form.getFloatValue("hsSquare"));
             String premiseName = form.getString("premise");
             Premise premise = premiseService.getPremiseByPremiseName(premiseName);
@@ -91,17 +97,26 @@ public class HouseStyleController {
         try {
             String jsonBody = IOUtils.toString(request.getInputStream(),"UTF-8");
             JSONObject form = JSONObject.parseObject(jsonBody);
-            System.out.println(form.getJSONObject("premise"));
+            System.out.println(form);
             Long houseStyleId = form.getLong("id");
+            HouseStyle oldHouseStyle = houseStyleService.getHouseStyleById(houseStyleId);
+            String oldHsPicture = oldHouseStyle.getHsPicture();
             HouseStyle houseStyle = houseStyleService.getHouseStyleById(houseStyleId);
             houseStyle.setHsCode(form.getString("hsCode"));
             houseStyle.setHsName(form.getString("hsName"));
             houseStyle.setHsIntroduction(form.getString("hsIntroduction"));
             String picture = form.getString("hsPicture");
-            String path=context.getRealPath("/uploadimages");
-            PicService service=new PicService();
-            String filename=service.base64ToImage(picture,path);
-            houseStyle.setHsPicture(filename);
+            if (picture.equals("（待录入）")||picture.equals(oldHsPicture)){
+                String filename = picture;
+                System.out.println(filename);
+                houseStyle.setHsPicture(filename);
+            }else {
+                String path=context.getRealPath("/uploadimages");
+                PicService service=new PicService();
+                String filename=service.base64ToImage(picture,path);
+                System.out.println(filename);
+                houseStyle.setHsPicture(filename);
+            }
             houseStyle.setHsSquare(form.getFloatValue("hsSquare"));
             JSONObject premiseJSON = form.getJSONObject("premise");
             String premiseName = premiseJSON.getString("premiseName");
@@ -134,6 +149,12 @@ public class HouseStyleController {
     @RequestMapping(value = "/getByHsName/{hsName}",method = RequestMethod.GET)
     public String getHouseStyleByHsName(@PathVariable("hsName") String hsName){
         HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName(hsName);
+        return JSON.toJSONString(houseStyle);
+    }
+    //根据id查户型
+    @RequestMapping(value = "/getById/{id}",method = RequestMethod.GET)
+    public String getHouseStyleById(@PathVariable("id") Long id){
+        HouseStyle houseStyle = houseStyleService.getHouseStyleById(id);
         return JSON.toJSONString(houseStyle);
     }
 }

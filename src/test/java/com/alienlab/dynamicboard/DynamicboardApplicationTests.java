@@ -35,11 +35,11 @@ public class DynamicboardApplicationTests {
 //		System.out.println(premise);
 //	}
 	//添加楼栋测试
-	public void TestAddBuilding(){
-		Premise premise = premiseService.getPremiseById((long) 5);
-		Building building = new Building("测试楼栋","05",3,3,2,"可售",premise);
-		buildingService.addBuilding(building);
-	}
+//	public void TestAddBuilding(){
+//		Premise premise = premiseService.getPremiseById((long) 5);
+//		Building building = new Building("测试楼栋","05",3,3,2,"可售",premise);
+//		buildingService.addBuilding(building);
+//	}
 	//添加户型测试
 //	public void TestAddHouseStyle(){
 //		Premise premise = premiseService.getPremiseById((long) 6);
@@ -82,6 +82,13 @@ public class DynamicboardApplicationTests {
 //			System.out.println(house);
 //		}
 //	}
+	//根据BuildingAndFloorNo查房源
+	public void TestGetAllAsTable(){
+		List<List<House>> finalHouses = houseService.getAllAsTable("A2栋");
+		for (List<House> houses:finalHouses){
+			System.out.println(houses);
+		}
+	}
 	//根据id查楼盘
 //	public void TestGetPremiseById(){
 //		System.out.println(premiseService.getPremiseById((long) 1));
