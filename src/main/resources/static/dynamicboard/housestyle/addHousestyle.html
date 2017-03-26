@@ -4,12 +4,12 @@
 <div class="modal-body">
     <form role="form" name="addHousestyleform" novalidate="novalidate" action="" method="post" enctype="multipart/form-data">
         <div class="form-group col-md-12">
-            <label>户型代码</label>
-            <input type="text" class="form-control" placeholder="请输入户型代码" ng-model="form.hsCode" name="hsCode" id="input-hsCode" required />
-        </div>
-        <div class="form-group col-md-12">
             <label>户型名称</label>
             <input type="text" class="form-control" placeholder="请输入户型名称" ng-model="form.hsName" name="hsName" id="input-hsName" required />
+        </div>
+        <div class="form-group col-md-12">
+            <label>户型代码</label>
+            <input type="text" class="form-control" placeholder="请输入户型代码" ng-model="form.hsCode" name="hsCode" id="input-hsCode" required />
         </div>
         <div class="form-group col-md-12">
             <label>户型面积</label>
@@ -29,7 +29,7 @@
         <div class="form-group col-md-12">
             <label>户型图</label>
             <input type="file" imagepreview fileread="image.file"
-                   id="imageloader" style="display:none;" ng-model="form.hsPicture" multiple/>
+                   id="imageloader" style="display:none;" ng-model="form.hsPicture"/>
         </div>
         <div class="form-group col-md-12" ng-if="image==null">
             <img class="img-rounded thumb64 center-block" src="app/img/addimage.jpg" onclick="imageloader.click()"/>
@@ -37,9 +37,6 @@
         <!--如果选择图片，预览图片-->
         <div class="form-group col-md-12" ng-if="image!=null">
             <img ng-src="{{image.file}}" class="img-rounded center-block" style="width: 256px;height: 160px;" onclick="imageloader.click()"/>
-            <!--<input type="file" imagepreview fileread="image.file"-->
-            <!--id="imageloader2" style="display:none;"/>-->
-            <!--<img src="app/img/addimage.jpg" class="img-rounded thumb64 center-block" onclick="imageloader2.click()"/>-->
         </div>
         <div style="clear:both;"></div>
     </form>

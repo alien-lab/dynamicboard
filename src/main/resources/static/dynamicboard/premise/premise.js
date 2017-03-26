@@ -157,6 +157,13 @@
         $scope.pagetitle = "添加楼盘";
         //保存添加
         $scope.save = function save() {
+            $scope.form.buildingNu = 0;
+            if ($scope.form.premiseFar == null){
+                $scope.form.premiseFar = 0;
+            }
+            if ($scope.form.premiseGsp == null){
+                $scope.form.premiseGsp = 0;
+            }
             console.log($scope.form);//所需的数据
             premiseService.addPremise($scope.form,function(data) {
                 if(data != null) {

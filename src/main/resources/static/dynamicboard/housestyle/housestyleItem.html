@@ -9,12 +9,16 @@
         </div>
         <div class="form-group col-md-12">
             <label>户型图</label><br/><br/>
-            <img class="img-rounded thumb64 center-block" src="{{form.hsPicture}}"/>
+            <div ng-if="form.hsPicture=='（待录入）'">
+                <label ng-model="form.hsPicture" value="{{form.hsPicture}}">{{form.hsPicture}}</label>
+            </div>
+            <div ng-if="form.hsPicture!='（待录入）'">
+                <img class="img-rounded center-block" style="width: 256px;height: 160px;" src="{{form.hsPicture}}"/>
+            </div>
         </div>
         <div style="clear:both;"></div>
     </form>
 </div>
 <div class="modal-footer">
-    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="housestyleItemform.$invalid" ng-click="save()">确定</button>
-    <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
+    <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">确定</button>
 </div>

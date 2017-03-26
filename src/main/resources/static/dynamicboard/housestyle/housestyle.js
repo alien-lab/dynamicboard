@@ -84,7 +84,32 @@
                         $uibModalInstance.dismiss('cancel');
                     };
                     $scope.save=function(){
-                        $uibModalInstance.close("ok");
+                        housestyleService.getHouseStyleById(houseStyleId,function (data) {
+                            $scope.hsdata=data;
+                            housestyleService.getHouseByHouseStyle($scope.hsdata.hsName,function (data) {
+                                $scope.housedata=data;
+                                console.log($scope.housedata.length);
+                                if ($scope.housedata.length>0){
+                                    var warningInstance = $uibModal.open({
+                                        animation: true,
+                                        templateUrl: 'system/common/warning.html',
+                                        controller:function($scope,$uibModalInstance){
+                                            $scope.title="删除提醒";
+                                            $scope.text="该户型已被应用暂不可删除";
+                                            $scope.save=function(){
+                                                $uibModalInstance.close("ok");
+                                            };
+                                        },
+                                        backdrop:true
+                                    });
+                                    warningInstance.result.then(function(){
+                                        $uibModalInstance.dismiss('cancel');
+                                    });
+                                }else {
+                                    $uibModalInstance.close("ok");
+                                }
+                            });
+                        });
                     };
                 },
                 backdrop:true
@@ -185,7 +210,14 @@
         });
         //保存添加
         $scope.save = function save() {
-            $scope.form.hsPicture = $scope.image.file;
+            if ($scope.form.hsIntroduction == null){
+                $scope.form.hsIntroduction = "（待录入）";
+            }
+            if ($scope.form.hsPicture == null){
+                $scope.form.hsPicture = "（待录入）";
+            }else {
+                $scope.form.hsPicture = $scope.image.file;
+            }
             console.log($scope.form);//所需的数据
             housestyleService.addHousestyle($scope.form,function(data) {
                 if(data != null) {
@@ -208,6 +240,7 @@
     housestyleModule.controller("updateHousestyleController",["$scope","housestyleService","$uibModalInstance","housestyleInstance",function($scope,housestyleService,$uibModalInstance,housestyleInstance){
         $scope.pagetitle = "修改户型";
         $scope.premise_names = [];
+        $scope.image = "";
         housestyleService.getAllPremise(function (data) {
             $scope.premise_data=data;
             for (var i=0;i<$scope.premise_data.length;i++){
@@ -215,10 +248,25 @@
             }
         });
         $scope.form = housestyleInstance.modify;
+        if ($scope.form.hsIntroduction=="（待录入）"){
+            $scope.form.hsIntroduction=null;
+        }
+        if ($scope.form.hsPicture == "（待录入）"){
+            $scope.image = "app/img/addimage.jpg";
+        }else {
+            $scope.image = $scope.form.hsPicture;
+        }
         console.log($scope.form);
         //保存修改
         $scope.save = function save() {
-            $scope.form.hsPicture = $scope.image.file;
+            if ($scope.form.hsIntroduction == null||$scope.form.hsIntroduction==""){
+                $scope.form.hsIntroduction = "（待录入）";
+            }
+            if ($scope.image == "app/img/addimage.jpg"){
+                $scope.form.hsPicture = "（待录入）";
+            }else {
+                $scope.form.hsPicture = $scope.image;
+            }
             console.log($scope.form);//所需的数据
             housestyleService.updateHousestyle($scope.form,function(data) {
                 if(data != null) {
@@ -236,14 +284,17 @@
         //取消修改
         $scope.cancel = function cancel(){
             $uibModalInstance.dismiss('cancel');
+            if ($scope.form.hsIntroduction == null||$scope.form.hsIntroduction==""){
+                $scope.form.hsIntroduction = "（待录入）";
+            }
+            if ($scope.form.hsPicture == null){
+                $scope.form.hsPicture = "（待录入）";
+            }
         }
     }]);
     housestyleModule.controller("housestyleItemController",["$scope","housestyleService","$uibModalInstance","housestyleInstance",function($scope,housestyleService,$uibModalInstance,housestyleInstance){
         $scope.pagetitle = "户型详情";
         $scope.form = housestyleInstance.modify;
-        $scope.save = function save() {
-            $uibModalInstance.dismiss('cancel');
-        };
         $scope.cancel = function cancel(){
             $uibModalInstance.dismiss('cancel');
         }
@@ -302,6 +353,32 @@
             }).then(function (response) {
                 callback(response.data,houseStyleId);
                 console.log(response.data,houseStyleId);
+            });
+        };
+        //根据id查户型
+        this.getHouseStyleById = function (houseStyleId,callback) {
+            $http({
+                url:"/housestyle/getById/"+houseStyleId,
+                method:"GET",
+                data:{
+                    id:houseStyleId
+                }
+            }).then(function (response) {
+                callback(response.data);
+                console.log(response.data);
+            });
+        };
+        //根据houseStyle查房源
+        this.getHouseByHouseStyle = function (hsName,callback) {
+            $http({
+                url:"/house/getByHouseStyle/"+hsName,
+                method:"GET",
+                data:{
+                    hsName:hsName
+                }
+            }).then(function (response) {
+                callback(response.data);
+                console.log(response.data);
             });
         };
     }]);
