@@ -5,6 +5,7 @@ import com.alienlab.dynamicboard.entity.HouseStyle;
 import com.alienlab.dynamicboard.entity.Premise;
 import com.alienlab.dynamicboard.repository.HouseRepository;
 import com.alienlab.dynamicboard.repository.HouseStyleRepository;
+import com.alienlab.dynamicboard.repository.PremiseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class HouseStyleService {
     private HouseStyleRepository houseStyleRepository;
     @Autowired
     private HouseRepository houseRepository;
+    @Autowired
+    private PremiseRepository premiseRepository;
     //添加户型
     public HouseStyle addHouseStyle(HouseStyle houseStyle){
         return houseStyleRepository.save(houseStyle);
@@ -54,5 +57,10 @@ public class HouseStyleService {
     //根据hsName查户型
     public HouseStyle getHouseStyleByHsName(String hsName){
         return houseStyleRepository.findByHsName(hsName);
+    }
+    //根据premise查户型
+    public List<HouseStyle> getHouseStyleByPremise(String premiseName){
+        Premise premise = premiseRepository.findByPremiseName(premiseName);
+        return houseStyleRepository.findByPremise(premise);
     }
 }

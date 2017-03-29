@@ -157,4 +157,10 @@ public class HouseStyleController {
         HouseStyle houseStyle = houseStyleService.getHouseStyleById(id);
         return JSON.toJSONString(houseStyle);
     }
+    //根据premise查询楼栋
+    @RequestMapping(value = "/getByPremise/{premiseName}",method = RequestMethod.GET)
+    public String getHouseStyleByPremise(@PathVariable("premiseName") String premiseName){
+        List<HouseStyle> houseStyles = houseStyleService.getHouseStyleByPremise(premiseName);
+        return JSON.toJSONString(houseStyles);
+    }
 }

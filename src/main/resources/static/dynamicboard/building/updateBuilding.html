@@ -25,13 +25,13 @@
         </div>
         <div class="form-group col-md-12">
             <label>楼栋状态</label>
-            <select class="dropdown form-control" ng-model="form.buildingStatus">
+            <select class="dropdown form-control" ng-model="form.buildingStatus" required>
                 <option ng-repeat="building_status in building_statuss" value="{{building_status}}">{{building_status}}</option>
             </select>
         </div>
         <div class="form-group col-md-12">
             <label>所属楼盘</label>
-            <select class="dropdown form-control" ng-model="form.premise.premiseName">
+            <select class="dropdown form-control" ng-model="form.premise.premiseName" required>
                 <option ng-repeat="premise_name in premise_names" value="{{premise_name}}">{{premise_name}}</option>
             </select>
         </div>

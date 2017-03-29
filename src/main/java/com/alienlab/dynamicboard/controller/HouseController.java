@@ -45,13 +45,9 @@ public class HouseController {
             House house = new House();
             System.out.println(form);
             house.setHouseNo(form.getString("houseNo"));
-            String hsName = form.getString("houseStyle");
-            HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName(hsName);
-            house.setHouseStyle(houseStyle);
-            house.setHouseSquare(houseStyle.getHsSquare());
             house.setUnitPrice(form.getDoubleValue("unitPrice"));
-            house.setTotalPrice(house.getHouseSquare()*house.getUnitPrice());
             house.setHouseStatus(form.getString("houseStatus"));
+            house.setFloorNo(form.getInteger("floorNo"));
             house.setUnitNo(form.getInteger("unitNo"));
             JSONObject premiseJSON = form.getJSONObject("premise");
             String premiseName = premiseJSON.getString("premiseName");
@@ -61,7 +57,12 @@ public class HouseController {
             String buildingName = buildingJSON.getString("buildingName");
             Building building = buildingService.getBuildingByBuildingName(buildingName);
             house.setBuilding(building);
-            house.setFloorNo(house.getBuilding().getFloorNu()+1);
+            JSONObject houseStyleJSON = form.getJSONObject("houseStyle");
+            String hsName = houseStyleJSON.getString("hsName");
+            HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName(hsName);
+            house.setHouseStyle(houseStyle);
+            house.setHouseSquare(form.getFloatValue("houseSquare"));
+            house.setTotalPrice(form.getDoubleValue("totalPrice"));
             List<House> result = houseService.addHouse(house);
             if (result == null){
                 return new ExecResult(false,"房源添加失败").toString();
@@ -100,13 +101,19 @@ public class HouseController {
             Long houseId = form.getLong("id");
             House house = houseService.getHouseById(houseId);
             house.setHouseNo(form.getString("houseNo"));
-            JSONObject houseStyleJSON = form.getJSONObject("houseStyle");
-            String hsName = houseStyleJSON.getString("hsName");
-            HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName(hsName);
-            house.setHouseStyle(houseStyle);
-            house.setHouseSquare(houseStyle.getHsSquare());
             house.setUnitPrice(form.getDoubleValue("unitPrice"));
-            house.setTotalPrice(house.getHouseSquare()*house.getUnitPrice());
+            house.setUnitPrice(form.getDoubleValue("unitPrice"));
+            JSONObject houseStyleJSON = form.getJSONObject("houseStyle");
+            if (houseStyleJSON==null){
+                house.setHouseStyle(null);
+                house.setHouseSquare(0);
+            }else {
+                String hsName = houseStyleJSON.getString("hsName");
+                HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName(hsName);
+                house.setHouseStyle(houseStyle);
+                house.setHouseSquare(houseStyle.getHsSquare());
+            }
+            house.setTotalPrice(form.getDoubleValue("totalPrice"));
             house.setHouseStatus(form.getString("houseStatus"));
             JSONObject buildingJSON = form.getJSONObject("building");
             String buildingName = buildingJSON.getString("buildingName");
@@ -155,5 +162,17 @@ public class HouseController {
     public String getByHouseStyle(@PathVariable("hsName") String hsName){
         List<House> houses = houseService.getHouseByHouseStyle(hsName);
         return JSON.toJSONString(houses);
+    }
+    //根据building查house
+    @RequestMapping(value = "/getByBuilding/{buildingName}",method = RequestMethod.GET)
+    public String getHouseByBuilding(@PathVariable("buildingName") String buildingName){
+        List<House> houses = houseService.getHouseByBuilding(buildingName);
+        return JSON.toJSONString(houses);
+    }
+    //根据id查house
+    @RequestMapping(value = "/getHouseById/{id}",method = RequestMethod.GET)
+    public String getHouseById(@PathVariable("id") Long id){
+        House house = houseService.getHouseById(id);
+        return JSON.toJSONString(house);
     }
 }

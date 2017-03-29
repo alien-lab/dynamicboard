@@ -81,7 +81,8 @@ public class HouseService {
         return houseRepository.findOne(id);
     }
     //根据building查房源
-    public List<House> getHouseByBuilding(Building building){
+    public List<House> getHouseByBuilding(String buildingName){
+        Building building = buildingRepository.findByBuildingName(buildingName);
         return houseRepository.findByBuilding(building);
     }
     //根据houseStyle查房源

@@ -8,41 +8,41 @@
             <input type="text" class="form-control" placeholder="请输入房号" ng-model="form.houseNo" name="houseNo" id="input-houseNo" required />
         </div>
         <div class="form-group col-md-12">
-            <label>户型</label>
-            <select class="dropdown form-control" ng-model="form.houseStyle">
-                <option ng-repeat="housestyle in housestyle_data" value="{{housestyle.hsName}}">{{housestyle.hsName}}</option>
-            </select>
-        </div>
-        <div class="form-group col-md-12">
             <label>单价</label>
             <input type="number" class="form-control" placeholder="请输入单价" ng-model="form.unitPrice" name="unitPrice" id="input-unitPrice" required />
         </div>
         <div class="form-group col-md-12">
             <label>状态</label>
-            <select class="dropdown form-control" ng-model="form.houseStatus">
+            <select class="dropdown form-control" ng-model="form.houseStatus" required>
                 <option ng-repeat="house_status in house_statuss" value="{{house_status}}">{{house_status}}</option>
             </select>
         </div>
         <div class="form-group col-md-12">
             <label>楼层号</label>
-            <input type="number" class="form-control" ng-value="building.floorNu+1" ng-model="form.floorNo" name="floorNo" id="input-floorNo" readOnly="true" required />
+            <input type="number" class="form-control" ng-value="building.floorNu+1" name="floorNo" id="input-floorNo" readOnly="true"/>
         </div>
         <div class="form-group col-md-12">
             <label>单元号</label>
-            <input type="number" class="form-control" placeholder="请输入单元号" ng-model="unitNo" name="unitNo" id="input-unitNo" required />
+            <input type="number" class="form-control" placeholder="请输入单元号" ng-model="form.unitNo" name="unitNo" id="input-unitNo" required/>
         </div>
         <div class="form-group col-md-12">
             <label>所属楼盘</label>
-            <input type="text" class="form-control" ng-value="building.premise.premiseName" name="premise" id="input-premise" readOnly="true" required />
+            <input type="text" class="form-control" ng-value="premiseName" name="premise" id="input-premise" readOnly="true" />
         </div>
         <div class="form-group col-md-12">
             <label>所属楼栋</label>
-            <input type="text" class="form-control" ng-value="building.buildingName" name="building" id="input-building" readOnly="true" required />
+            <input type="text" class="form-control" ng-value="buildingName" name="building" id="input-building" readOnly="true" />
+        </div>
+        <div class="form-group col-md-12">
+            <label>户型</label>
+            <select class="dropdown form-control" ng-model="form.houseStyle" required>
+                <option ng-repeat="housestyle in housestyles" value="{{housestyle.hsName}}">{{housestyle.hsName}}</option>
+            </select>
         </div>
         <div style="clear:both;"></div>
     </form>
 </div>
 <div class="modal-footer">
-    <button class="mb-sm btn btn-primary" type="submit" ng-click="save()">保存</button>
+    <button class="mb-sm btn btn-primary" ng-disabled="addHouseform.$invalid" type="submit" ng-click="save()">保存</button>
     <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
 </div>

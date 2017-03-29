@@ -4,8 +4,9 @@
         float: right;
     }
     .premiseOption {
-        width: 8%;
+        width: 12%;
         float: right;
+        margin-right: 8px;
     }
     .house,.houseNo,.hsName{
         border:1px solid #eee;
@@ -29,28 +30,43 @@
         padding:0px;
         margin-right:5px;
     }
-    .red{
-        background-color: #9a0d0d;
+    .saleable{
+        background-color: #43d967;
     }
-    .green{
-        background-color: #0BB20C;
+    .intention{
+        background-color: #ffff00;
     }
-    .null{
+    .subscription{
+        background-color: #eb9316;
+    }
+    .deal{
+        background-color: #1aacda;
+    }
+    .mortgage{
+        background-color: #843534;
+    }
+    .out{
+        background-color: #8a6d3b;
+    }
+    .saleCtrl{
+        background-color: #d43f3a;
+    }
+    .choose {
         background-color: #0f0f0f;
     }
-    .black{
-        background-color: #1aacda;
+    .null{
+        background-color: #d9edf7;
     }
 </style>
 <h3>房源管理
-    <select class="form-control buildingOption" ng-model="buildingName" ng-change="selectChanged(buildingName)">
-        <option ng-repeat="building in building_data" value="{{building.buildingName}}">{{building.buildingName}}</option>
+    <select class="form-control buildingOption" ng-model="buildingName" ng-change="buildingChanged(buildingName)" ng-if="status=='yes'">
+        <option ng-repeat="building in buildings" value="{{building.buildingName}}">{{building.buildingName}}</option>
     </select>
-    <select class="form-control premiseOption" ng-model="premiseName" ng-change="selectChanged(premiseName)">
-        <option ng-repeat="premise in premise_data" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
+    <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)">
+        <option ng-repeat="premise in allPremise" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
     </select>
 </h3>
-<div class="row">
+<div class="row" ng-if="status=='yes'">
     <div class="col-md-8">
         <button class="btn btn-labeled btn-success" type="button" ng-click="showAddHouse()" tabindex="0">
             <span class="btn-label">
@@ -76,16 +92,30 @@
             </span>
             批量删除
         </button>
-        <button class="btn btn-labeled btn-primary" type="button" ng-click="showUpdateUnitPrices()" tabindex="0" ng-if="editable=='yes'">
+        <button class="btn btn-labeled btn-primary" type="button" ng-click="showUpdateHouses()" tabindex="0" ng-if="editable=='yes'">
             <span class="btn-label">
                 <i class="fa fa-exclamation"></i>
             </span>
             批量修改
         </button>
     </div>
+    <div class="col-md-4">
+        <div>
+            <span>可售</span><div class="saleable" style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
+            <span>意向</span><div class="intention" style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
+            <span>认购</span><div class="subscription" style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
+            <span>成交</span><div class="deal" style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
+        </div>
+        <div>
+            <span>抵押</span><div class="mortgage" style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
+            <span>退房</span><div class="out" style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
+            <span>销控</span><div class="saleCtrl" style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
+            <span>无状态</span><div class="null" style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
+        </div>
+    </div>
 </div>
 <div class="col-md-12" ng-if="editable=='no'">
-    <div class="panel-body">
+    <div class="panel-body" ng-if="status=='yes'">
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
                 <tbody>
@@ -94,7 +124,6 @@
                     <td ng-repeat="house in house_data[$index]">
                         <div class="house" ng-click="showUpdateHouse(house)" ng-class="setStatusColor(house.houseStatus)" ng-if="house.houseStatus!='不是房源'&&house.houseStatus!='已删除'">
                             <div class="houseNo">房号:{{house.houseNo}}</div>
-                            <div style="display:none;">状态:{{house.houseStatus}}</div>
                             <div>
                                 <div class="hsName col-md-2">户型:<br/>{{house.houseStyle.hsCode}}</div>
                                 <div class="rightPanel col-md-10">
@@ -121,18 +150,20 @@
             </table>
         </div>
     </div>
+    <div class="panel-body" ng-if="status=='no'">
+        该楼盘暂无楼栋
+    </div>
 </div>
 <div class="col-md-12" ng-if="editable=='yes'">
-    <div class="panel-body">
+    <div class="panel-body" ng-if="status=='yes'">
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
                 <tbody>
                 <tr ng-repeat="floorhouses in house_data">
                     <td>第{{house_data.length-$index}}层</td>
                     <td ng-repeat="house in house_data[$index]">
-                        <div class="house" ng-class="setStatusColor(house.houseStatus)" ng-if="house.houseStatus!='不是房源'&&house.houseStatus!='已删除'">
+                        <div class="house" ng-click="selectHouses(house)" ng-class="setStatusColor(house.houseStatus)" ng-if="house.houseStatus!='不是房源'&&house.houseStatus!='已删除'">
                             <div class="houseNo">房号:{{house.houseNo}}</div>
-                            <div style="display:none;">状态:{{house.houseStatus}}</div>
                             <div>
                                 <div class="hsName col-md-2">户型:<br/>{{house.houseStyle.hsCode}}</div>
                                 <div class="rightPanel col-md-10">
@@ -158,5 +189,8 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="panel-body" ng-if="status=='no'">
+        该楼盘暂无楼栋
     </div>
 </div>

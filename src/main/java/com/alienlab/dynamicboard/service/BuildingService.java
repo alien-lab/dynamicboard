@@ -131,8 +131,13 @@ public class BuildingService {
     public Building getBuildingById(Long id){
         return buildingRepository.findOne(id);
     }
-    //根据buildingName楼栋
+    //根据buildingName查楼栋
     public Building getBuildingByBuildingName(String buildingName){
         return buildingRepository.findByBuildingName(buildingName);
+    }
+    //根据premise查楼栋
+    public List<Building> getBuildingByPremise(String premiseName){
+        Premise premise = premiseRepository.findByPremiseName(premiseName);
+        return buildingRepository.findByPremise(premise);
     }
 }

@@ -154,4 +154,10 @@ public class BuildingController {
         Building building = buildingService.getBuildingByBuildingName(buildingName);
         return JSON.toJSONString(building);
     }
+    //根据premise查询楼栋
+    @RequestMapping(value = "/getByPremise/{premiseName}",method = RequestMethod.GET)
+    public String getBuildingByPremise(@PathVariable("premiseName") String premiseName){
+        List<Building> buildings = buildingService.getBuildingByPremise(premiseName);
+        return JSON.toJSONString(buildings);
+    }
 }
