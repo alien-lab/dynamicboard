@@ -11,7 +11,7 @@
             <span class="btn-label">
                 <i class="fa fa-minus"></i>
             </span>
-            删除楼盘
+            批量删除当前页楼盘
         </button>
     </div>
 </div>
@@ -32,7 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="premise in premise_data">
+                <tr ng-repeat="premise in premise_data.content">
                     <td>
                         <input type="checkbox" pno="{{premise.id}}" ng-model="premise.$isselected" class="ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" tabindex="0" aria-checked="false" aria-invalid="false" style="">
                     </td>
@@ -51,5 +51,10 @@
                 </tbody>
             </table>
         </div>
+        <ul class="pagination pagination-sm">
+            <li ng-disabled="premise_data.first" ng-click="loadData(premise_data.number-1,premise_data.size)"><a href="javascript:void(0)">上一页</a></li>
+            <li><a href="javascript:void(0)">{{premise_data.number+1}}/{{premise_data.totalPages}}</a></li>
+            <li ng-disabled="premise_data.last" ng-click="loadData(premise_data.number+1,premise_data.size)"><a href="javascript:void(0)">下一页</a></li>
+        </ul>
     </div>
 </div>

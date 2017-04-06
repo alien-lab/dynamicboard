@@ -7,6 +7,7 @@ import com.alienlab.dynamicboard.entity.Premise;
 import com.alienlab.dynamicboard.service.PremiseService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -108,5 +109,10 @@ public class PremiseController {
     public String getPremiseByPremiseName(@PathVariable("premiseName")String premiseName){
         Premise premise = premiseService.getPremiseByPremiseName(premiseName);
         return JSON.toJSONString(premise);
+    }
+    //premise分页查询
+    @RequestMapping(value = "/{index}-{size}",method = RequestMethod.GET)
+    public Page<Premise> getPremisePage(@PathVariable("index") String index,@PathVariable("size") String size){
+        return premiseService.getPremisePage(Integer.parseInt(index),Integer.parseInt(size));
     }
 }

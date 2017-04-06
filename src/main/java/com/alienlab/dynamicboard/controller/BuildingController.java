@@ -9,6 +9,8 @@ import com.alienlab.dynamicboard.service.BuildingService;
 import com.alienlab.dynamicboard.service.PremiseService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -159,5 +161,15 @@ public class BuildingController {
     public String getBuildingByPremise(@PathVariable("premiseName") String premiseName){
         List<Building> buildings = buildingService.getBuildingByPremise(premiseName);
         return JSON.toJSONString(buildings);
+    }
+    //分页查询
+    @RequestMapping(value = "/getBuildingPage/{index}-{size}",method = RequestMethod.GET)
+    public Page<Building> getBuildingPage(@PathVariable("index") String index, @PathVariable("size") String size){
+        return buildingService.getBuildingPage(Integer.parseInt(index),Integer.parseInt(size));
+    }
+    //根据premise分页查询
+    @RequestMapping(value = "/getBuildingByPremisePage/{premiseName}-{index}-{size}",method = RequestMethod.GET)
+    public Page<Building> getBuildingByPremisePage(@PathVariable("premiseName") String premiseName, @PathVariable("index") String index, @PathVariable("size") String size){
+        return buildingService.getBuildingByPremisePage(premiseName,Integer.parseInt(index),Integer.parseInt(size));
     }
 }

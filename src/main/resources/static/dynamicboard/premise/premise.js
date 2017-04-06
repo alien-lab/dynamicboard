@@ -13,20 +13,43 @@
             controller:"premiseController"
         });
     }]);
-    premiseModule.controller("premiseController",["$scope","premiseService","$uibModal","premiseInstance",function ($scope,premiseService,$uibModal,premiseInstance) {
+    premiseModule.value("premiseValue",{"thisPage":""});
+    premiseModule.controller("premiseController",["$scope","premiseService","$uibModal","premiseInstance","premiseValue",function ($scope,premiseService,$uibModal,premiseInstance,premiseValue) {
         $scope.pagetitle="楼盘管理";
-        //显示所有楼盘
-        premiseService.getAllPremise(function (data) {
-            $scope.premise_data=data;
-            console.log(data);
-        });
-        //全选
+        $scope.premise_data=[];
+        $scope.premise_data.content=[];
+        //显示所有楼盘（不分页）
+        // premiseService.getAllPremise(function (data) {
+        //     $scope.premise_data=data;
+        //     console.log(data);
+        // });
+        //所有premise的分页显示
+        $scope.loadData=loadData;
+        function loadData(index,size){
+            if(index>0&&index<$scope.premise_data.totalPages){
+                premiseService.getPremisePage(index,size,function(data){
+                    $scope.premise_data=data;
+                    console.log($scope.premise_data);
+                    premiseValue.thisPage=$scope.premise_data.number;
+                    $scope.$isselectall=false;
+                });
+            }else if(index==0){
+                premiseService.getPremisePage(index,size,function(data){
+                    $scope.premise_data=data;
+                    console.log($scope.premise_data);
+                    premiseValue.thisPage=$scope.premise_data.number;
+                    $scope.$isselectall=false;
+                });
+            }
+        }
+        loadData(0,5);
+        //全选当前页数据
         $scope.selectAll = function selectAll(){
-            for(var i=0; i<$scope.premise_data.length; i++) {
+            for(var i=0; i<$scope.premise_data.content.length; i++) {
                 if($scope.$isselectall) {
-                    $scope.premise_data[i].$isselected = true;
+                    $scope.premise_data.content[i].$isselected = true;
                 } else {
-                    $scope.premise_data[i].$isselected = false;
+                    $scope.premise_data.content[i].$isselected = false;
                 }
             }
         };
@@ -44,8 +67,13 @@
             modalInstance.result.then(function (data) {
                 //添加保存成功
                 console.log("正常关闭添加楼盘模态框");
-                var premise = data;
-                $scope.premise_data.push(premise);
+                // var premise = data;
+                // $scope.premise_data.push(premise);
+                if(data != null) {
+                    loadData(premiseValue.thisPage,5);
+                } else {
+                    console.log("未执行loadData");
+                }
             }, function() {
                 console.log("取消添加楼盘");
             })
@@ -90,13 +118,14 @@
             promitInstance.result.then(function(){
                 premiseService.deletePremise(premiseId,function(data){
                     if(data != null) {
-                        for(var i=0;i<$scope.premise_data.length;i++) {
-                            if($scope.premise_data[i].id == premiseId) {
-                                //刷新楼盘页面
-                                $scope.premise_data.splice(i,1);
-                                break;
-                            }
-                        }
+                        // for(var i=0;i<$scope.premise_data.length;i++) {
+                        //     if($scope.premise_data[i].id == premiseId) {
+                        //         //刷新楼盘页面
+                        //         $scope.premise_data.splice(i,1);
+                        //         break;
+                        //     }
+                        // }
+                        loadData(premiseValue.thisPage,5);
                     }
                 });
             });
@@ -104,9 +133,9 @@
         //批量删除楼盘
         $scope.getSelects = function() {
             var selects = [];
-            for(var i=0;i<$scope.premise_data.length;i++) {
-                if($scope.premise_data[i].$isselected) {
-                    selects.push($scope.premise_data[i]);
+            for(var i=0;i<$scope.premise_data.content.length;i++) {
+                if($scope.premise_data.content[i].$isselected) {
+                    selects.push($scope.premise_data.content[i]);
                 }
             }
             return selects;
@@ -134,18 +163,19 @@
             });
             promitInstance.result.then(function(){
                 var deletedPremiseId = [];
-                for(var i=0;i<$scope.premise_data.length;i++) {
-                    if($scope.premise_data[i].$isselected) {
-                        premiseService.deletePremise($scope.premise_data[i].id,function(data,premiseId){
+                for(var i=0;i<$scope.premise_data.content.length;i++) {
+                    if($scope.premise_data.content[i].$isselected) {
+                        premiseService.deletePremise($scope.premise_data.content[i].id,function(data,premiseId){
                             if(data!=null) {
                                 deletedPremiseId.push(premiseId);
-                                for(var k=0;k<$scope.premise_data.length;k++) {
-                                    for(var j=0;j<deletedPremiseId.length;j++) {
-                                        if($scope.premise_data[k].id == deletedPremiseId[j]) {
-                                            $scope.premise_data.splice(k,1);
-                                        }
-                                    }
-                                }
+                                // for(var k=0;k<$scope.premise_data.length;k++) {
+                                //     for(var j=0;j<deletedPremiseId.length;j++) {
+                                //         if($scope.premise_data[k].id == deletedPremiseId[j]) {
+                                //             $scope.premise_data.splice(k,1);
+                                //         }
+                                //     }
+                                // }
+                                loadData(premiseValue.thisPage,5);
                             }
                         });
                     }
@@ -248,6 +278,18 @@
             }).then(function (response) {
                 callback(response.data,premiseId);
                 console.log(response.data,premiseId);
+            });
+        };
+        this.getPremisePage = function (index,size,callback) {
+            $http({
+                url:"/premise/"+index+"-"+size,
+                method:"GET",
+                data:{
+                    index:index,
+                    size:size
+                }
+            }).then(function (response) {
+                callback(response.data);
             });
         }
     }]);

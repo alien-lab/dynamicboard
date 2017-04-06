@@ -13,20 +13,106 @@
             controller:"buildingController"
         });
     }]);
-    buildingModule.controller("buildingController",["$scope","buildingService","buildingInstance","$uibModal",function ($scope,buildingService,buildingInstance,$uibModal) {
-        $scope.pagetitle="楼栋管理";
-        //显示所有楼栋
-        buildingService.getAllBuilding(function (data) {
-            $scope.building_data=data;
-            console.log(data);
+    buildingModule.value("buildingValue",{"thisPage":""});
+    buildingModule.controller("buildingController",["$scope","buildingService","buildingInstance","$uibModal","buildingValue",function ($scope,buildingService,buildingInstance,$uibModal,buildingValue) {
+        $scope.building_data = [];
+        $scope.building_data.content = [];
+        $scope.premiseName="所有";
+        $scope.page=true;
+        //显示所有楼栋（不分页）
+        // buildingService.getAllBuilding(function (data) {
+        //     $scope.building_data=data;
+        //     console.log(data);
+        // });
+        //获得所有楼盘
+        buildingService.getAllPremise(function (data) {
+           $scope.premises=data;
         });
-        //全选
+        //分页显示所有楼栋
+        $scope.loadAllData=loadAllData;
+        function loadAllData(index,size){
+            if(index>0&&index<$scope.building_data.totalPages){
+                buildingService.getBuildingPage(index,size,function(data){
+                    $scope.building_data=data;
+                    console.log($scope.building_data);
+                    if ($scope.building_data.content.length==0){
+                        $scope.page=false;
+                    }else {
+                        $scope.page=true;
+                    }
+                    buildingValue.thisPage=$scope.building_data.number;
+                    $scope.$isselectall=false;
+                });
+            }else if(index==0){
+                buildingService.getBuildingPage(index,size,function(data){
+                    $scope.building_data=data;
+                    console.log($scope.building_data);
+                    if ($scope.building_data.content.length==0){
+                        $scope.page=false;
+                    }else {
+                        $scope.page=true;
+                    }
+                    buildingValue.thisPage=$scope.building_data.number;
+                    $scope.$isselectall=false;
+                });
+            }
+        }
+        loadAllData(0,5);
+        //分页显示指定楼盘的楼栋
+        $scope.loadData=loadData;
+        function loadData(premiseName,index,size){
+            if(index>0&&index<$scope.building_data.totalPages){
+                buildingService.getBuildingByPremisePage(premiseName,index,size,function(data){
+                    $scope.building_data=data;
+                    console.log($scope.building_data);
+                    if ($scope.building_data.content.length==0){
+                        $scope.page=false;
+                    }else {
+                        $scope.page=true;
+                    }
+                    buildingValue.thisPage=$scope.building_data.number;
+                    $scope.$isselectall=false;
+                });
+            }else if(index==0){
+                buildingService.getBuildingByPremisePage(premiseName,index,size,function(data){
+                    $scope.building_data=data;
+                    console.log($scope.building_data);
+                    if ($scope.building_data.content.length==0){
+                        $scope.page=false;
+                    }else{
+                        $scope.page=true;
+                    }
+                    buildingValue.thisPage=$scope.building_data.number;
+                    $scope.$isselectall=false;
+                });
+            }
+        }
+        //premise的ng-change事件
+        $scope.premiseChanged=premiseChanged;
+        function premiseChanged(premiseName){
+            console.log(premiseName);
+            if ($scope.premiseName=="所有"){
+                loadAllData(0,5);
+            }else{
+                loadData(premiseName,0,5);
+            }
+        }
+        //上一页，下一页
+        $scope.changePage=changePage;
+        function changePage(index,size) {
+            if ($scope.premiseName=="所有"){
+                loadAllData(index,size);
+            }else{
+                loadData($scope.premiseName,index,size);
+            }
+        }
+        //全选当前页数据
         $scope.selectAll = function selectAll(){
-            for(var i=0; i<$scope.building_data.length; i++) {
+            for(var i=0; i<$scope.building_data.content.length; i++) {
                 if($scope.$isselectall) {
-                    $scope.building_data[i].$isselected = true;
+                    $scope.building_data.content[i].$isselected = true;
                 } else {
-                    $scope.building_data[i].$isselected = false;
+                    $scope.building_data.content[i].$isselected = false;
                 }
             }
         };
@@ -44,8 +130,13 @@
             modalInstance.result.then(function (data) {
                 //添加保存成功
                 console.log("正常关闭添加楼栋模态框");
-                var building = data;
-                $scope.building_data.push(building);
+                // var building = data;
+                // $scope.building_data.push(building);
+                if ($scope.premiseName=="所有"){
+                    loadAllData(buildingValue.thisPage,5);
+                }else {
+                    loadData($scope.premiseName,buildingValue.thisPage,5);
+                }
             }, function() {
                 console.log("取消添加楼栋");
             })
@@ -90,12 +181,17 @@
             promitInstance.result.then(function(){
                 buildingService.deleteBuilding(buildingId,function(data){
                     if(data != null) {
-                        for(var i=0;i<$scope.building_data.length;i++) {
-                            if($scope.building_data[i].id == buildingId) {
-                                //刷新楼栋页面
-                                $scope.building_data.splice(i,1);
-                                break;
-                            }
+                        // for(var i=0;i<$scope.building_data.length;i++) {
+                        //     if($scope.building_data[i].id == buildingId) {
+                        //         //刷新楼栋页面
+                        //         $scope.building_data.splice(i,1);
+                        //         break;
+                        //     }
+                        // }
+                        if ($scope.premiseName=="所有"){
+                            loadAllData(buildingValue.thisPage,5);
+                        }else {
+                            loadData($scope.premiseName,buildingValue.thisPage,5);
                         }
                     }
                 });
@@ -104,9 +200,9 @@
         //批量删除楼栋
         $scope.getSelects = function() {
             var selects = [];
-            for(var i=0;i<$scope.building_data.length;i++) {
-                if($scope.building_data[i].$isselected) {
-                    selects.push($scope.building_data[i]);
+            for(var i=0;i<$scope.building_data.content.length;i++) {
+                if($scope.building_data.content[i].$isselected) {
+                    selects.push($scope.building_data.content[i]);
                 }
             }
             return selects;
@@ -122,7 +218,7 @@
                 templateUrl: 'system/common/promit.html',
                 controller: function($scope,$uibModalInstance){
                     $scope.title="操作确认";
-                    $scope.text="确认删除该楼栋吗？";
+                    $scope.text="确认删除这些楼栋吗？";
                     $scope.cancel=function(){
                         $uibModalInstance.dismiss('cancel');
                     };
@@ -133,18 +229,14 @@
                 backdrop:true
             });
             promitInstance.result.then(function(){
-                var deletedBuildingId = [];
-                for(var i=0;i<$scope.building_data.length;i++) {
-                    if($scope.building_data[i].$isselected) {
-                        buildingService.deleteBuilding($scope.building_data[i].id,function(data,buildingId){
+                for(var i=0;i<$scope.building_data.content.length;i++) {
+                    if($scope.building_data.content[i].$isselected) {
+                        buildingService.deleteBuilding($scope.building_data.content[i].id,function(data){
                             if(data!=null) {
-                                deletedBuildingId.push(buildingId);
-                                for(var k=0;k<$scope.building_data.length;k++) {
-                                    for(var j=0;j<deletedBuildingId.length;j++) {
-                                        if($scope.building_data[k].id == deletedBuildingId[j]) {
-                                            $scope.building_data.splice(k,1);
-                                        }
-                                    }
+                                if ($scope.premiseName=="所有"){
+                                    loadAllData(buildingValue.thisPage,5);
+                                }else {
+                                    loadData($scope.premiseName,buildingValue.thisPage,5);
                                 }
                             }
                         });
@@ -276,7 +368,6 @@
                 method:'GET'
             }).then(function(response){
                 callback(response.data);
-                console.log(response.data);
             });
         };
         //添加楼栋
@@ -336,6 +427,33 @@
             }).then(function (response) {
                 callback(response.data);
                 console.log(response.data);
+            });
+        };
+        //分页查询所有楼栋
+        this.getBuildingPage = function (index,size,callback) {
+            $http({
+                url:"/building/getBuildingPage/"+index+"-"+size,
+                method:"GET",
+                data:{
+                    index:index,
+                    size:size
+                }
+            }).then(function (response) {
+                callback(response.data);
+            });
+        };
+        //根据premise分页查询
+        this.getBuildingByPremisePage = function (premiseName,index,size,callback) {
+            $http({
+                url:"/building/getBuildingByPremisePage/"+premiseName+"-"+index+"-"+size,
+                method:"GET",
+                data:{
+                    premiseName:premiseName,
+                    index:index,
+                    size:size
+                }
+            }).then(function (response) {
+                callback(response.data);
             });
         }
     }]);

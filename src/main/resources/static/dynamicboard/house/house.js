@@ -13,7 +13,7 @@
             controller:"houseController"
         });
     }]);
-    houseModule.value("houseValue",{"buildingName":""},{"premiseName":""},{"selects":""},{"houseStyles":""});
+    houseModule.value("houseValue",{"buildingName":""},{"premiseName":""},{"selects":""},{"selectsOld":""},{"houseStyles":""});
     houseModule.controller("houseController",["$scope","houseService","$uibModal","houseInstance","houseValue",function ($scope,houseService,$uibModal,houseInstance,houseValue) {
         $scope.editable = "no";//1
         //获取所有楼盘
@@ -122,6 +122,30 @@
                 return "null";
             }
         }
+        $scope.getSelects = function (){
+            $scope.thisBuilding = $scope.house_data[0][0].building;
+            $scope.floorNu=$scope.thisBuilding.floorNu;
+            $scope.floorHouses=$scope.thisBuilding.unitNu*$scope.thisBuilding.unitHouseNu;
+            $scope.selects = [];
+            for(var i=0;i<$scope.floorNu;i++) {
+                for (var j=0;j<$scope.floorHouses;j++){
+                    if($scope.house_data[i][j].houseStatus=="选中") {
+                        $scope.selects.push($scope.house_data[i][j]);
+                    }
+                }
+            }
+            return $scope.selects;
+        };
+        // $scope.getSelectsOld=function () {
+        //     $scope.getSelects();
+        //     console.log($scope.selects);
+        //     houseValue.selectsOld = [];
+        //     for (var i=0;i<$scope.selects.length;i++){
+        //         houseService.getHouseById($scope.selects[i].id,function (data) {
+        //             houseValue.selectsOld.push(data);
+        //         })
+        //     }
+        // };
         //切换成可以批量操作
         $scope.changeEdit=changeEdit;
         function changeEdit() {
@@ -130,7 +154,44 @@
         //切换成不可以批量操作
         $scope.changeNoEdit=changeNoEdit;
         function changeNoEdit() {
-            $scope.editable="no";
+            //判断是否存在被选中的，存在就取消选中
+            $scope.getSelects();
+            // $scope.getSelectsOld();
+            // console.log($scope.selects);
+            // console.log(houseValue.selectsOld);
+            if ($scope.selects.length>0){
+                console.log("存在被选中的没有被取消选中");
+                var promitInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'system/common/warning.html',
+                    controller: function($scope,$uibModalInstance){
+                        $scope.title="操作提示";
+                        $scope.text="存在被选中的没有被取消选中,请先取消选中";
+                        $scope.cancel=function(){
+                            $uibModalInstance.dismiss('cancel');
+                        };
+                        $scope.save=function(){
+                            $uibModalInstance.close("ok");
+                        };
+                    },
+                    backdrop:true
+                });
+                promitInstance.result.then(function(){
+                    // for (var i=0;i<$scope.selects.length;i++){
+                    //     for (var j=0;j<houseValue.selectsOld.length;j++){
+                    //         console.log($scope.selects[i].houseNo);
+                    //         console.log(houseValue.selectsOld[j].houseNo);
+                    //         if ($scope.selects[i].id==houseValue.selectsOld[j].id){
+                    //             $scope.selects[i].houseStatus=houseValue.selectsOld[j].houseStatus;
+                    //         }
+                    //     }
+                    // }
+                    // $scope.editable="no";
+                });
+            }else {
+                console.log("不存在被选中的没有被取消选中");
+                $scope.editable="no";
+            }
         }
         //修改房源模态框
         $scope.showUpdateHouse = showUpdateHouse;
@@ -151,7 +212,7 @@
                 console.log("取消修改房源");
             })
         }
-        //批量选择
+        //批量选择时状态切换
         $scope.selectHouses=selectHouses;
         function selectHouses(house) {
             if (house.houseStatus!="选中"){

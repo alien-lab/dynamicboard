@@ -10,6 +10,7 @@ import com.alienlab.dynamicboard.service.PicService;
 import com.alienlab.dynamicboard.service.PremiseService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -162,5 +163,15 @@ public class HouseStyleController {
     public String getHouseStyleByPremise(@PathVariable("premiseName") String premiseName){
         List<HouseStyle> houseStyles = houseStyleService.getHouseStyleByPremise(premiseName);
         return JSON.toJSONString(houseStyles);
+    }
+    //分页查询
+    @RequestMapping(value = "/getHouseStylePage/{index}-{size}",method = RequestMethod.GET)
+    public Page<HouseStyle> getHouseStylePage(@PathVariable("index") String index,@PathVariable("size") String size){
+        return houseStyleService.getHouseStylePage(Integer.parseInt(index),Integer.parseInt(size));
+    }
+    //根据premise分页查询
+    @RequestMapping(value = "/getHouseStyleByPremisePage/{premiseName}-{index}-{size}")
+    public Page<HouseStyle> getHouseStyleByPremisePage(@PathVariable("premiseName") String premiseName,@PathVariable("index") String index,@PathVariable("size") String size){
+        return houseStyleService.getHouseStyleByPremisePage(premiseName,Integer.parseInt(index),Integer.parseInt(size));
     }
 }

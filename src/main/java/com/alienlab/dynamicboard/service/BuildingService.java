@@ -9,6 +9,9 @@ import com.alienlab.dynamicboard.repository.HouseRepository;
 import com.alienlab.dynamicboard.repository.HouseStyleRepository;
 import com.alienlab.dynamicboard.repository.PremiseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -139,5 +142,14 @@ public class BuildingService {
     public List<Building> getBuildingByPremise(String premiseName){
         Premise premise = premiseRepository.findByPremiseName(premiseName);
         return buildingRepository.findByPremise(premise);
+    }
+    //building分页查询
+    public Page<Building> getBuildingPage(Integer index,Integer size){
+        return buildingRepository.findAll(new PageRequest(index,size));
+    }
+    //buildingByPremise分页查询
+    public Page<Building> getBuildingByPremisePage(String premiseName,Integer index,Integer size){
+        Premise premise = premiseRepository.findByPremiseName(premiseName);
+        return buildingRepository.findBuildingByPremise(premise,new PageRequest(index,size));
     }
 }

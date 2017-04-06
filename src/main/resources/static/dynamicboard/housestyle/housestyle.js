@@ -13,21 +13,107 @@
             controller:"housestyleController"
         });
     }]);
-    housestyleModule.controller("housestyleController",["$scope","housestyleService","$uibModal","housestyleInstance",function ($scope,housestyleService,$uibModal,housestyleInstance) {
-        $scope.pagetitle="户型管理";
+    housestyleModule.value("housestyleValue",{"thisPage":""});
+    housestyleModule.controller("housestyleController",["$scope","housestyleService","$uibModal","housestyleInstance","housestyleValue",function ($scope,housestyleService,$uibModal,housestyleInstance,housestyleValue) {
         $scope.image=null;//当前图片
-        //显示所有户型
-        housestyleService.getAllHousestyle(function (data) {
-            $scope.housestyle_data=data;
-            console.log(data);
+        $scope.housestyle_data=[];
+        $scope.housestyle_data.content=[];
+        $scope.premiseName="所有";
+        $scope.page=true;
+        //显示所有户型（不分页）
+        // housestyleService.getAllHousestyle(function (data) {
+        //     $scope.housestyle_data=data;
+        //     console.log(data);
+        // });
+        //获得所有楼盘
+        housestyleService.getAllPremise(function (data) {
+            $scope.premises=data;
         });
-        //全选
+        //所有户型的分页显示
+        $scope.loadAllData=loadAllData;
+        function loadAllData(index,size) {
+            if(index>0&&index<$scope.housestyle_data.totalPages){
+                housestyleService.getHouseStylePage(index,size,function(data){
+                    $scope.housestyle_data=data;
+                    console.log($scope.housestyle_data);
+                    housestyleValue.thisPage=$scope.housestyle_data.number;
+                    $scope.$isselectall=false;
+                    if ($scope.housestyle_data.content.length==0){
+                        $scope.page=false;
+                    }else {
+                        $scope.page=true;
+                    }
+                });
+            }else if(index==0){
+                housestyleService.getHouseStylePage(index,size,function(data){
+                    $scope.housestyle_data=data;
+                    console.log($scope.housestyle_data);
+                    housestyleValue.thisPage=$scope.housestyle_data.number;
+                    $scope.$isselectall=false;
+                    if ($scope.housestyle_data.content.length==0){
+                        $scope.page=false;
+                    }else {
+                        $scope.page=true;
+                    }
+                });
+            }
+        }
+        loadAllData(0,5);
+        //分页显示指定楼盘的户型
+        $scope.loadData=loadData;
+        function loadData(premiseName,index,size) {
+            if(index>0&&index<$scope.housestyle_data.totalPages){
+                housestyleService.getHouseStyleByPremisePage(premiseName,index,size,function(data){
+                    $scope.housestyle_data=data;
+                    console.log($scope.housestyle_data);
+                    housestyleValue.thisPage=$scope.housestyle_data.number;
+                    $scope.$isselectall=false;
+                    if ($scope.housestyle_data.content.length==0){
+                        $scope.page=false;
+                    }else {
+                        $scope.page=true;
+                    }
+                });
+            }else if(index==0){
+                housestyleService.getHouseStyleByPremisePage(premiseName,index,size,function(data){
+                    $scope.housestyle_data=data;
+                    console.log($scope.housestyle_data);
+                    housestyleValue.thisPage=$scope.housestyle_data.number;
+                    $scope.$isselectall=false;
+                    if ($scope.housestyle_data.content.length==0){
+                        $scope.page=false;
+                    }else{
+                        $scope.page=true;
+                    }
+                });
+            }
+        }
+        //premise的ng-change事件
+        $scope.premiseChanged=premiseChanged;
+        function premiseChanged(premiseName){
+            console.log(premiseName);
+            if ($scope.premiseName=="所有"){
+                loadAllData(0,5);
+            }else{
+                loadData(premiseName,0,5);
+            }
+        }
+        //上一页，下一页
+        $scope.changePage=changePage;
+        function changePage(index,size) {
+            if ($scope.premiseName=="所有"){
+                loadAllData(index,size);
+            }else{
+                loadData($scope.premiseName,index,size);
+            }
+        }
+        //全选当前页数据
         $scope.selectAll = function selectAll(){
-            for(var i=0; i<$scope.housestyle_data.length; i++) {
+            for(var i=0; i<$scope.housestyle_data.content.length; i++) {
                 if($scope.$isselectall) {
-                    $scope.housestyle_data[i].$isselected = true;
+                    $scope.housestyle_data.content[i].$isselected = true;
                 } else {
-                    $scope.housestyle_data[i].$isselected = false;
+                    $scope.housestyle_data.content[i].$isselected = false;
                 }
             }
         };
@@ -45,9 +131,13 @@
             modalInstance.result.then(function (data) {
                 //添加保存成功
                 console.log("正常关闭添加户型模态框");
-                var housestyle = data;
-                $scope.housestyle_data.push(housestyle);
-                console.log($scope.housestyle_data);
+                // var housestyle = data;
+                // $scope.housestyle_data.push(housestyle);
+                if ($scope.premiseName=="所有"){
+                    loadAllData(housestyleValue.thisPage,5);
+                }else {
+                    loadData($scope.premiseName,housestyleValue.thisPage,5);
+                }
             }, function() {
                 console.log("取消添加户型");
             })
@@ -117,12 +207,17 @@
             promitInstance.result.then(function(){
                 housestyleService.deleteHousestyle(houseStyleId,function(data){
                     if(data != null) {
-                        for(var i=0;i<$scope.housestyle_data.length;i++) {
-                            if($scope.housestyle_data[i].id == houseStyleId) {
-                                //刷新户型页面
-                                $scope.housestyle_data.splice(i,1);
-                                break;
-                            }
+                        // for(var i=0;i<$scope.housestyle_data.length;i++) {
+                        //     if($scope.housestyle_data[i].id == houseStyleId) {
+                        //         //刷新户型页面
+                        //         $scope.housestyle_data.splice(i,1);
+                        //         break;
+                        //     }
+                        // }
+                        if ($scope.premiseName=="所有"){
+                            loadAllData(housestyleValue.thisPage,5);
+                        }else {
+                            loadData($scope.premiseName,housestyleValue.thisPage,5);
                         }
                     }
                 });
@@ -131,9 +226,9 @@
         //批量删除户型
         $scope.getSelects = function() {
             var selects = [];
-            for(var i=0;i<$scope.housestyle_data.length;i++) {
-                if($scope.housestyle_data[i].$isselected) {
-                    selects.push($scope.housestyle_data[i]);
+            for(var i=0;i<$scope.housestyle_data.content.length;i++) {
+                if($scope.housestyle_data.content[i].$isselected) {
+                    selects.push($scope.housestyle_data.content[i]);
                 }
             }
             return selects;
@@ -149,7 +244,7 @@
                 templateUrl: 'system/common/promit.html',
                 controller: function($scope,$uibModalInstance){
                     $scope.title="操作确认";
-                    $scope.text="确认删除该户型吗？";
+                    $scope.text="确认删除这些户型吗？";
                     $scope.cancel=function(){
                         $uibModalInstance.dismiss('cancel');
                     };
@@ -160,18 +255,21 @@
                 backdrop:true
             });
             promitInstance.result.then(function(){
-                var deletedHousestyleId = [];
-                for(var i=0;i<$scope.housestyle_data.length;i++) {
-                    if($scope.housestyle_data[i].$isselected) {
-                        housestyleService.deleteHousestyle($scope.housestyle_data[i].id,function(data,houseStyleId){
+                for(var i=0;i<$scope.housestyle_data.content.length;i++) {
+                    if($scope.housestyle_data.content[i].$isselected) {
+                        housestyleService.deleteHousestyle($scope.housestyle_data.content[i].id,function(data){
                             if(data!=null) {
-                                deletedHousestyleId.push(houseStyleId);
-                                for(var k=0;k<$scope.housestyle_data.length;k++) {
-                                    for(var j=0;j<deletedHousestyleId.length;j++) {
-                                        if($scope.housestyle_data[k].id == deletedHousestyleId[j]) {
-                                            $scope.housestyle_data.splice(k,1);
-                                        }
-                                    }
+                                // for(var k=0;k<$scope.housestyle_data.length;k++) {
+                                //     for(var j=0;j<deletedHousestyleId.length;j++) {
+                                //         if($scope.housestyle_data[k].id == deletedHousestyleId[j]) {
+                                //             $scope.housestyle_data.splice(k,1);
+                                //         }
+                                //     }
+                                // }
+                                if ($scope.premiseName=="所有"){
+                                    loadAllData(housestyleValue.thisPage,5);
+                                }else {
+                                    loadData($scope.premiseName,housestyleValue.thisPage,5);
                                 }
                             }
                         });
@@ -381,6 +479,34 @@
                 console.log(response.data);
             });
         };
+        //分页查询所有户型
+        this.getHouseStylePage = function (index,size,callback) {
+            $http({
+                url:"/housestyle/getHouseStylePage/"+index+"-"+size,
+                method:"GET",
+                data:{
+                    index:index,
+                    size:size
+                }
+            }).then(function (response) {
+                console.log(response.data);
+                callback(response.data);
+            });
+        };
+        //根据premise分页查询
+        this.getHouseStyleByPremisePage = function (premiseName,index,size,callback) {
+            $http({
+                url:"/housestyle/getHouseStyleByPremisePage/"+premiseName+"-"+index+"-"+size,
+                method:"GET",
+                data:{
+                    premiseName:premiseName,
+                    index:index,
+                    size:size
+                }
+            }).then(function (response) {
+                callback(response.data);
+            });
+        }
     }]);
     housestyleModule.directive("imagepreview",[function(){
         return {

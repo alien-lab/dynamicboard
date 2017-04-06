@@ -6,6 +6,8 @@ import com.alienlab.dynamicboard.entity.HouseStyle;
 import com.alienlab.dynamicboard.entity.Premise;
 import com.alienlab.dynamicboard.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -79,5 +81,9 @@ public class PremiseService {
     //根据楼盘名查楼盘
     public Premise getPremiseByPremiseName(String premiseName) {
         return premiseRepository.findByPremiseName(premiseName);
+    }
+    //premise分页查询
+    public Page<Premise> getPremisePage(Integer index,Integer size){
+        return premiseRepository.findAll(new PageRequest(index,size));
     }
 }

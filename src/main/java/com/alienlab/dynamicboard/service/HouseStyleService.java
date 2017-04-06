@@ -7,6 +7,8 @@ import com.alienlab.dynamicboard.repository.HouseRepository;
 import com.alienlab.dynamicboard.repository.HouseStyleRepository;
 import com.alienlab.dynamicboard.repository.PremiseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,5 +64,14 @@ public class HouseStyleService {
     public List<HouseStyle> getHouseStyleByPremise(String premiseName){
         Premise premise = premiseRepository.findByPremiseName(premiseName);
         return houseStyleRepository.findByPremise(premise);
+    }
+    //houseStyle分页查询
+    public Page<HouseStyle> getHouseStylePage(Integer index,Integer size){
+        return houseStyleRepository.findAll(new PageRequest(index,size));
+    }
+    //houseStyle根据premise分页查询
+    public Page<HouseStyle> getHouseStyleByPremisePage(String premiseName,Integer index,Integer size){
+        Premise premise = premiseRepository.findByPremiseName(premiseName);
+        return houseStyleRepository.findHouseStyleByPremise(premise,new PageRequest(index,size));
     }
 }

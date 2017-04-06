@@ -1,5 +1,6 @@
 package com.alienlab.dynamicboard.repository;
 
+import com.alienlab.dynamicboard.entity.Building;
 import com.alienlab.dynamicboard.entity.Premise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
