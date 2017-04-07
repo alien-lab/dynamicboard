@@ -105,7 +105,7 @@
                 templateUrl: 'system/common/promit.html',
                 controller:function($scope,$uibModalInstance){
                     $scope.title="操作确认";
-                    $scope.text="将一并删除该楼盘下的所有楼栋，确认删除该楼盘吗？";
+                    $scope.text="将一并删除该楼盘下的所有楼栋和户型，确认删除该楼盘吗？";
                     $scope.cancel=function(){
                         $uibModalInstance.dismiss('cancel');
                     };
@@ -242,7 +242,6 @@
                 method:'GET'
             }).then(function(response){
                 callback(response.data);
-                console.log(response.data);
             });
         };
         //添加楼盘
@@ -253,7 +252,6 @@
                 data:premise
             }).then(function (response) {
                 callback(response.data.data);
-                console.log(response.data.data);
             });
         };
         //修改楼盘信息
@@ -264,7 +262,6 @@
                 data:premise
             }).then(function (response) {
                 callback(response.data.data);
-                console.log(response.data.data);
             });
         };
         //删除当前楼盘
@@ -277,7 +274,6 @@
                 }
             }).then(function (response) {
                 callback(response.data,premiseId);
-                console.log(response.data,premiseId);
             });
         };
         this.getPremisePage = function (index,size,callback) {

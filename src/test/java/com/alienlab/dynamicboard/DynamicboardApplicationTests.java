@@ -83,12 +83,12 @@ public class DynamicboardApplicationTests {
 //		}
 //	}
 	//根据BuildingAndFloorNo查房源
-	public void TestGetAllAsTable(){
-		List<List<House>> finalHouses = houseService.getAllAsTable("A2栋");
-		for (List<House> houses:finalHouses){
-			System.out.println(houses);
-		}
-	}
+//	public void TestGetAllAsTable(){
+//		List<List<House>> finalHouses = houseService.getAllAsTable("A2栋");
+//		for (List<House> houses:finalHouses){
+//			System.out.println(houses);
+//		}
+//	}
 	//根据id查楼盘
 //	public void TestGetPremiseById(){
 //		System.out.println(premiseService.getPremiseById((long) 1));
@@ -155,9 +155,9 @@ public class DynamicboardApplicationTests {
 //		HouseStyle houseStyle = houseStyleService.getHouseStyleByHsName("1");
 //		System.out.println(houseStyle);
 //	}
-	//根据buildingName楼栋
-//	public void TestGetBuildingByBuildingName(){
-//		Building building = buildingService.getBuildingByBuildingName("2");
-//		System.out.println(building);
-//	}
+	//根据buildingName查楼栋
+	public void TestGetBuildingByBuildingName(){
+		Building building = buildingService.getBuildingByBuildingName("1#");
+		System.out.println(building);
+	}
 }

@@ -15,68 +15,67 @@
     }]);
     houseModule.value("houseValue",{"buildingName":""},{"premiseName":""},{"selects":""},{"selectsOld":""},{"houseStyles":""});
     houseModule.controller("houseController",["$scope","houseService","$uibModal","houseInstance","houseValue",function ($scope,houseService,$uibModal,houseInstance,houseValue) {
-        $scope.editable = "no";//1
+        $scope.premiseName="请选择楼盘";
+        houseValue.premiseName=$scope.premiseName;
+        $scope.buildingName="请选择楼栋";
+        houseValue.buildingName=$scope.buildingName;
+        $scope.pagePremise = "yes";//是否存在楼盘
+        $scope.pageBuilding = "yes";//是否存在楼栋
+        $scope.selectedAll = "no";//是否已都选择
+        $scope.editable = "no";//是否可编辑
         //获取所有楼盘
         houseService.getAllPremise(function (data) {
-            $scope.allPremise=data;//2
-            $scope.currentPremise=$scope.allPremise[0];//2
-            $scope.premiseName=$scope.currentPremise.premiseName;//2
-            houseValue.premiseName=$scope.premiseName;//2
-            //根据当前premise获取building
-            houseService.getBuildingByPremise($scope.premiseName,function (data) {
-                $scope.buildings=data;//3
-                if ($scope.buildings.length>0) {//3
-                    $scope.status="yes";
-                    $scope.currentbuilding = $scope.buildings[0];
-                    $scope.buildingName = $scope.currentbuilding.buildingName;
-                    houseValue.buildingName = $scope.buildingName;
-                    //根据当前building获取house
-                    houseService.getAllAsTable($scope.buildingName, function (data) {
-                        $scope.house_data = data;//4
-                        console.log("初始房源数据：" + data);//4
-                    });
-                }else {//3
-                    $scope.status="no";
-                }
-            })
+            $scope.allPremise=data;
+            if ($scope.allPremise.length==0){
+                $scope.pagePremise = "no";
+            }else {
+                $scope.pagePremise = "yes";
+            }
         });
         //premise下拉框ng-change事件
         $scope.premiseChanged=premiseChanged;
         function premiseChanged(premiseName) {
             $scope.premiseName=premiseName;
             houseValue.premiseName=$scope.premiseName;
-            houseService.getBuildingByPremise($scope.premiseName,function (data) {
-                $scope.buildings=data;
-                if ($scope.buildings.length>0){
-                    $scope.status="yes";
-                    $scope.currentbuilding=$scope.buildings[0];
-                    $scope.buildingName=$scope.currentbuilding.buildingName;
-                    houseValue.buildingName=$scope.buildingName;
-                    //根据当前building获取house
-                    houseService.getAllAsTable($scope.buildingName,function (data) {
-                        $scope.house_data=data;
-                        console.log($scope.premiseName+"的初始房源数据："+data);
-                    });
-                }else {
-                    $scope.status="no";
-                }
-            })
+            $scope.buildingName="请选择楼栋";
+            houseValue.buildingName=$scope.buildingName;
+            $scope.selectedAll = "no";
+            $scope.house_data=[];
+            if ($scope.premiseName!="请选择楼盘"){
+                houseService.getBuildingByPremise($scope.premiseName,function (data) {
+                    $scope.buildings=data;
+                    if ($scope.buildings.length>0){
+                        $scope.pageBuilding="yes";
+                    }else {
+                        $scope.pageBuilding="no";
+                    }
+                })
+            }else {
+                $scope.pageBuilding="yes";
+                $scope.buildings=[];
+                $scope.house_data=[];
+            }
         }
         //building下拉框ng-change事件
         $scope.buildingChanged=buildingChanged;
         function buildingChanged(buildingName) {
-            $scope.status="yes";
             $scope.buildingName=buildingName;
             houseValue.buildingName=$scope.buildingName;
-            houseService.getByBuildingName($scope.buildingName,function (data) {
-                $scope.building=data;
-                $scope.premiseName=$scope.building.premise.premiseName;
-                houseValue.premiseName=$scope.premiseName;
-                houseService.getAllAsTable($scope.buildingName,function (data) {
-                    $scope.house_data=data;
-                    console.log($scope.premiseName+"-"+$scope.buildingName+"的房源数据："+data);
+            if ($scope.buildingName!="请选择楼栋"){
+                $scope.selectedAll = "yes";
+                houseService.getByBuildingName($scope.buildingName,function (data) {
+                    $scope.building=data;
+                    $scope.premiseName=$scope.building.premise.premiseName;
+                    houseValue.premiseName=$scope.premiseName;
+                    houseService.getAllAsTable($scope.buildingName,function (data) {
+                        $scope.house_data=data;
+                        console.log($scope.premiseName+"-"+$scope.buildingName+"的房源数据："+data);
+                    });
                 });
-            });
+            }else {
+                $scope.selectedAll = "no";
+                $scope.house_data=[];
+            }
         }
         //添加房源模态框
         $scope.showAddHouse = showAddHouse;
@@ -603,6 +602,7 @@
                     buildingName:buildingName
                 }
             }).then(function (response) {
+                console.log(response.data);
                 callback(response.data);
             });
         };

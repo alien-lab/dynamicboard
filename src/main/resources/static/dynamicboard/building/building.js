@@ -18,7 +18,7 @@
         $scope.building_data = [];
         $scope.building_data.content = [];
         $scope.premiseName="所有";
-        $scope.page=true;
+        // $scope.page=true;
         //显示所有楼栋（不分页）
         // buildingService.getAllBuilding(function (data) {
         //     $scope.building_data=data;
@@ -35,11 +35,11 @@
                 buildingService.getBuildingPage(index,size,function(data){
                     $scope.building_data=data;
                     console.log($scope.building_data);
-                    if ($scope.building_data.content.length==0){
-                        $scope.page=false;
-                    }else {
-                        $scope.page=true;
-                    }
+                    // if ($scope.building_data.content.length==0){
+                    //     $scope.page=false;
+                    // }else {
+                    //     $scope.page=true;
+                    // }
                     buildingValue.thisPage=$scope.building_data.number;
                     $scope.$isselectall=false;
                 });
@@ -47,11 +47,11 @@
                 buildingService.getBuildingPage(index,size,function(data){
                     $scope.building_data=data;
                     console.log($scope.building_data);
-                    if ($scope.building_data.content.length==0){
-                        $scope.page=false;
-                    }else {
-                        $scope.page=true;
-                    }
+                    // if ($scope.building_data.content.length==0){
+                    //     $scope.page=false;
+                    // }else {
+                    //     $scope.page=true;
+                    // }
                     buildingValue.thisPage=$scope.building_data.number;
                     $scope.$isselectall=false;
                 });
@@ -65,11 +65,11 @@
                 buildingService.getBuildingByPremisePage(premiseName,index,size,function(data){
                     $scope.building_data=data;
                     console.log($scope.building_data);
-                    if ($scope.building_data.content.length==0){
-                        $scope.page=false;
-                    }else {
-                        $scope.page=true;
-                    }
+                    // if ($scope.building_data.content.length==0){
+                    //     $scope.page=false;
+                    // }else {
+                    //     $scope.page=true;
+                    // }
                     buildingValue.thisPage=$scope.building_data.number;
                     $scope.$isselectall=false;
                 });
@@ -77,11 +77,11 @@
                 buildingService.getBuildingByPremisePage(premiseName,index,size,function(data){
                     $scope.building_data=data;
                     console.log($scope.building_data);
-                    if ($scope.building_data.content.length==0){
-                        $scope.page=false;
-                    }else{
-                        $scope.page=true;
-                    }
+                    // if ($scope.building_data.content.length==0){
+                    //     $scope.page=false;
+                    // }else{
+                    //     $scope.page=true;
+                    // }
                     buildingValue.thisPage=$scope.building_data.number;
                     $scope.$isselectall=false;
                 });
@@ -358,7 +358,6 @@
                 method:'GET'
             }).then(function(data){
                 callback(data.data.data);
-                console.log(data.data.data);
             });
         };
         //获得所有楼盘
@@ -378,7 +377,6 @@
                 data:building
             }).then(function (response) {
                 callback(response.data.data);
-                console.log(response.data.data);
             });
         };
         //新修改楼栋信息
@@ -389,7 +387,6 @@
                 data:building
             }).then(function (response) {
                 callback(response.data.data);
-                console.log(response.data.data);
             });
         };
         //旧修改楼栋信息
@@ -400,7 +397,6 @@
                 data:building
             }).then(function (response) {
                 callback(response.data.data);
-                console.log(response.data.data);
             });
         };
         //删除当前楼栋
@@ -413,7 +409,6 @@
                 }
             }).then(function (response) {
                 callback(response.data,buildingId);
-                console.log(response.data,buildingId);
             });
         };
         //根据premiseName查询楼盘
@@ -426,7 +421,6 @@
                 }
             }).then(function (response) {
                 callback(response.data);
-                console.log(response.data);
             });
         };
         //分页查询所有楼栋

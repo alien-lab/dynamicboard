@@ -19,7 +19,7 @@
         $scope.housestyle_data=[];
         $scope.housestyle_data.content=[];
         $scope.premiseName="所有";
-        $scope.page=true;
+        // $scope.page=true;
         //显示所有户型（不分页）
         // housestyleService.getAllHousestyle(function (data) {
         //     $scope.housestyle_data=data;
@@ -38,11 +38,11 @@
                     console.log($scope.housestyle_data);
                     housestyleValue.thisPage=$scope.housestyle_data.number;
                     $scope.$isselectall=false;
-                    if ($scope.housestyle_data.content.length==0){
-                        $scope.page=false;
-                    }else {
-                        $scope.page=true;
-                    }
+                    // if ($scope.housestyle_data.content.length==0){
+                    //     $scope.page=false;
+                    // }else {
+                    //     $scope.page=true;
+                    // }
                 });
             }else if(index==0){
                 housestyleService.getHouseStylePage(index,size,function(data){
@@ -50,11 +50,11 @@
                     console.log($scope.housestyle_data);
                     housestyleValue.thisPage=$scope.housestyle_data.number;
                     $scope.$isselectall=false;
-                    if ($scope.housestyle_data.content.length==0){
-                        $scope.page=false;
-                    }else {
-                        $scope.page=true;
-                    }
+                    // if ($scope.housestyle_data.content.length==0){
+                    //     $scope.page=false;
+                    // }else {
+                    //     $scope.page=true;
+                    // }
                 });
             }
         }
@@ -68,11 +68,11 @@
                     console.log($scope.housestyle_data);
                     housestyleValue.thisPage=$scope.housestyle_data.number;
                     $scope.$isselectall=false;
-                    if ($scope.housestyle_data.content.length==0){
-                        $scope.page=false;
-                    }else {
-                        $scope.page=true;
-                    }
+                    // if ($scope.housestyle_data.content.length==0){
+                    //     $scope.page=false;
+                    // }else {
+                    //     $scope.page=true;
+                    // }
                 });
             }else if(index==0){
                 housestyleService.getHouseStyleByPremisePage(premiseName,index,size,function(data){
@@ -80,11 +80,11 @@
                     console.log($scope.housestyle_data);
                     housestyleValue.thisPage=$scope.housestyle_data.number;
                     $scope.$isselectall=false;
-                    if ($scope.housestyle_data.content.length==0){
-                        $scope.page=false;
-                    }else{
-                        $scope.page=true;
-                    }
+                    // if ($scope.housestyle_data.content.length==0){
+                    //     $scope.page=false;
+                    // }else{
+                    //     $scope.page=true;
+                    // }
                 });
             }
         }
@@ -300,6 +300,7 @@
     housestyleModule.controller("addHousestyleController",["$scope","housestyleService","$uibModalInstance",function($scope,housestyleService,$uibModalInstance){
         $scope.pagetitle = "添加户型";
         $scope.premise_names = [];
+        $scope.image="app/img/addimage.jpg";
         housestyleService.getAllPremise(function (data) {
             $scope.premise_data=data;
             for (var i=0;i<$scope.premise_data.length;i++){
@@ -308,13 +309,13 @@
         });
         //保存添加
         $scope.save = function save() {
-            if ($scope.form.hsIntroduction == null){
+            if ($scope.form.hsIntroduction == null||$scope.form.hsIntroduction==""){
                 $scope.form.hsIntroduction = "（待录入）";
             }
-            if ($scope.form.hsPicture == null){
+            if ($scope.image == "app/img/addimage.jpg"){
                 $scope.form.hsPicture = "（待录入）";
             }else {
-                $scope.form.hsPicture = $scope.image.file;
+                $scope.form.hsPicture = $scope.image;
             }
             console.log($scope.form);//所需的数据
             housestyleService.addHousestyle($scope.form,function(data) {
@@ -405,7 +406,6 @@
                 method:'GET'
             }).then(function(data){
                 callback(data.data.data);
-                console.log(data.data.data);
             });
         };
         //获得所有楼盘
@@ -415,7 +415,6 @@
                 method:'GET'
             }).then(function(response){
                 callback(response.data);
-                console.log(response.data);
             });
         };
         //添加户型
@@ -426,7 +425,6 @@
                 data:housestyle
             }).then(function (response) {
                 callback(response.data.data);
-                console.log(response.data.data);
             });
         };
         //修改户型
@@ -437,7 +435,6 @@
                 data:housestyle
             }).then(function (response) {
                 callback(response.data.data);
-                console.log(response.data.data);
             });
         };
         //删除当前户型
@@ -450,7 +447,6 @@
                 }
             }).then(function (response) {
                 callback(response.data,houseStyleId);
-                console.log(response.data,houseStyleId);
             });
         };
         //根据id查户型
@@ -463,7 +459,6 @@
                 }
             }).then(function (response) {
                 callback(response.data);
-                console.log(response.data);
             });
         };
         //根据houseStyle查房源
@@ -476,7 +471,6 @@
                 }
             }).then(function (response) {
                 callback(response.data);
-                console.log(response.data);
             });
         };
         //分页查询所有户型
@@ -489,7 +483,6 @@
                     size:size
                 }
             }).then(function (response) {
-                console.log(response.data);
                 callback(response.data);
             });
         };

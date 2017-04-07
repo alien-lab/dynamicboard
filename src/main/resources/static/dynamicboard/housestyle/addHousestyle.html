@@ -28,15 +28,15 @@
         </div>
         <div class="form-group col-md-12">
             <label>户型图</label>
-            <input type="file" imagepreview fileread="image.file"
+            <input type="file" imagepreview fileread="image"
                    id="imageloader" style="display:none;" ng-model="form.hsPicture"/>
         </div>
-        <div class="form-group col-md-12" ng-if="image==null">
+        <div class="form-group col-md-12" ng-if="image == 'app/img/addimage.jpg'">
             <img class="img-rounded thumb64 center-block" src="app/img/addimage.jpg" onclick="imageloader.click()"/>
         </div>
         <!--如果选择图片，预览图片-->
-        <div class="form-group col-md-12" ng-if="image!=null">
-            <img ng-src="{{image.file}}" class="img-rounded center-block" style="width: 256px;height: 160px;" onclick="imageloader.click()"/>
+        <div class="form-group col-md-12" ng-if="image != 'app/img/addimage.jpg'">
+            <img ng-src="{{image}}" class="img-rounded center-block" style="width: 256px;height: 160px;" onclick="imageloader.click()"/>
         </div>
         <div style="clear:both;"></div>
     </form>
