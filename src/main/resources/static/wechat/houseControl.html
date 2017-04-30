@@ -4,31 +4,70 @@
     <meta charset="UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="../vendor/bootstrap/v4/css/bootstrap.min.css" />
     <script src="../vendor/angularjs/angular.min.js"></script>
     <title>Title</title>
     <style>
+        body{
+            padding-top:60px;
+            max-width:100%;
+        }
+        .bg-inverse{
+            color:#fff;
+        }
         .house{
             list-style: none;
             border:1px solid #eee;
-            pading:0;
+            padding:0;
             margin:0;
         }
+        .house .houseno{
+            font-size:110%;
+            font-weight:600;
+            width:100%;
+            text-align:center;
+        }
+        .house .houseinfo{
+            width:100%;
+            margin-top:3px;
+            font-size:80%;
+            text-align:center;
+        }
+        /*可售*/
+        .house .sell{
+
+        }
+        /*销控*/
+        .house .notsell{
+
+        }
+        /*预约*/
+        .house .mark{
+
+        }
+
     </style>
 </head>
 <body ng-app="house" ng-controller="testController">
-<ul  ng-repeat="house in building.houses" style="white-space:nowrap;clear:both;margin:0;padding:0;">
-    <li style="display:inline-block;min-width:100px;" ng-repeat="h in building.houses[$index]">
-        <ul class="house">
-            <li>{{h.no}}</li>
-            <li>{{h.area}}</li>
-            <li>{{h.price}}</li>
-            <li>{{h.type}}</li>
-            <li>{{h.totalprice}}</li>
-        </ul>
-    </li>
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+        <div class="navbar-brand">房源信息 旭日华庭 35栋 112套</div>
+    </nav>
+    <div class="container" style="overflow-x: scroll;">
+        <ul ng-repeat="house in building.houses" style="white-space:nowrap;clear:both;margin:0;padding:0;">
+            <li style="display:inline-block;min-width:100px;padding:0;margin:0;"
+                ng-repeat="h in building.houses[$index]" class="text-white"
+                ng-class="{'bg-success':(h.status=='可售')
+                ,'bg-danger':(h.status=='售控')}">
+                <ul class="house">
+                    <li class="houseno">{{h.no}}</li>
+                    <li class="houseinfo">{{h.type}}|{{h.area}}|{{h.totalprice/10000 |number:2}}万</li>
+                </ul>
+            </li>
 
-</ul>
+        </ul>
+    </div>
+
 
 <script src="js/houseControl.js"></script>
 </body>

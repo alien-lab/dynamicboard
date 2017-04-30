@@ -20,6 +20,7 @@
             this.price=price;
             this.type=type;
             this.totalprice=this.price*this.area;
+            this.status="可售";
         }
         genHouse();
         $scope.building=building;
@@ -35,6 +36,8 @@
                             10000+(Math.abs(i-15)*100),
                             'A'+((j+1)*(k+1)%4)
                         );
+                        h.status=((i==(Math.floor(Math.random()*building.floorcount)))||(j==(Math.floor(Math.random()*building.unitcount)))
+                            ?"售控":"可售");
                         floorhouse.push(h);
                     }
                 }
