@@ -1,11 +1,20 @@
 /**
- * Created by juhuiguang on 2017/2/23.
+ * Created by 橘 on 2017/5/1.
  */
 (function(){
-    'use strict';
-    var house=angular.module("house",[]);
-    house.controller("testController",["$scope","$filter",function($scope,$filter){
-        $scope.test="tttttt";
+    var house=angular.module("house");
+    house.controller("houseListController",["$scope","$state",function($scope,$state){
+        $scope.title="楼栋选择";
+        $scope.goBoard=function(){
+            $state.go("houseboard");
+        }
+    }]);
+
+    house.controller("houseBoardController",["$scope","$state",function($scope,$state){
+        $scope.title="楼盘房源";
+        $scope.goList=function(){
+            $state.go("houselist");
+        }
         var building={
             no:"17",
             floorcount:30,
@@ -44,7 +53,12 @@
                 building.houses.push(floorhouse);
             }
         }
-
     }]);
 
+    house.controller("houseInfoController",["$scope","$state",function($scope,$state){
+        $scope.title="房源详情";
+        $scope.goBoard=function(){
+            $state.go("houseboard");
+        }
+    }]);
 })();
