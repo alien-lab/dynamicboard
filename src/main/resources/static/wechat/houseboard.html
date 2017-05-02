@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
-    <link rel="stylesheet" href="../vendor/bootstrap/v4/css/bootstrap.min.css" />
-    <script src="../vendor/angularjs/angular.min.js"></script>
-    <title>Title</title>
+
     <style>
         body{
             padding-top:60px;
@@ -48,10 +39,9 @@
         }
 
     </style>
-</head>
-<body ng-app="house" ng-controller="testController">
+
     <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-        <div class="navbar-brand">房源信息 旭日华庭 35栋 112套</div>
+        <div class="navbar-brand">房源信息 旭日华庭 <a ng-click="goList()">35</a>栋 112套 </div>
     </nav>
     <div class="container" style="overflow-x: scroll;">
         <ul ng-repeat="house in building.houses" style="white-space:nowrap;clear:both;margin:0;padding:0;">
@@ -67,8 +57,3 @@
 
         </ul>
     </div>
-
-
-<script src="js/houseControl.js"></script>
-</body>
-</html>
