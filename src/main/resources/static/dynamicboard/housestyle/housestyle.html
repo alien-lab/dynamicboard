@@ -37,6 +37,7 @@
                     <th>户型名</th>
                     <th>面积/m<sup>2</sup></th>
                     <th>所属楼盘</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -57,7 +58,7 @@
                 </tbody>
             </table>
         </div>
-        <ul class="pagination pagination-sm">
+        <ul class="pagination pagination-sm" style="float: right;">
             <li ng-disabled="housestyle_data.first" ng-click="changePage(housestyle_data.number-1,housestyle_data.size)"><a href="javascript:void(0)">上一页</a></li>
             <li><a href="javascript:void(0)">{{housestyle_data.number+1}}/{{housestyle_data.totalPages}}</a></li>
             <li ng-disabled="housestyle_data.last" ng-click="changePage(housestyle_data.number+1,housestyle_data.size)"><a href="javascript:void(0)">下一页</a></li>

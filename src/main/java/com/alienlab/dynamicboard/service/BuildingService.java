@@ -33,6 +33,8 @@ public class BuildingService {
     //添加楼栋
     public Building addBuilding(Building building){
         Building saveBuilding = buildingRepository.save(building);
+        Premise premise = building.getPremise();
+        premise.setBuildingNu(premise.getBuildingNu()+1);
         int i,j,k,a,b;
         List<String> houseNos = new ArrayList<>();
         List<Integer> unitNos = new ArrayList<>();
@@ -70,6 +72,8 @@ public class BuildingService {
             for (House house:houses){
                 houseRepository.delete(house);
             }
+            Premise premise = building.getPremise();
+            premise.setBuildingNu(premise.getBuildingNu()-1);
             buildingRepository.delete(id);
             return true;
         }catch (Exception e){

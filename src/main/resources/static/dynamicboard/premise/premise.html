@@ -29,6 +29,7 @@
                     <th>容积率/百分比</th>
                     <th>绿化率/百分比</th>
                     <th>售楼处电话</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,7 +52,7 @@
                 </tbody>
             </table>
         </div>
-        <ul class="pagination pagination-sm">
+        <ul class="pagination pagination-sm" style="float: right;">
             <li ng-disabled="premise_data.first" ng-click="loadData(premise_data.number-1,premise_data.size)"><a href="javascript:void(0)">上一页</a></li>
             <li><a href="javascript:void(0)">{{premise_data.number+1}}/{{premise_data.totalPages}}</a></li>
             <li ng-disabled="premise_data.last" ng-click="loadData(premise_data.number+1,premise_data.size)"><a href="javascript:void(0)">下一页</a></li>
