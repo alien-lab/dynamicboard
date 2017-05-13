@@ -1,35 +1,41 @@
-<div  class="block-center mt-xl wd-xl">
-   <!-- START panel-->
-   <div class="panel panel-dark panel-flat">
-      <div class="panel-heading text-center" style="background-color:rgba(29,174,219,0.8)">
-         <a href="#">
-            <img src="app/img/logo.png" alt="Image" class="block-center img-rounded" />
-         </a>
-      </div>
-      <div class="panel-body">
-         <p class="text-center pv">欢迎使用朴实的系统，请登录</p>
-         <form role="form" novalidate="" class="form-validate mb-lg">
-            <div class="form-group ">
-               <input  type="text" name="account_email" placeholder="请输入您的用户名" autocomplete="true" ng-model="login.loginname" required class="form-control" />
-               <span class="fa fa-envelope form-control-feedback text-muted"></span>
+<div class="block-center mt-xl wd-xl">
+    <!-- START panel-->
+    <div class="panel panel-dark panel-flat">
+        <div class="panel-heading text-center" style="background-color:rgba(29,174,219,0.8);">
+            <a href="#">
+                <img src="app/img/logo.png" alt="Image" class="block-center img-rounded"/>
+            </a>
+        </div>
+        <div class="panel-body">
+            <p class="text-center pv">欢迎使用销控系统，请登录</p>
+            <form role="form" novalidate="" class="form-validate mb-lg">
+                <div class="form-group has-feedback">
+                    <input type="text" name="account_email" placeholder="请输入您的用户名" autocomplete="off"
+                           ng-model="login.account" required class="form-control"/>
+                    <!--<span class="fa fa-envelope form-control-feedback text-muted"></span>-->
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="account_password" placeholder="请输入密码" ng-model="login.password"
+                           required class="form-control"/>
+                    <!--<span class="fa fa-lock form-control-feedback text-muted"></span>-->
+                </div>
+                <button class="btn btn-block btn-primary mt-lg" ng-disabled="!(login.account &amp;&amp; login.password)"
+                        ng-click="doLogin()">登录
+                </button>
+            </form>
+            <div ng-if="login.errormsg!=null&&login.errormsg!=''" class="alert alert-danger text-center">
+                {{login.errormsg}}
             </div>
-            <div class="form-group ">
-               <input type="password" name="account_password" placeholder="请输入密码" ng-model="login.password" required class="form-control" />
-               <span class="fa fa-lock form-control-feedback text-muted"></span>
-            </div>
-
-            <button class="btn btn-block btn-primary mt-lg" ng-disabled="loginForm.$invalid" ng-click="dologin()">登录</button>
-         </form>
-         <div ng-if="login.errormsg!=null&&login.errormsg!=''" class="alert alert-danger text-center">{{login.errormsg}}</div>
-      </div>
-   </div>
-   <!-- END panel-->
-   <div class="p-lg text-center">
-      <span>&copy;</span>
-      <span ng-bind="app.year"></span>
-      <span>-</span>
-      <span ng-bind="app.name"></span>
-      <br/>
-      <span ng-bind="app.description"></span>
-   </div>
+            <p class="pt-lg text-center">需要注册?</p><a ui-sref="register" class="btn btn-block btn-default">前往注册</a>
+        </div>
+    </div>
+    <!-- END panel-->
+    <div class="p-lg text-center">
+        <span>&copy;</span>
+        <span ng-bind="app.year"></span>
+        <span>-</span>
+        <span ng-bind="app.name"></span>
+        <br/>
+        <span ng-bind="app.description"></span>
+    </div>
 </div>

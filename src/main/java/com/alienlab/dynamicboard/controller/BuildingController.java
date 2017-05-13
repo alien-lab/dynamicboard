@@ -100,7 +100,7 @@ public class BuildingController {
             }else {
                 ExecResult er = new ExecResult();
                 er.setResult(true);
-                er.setData((JSON) JSON.toJSON(building));
+                er.setData((JSON) JSON.toJSON(result));
                 return er.toString();
             }
         } catch (IOException e) {

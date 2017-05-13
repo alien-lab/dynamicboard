@@ -12,7 +12,7 @@
 // APP START
 // ----------------------------------- 
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -20,7 +20,6 @@
             'app.core',
             'app.routes',
             'app.sidebar',
-            'app.navsearch',
             'app.preloader',
             'app.loadingbar',
             'app.translate',
@@ -29,12 +28,13 @@
             'dynamicboard.premise',
             'dynamicboard.building',
             'dynamicboard.house',
-            'dynamicboard.housestyle'
+            'dynamicboard.housestyle',
+            'dynamicboard.staff'
         ]);
 })();
 
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -53,31 +53,31 @@
             'ui.utils'
         ]);
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.lazyload', []);
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.colors', []);
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.loadingbar', []);
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.navsearch', []);
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -85,7 +85,7 @@
             'app.lazyload'
         ]);
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -93,25 +93,25 @@
 })();
 
 
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.settings', []);
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.sidebar', []);
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.translate', []);
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -120,7 +120,7 @@
         ]);
 })();
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -128,17 +128,17 @@
         .config(coreConfig);
 
     coreConfig.$inject = ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$animateProvider'];
-    function coreConfig($controllerProvider, $compileProvider, $filterProvider, $provide, $animateProvider){
+    function coreConfig($controllerProvider, $compileProvider, $filterProvider, $provide, $animateProvider) {
 
         var core = angular.module('app.core');
         // registering components after bootstrap
         core.controller = $controllerProvider.register;
-        core.directive  = $compileProvider.directive;
-        core.filter     = $filterProvider.register;
-        core.factory    = $provide.factory;
-        core.service    = $provide.service;
-        core.constant   = $provide.constant;
-        core.value      = $provide.value;
+        core.directive = $compileProvider.directive;
+        core.filter = $filterProvider.register;
+        core.factory = $provide.factory;
+        core.service = $provide.service;
+        core.constant = $provide.constant;
+        core.value = $provide.value;
 
         // Disables animation on items with class .ng-no-animation
         $animateProvider.classNameFilter(/^((?!(ng-no-animation)).)*$/);
@@ -151,33 +151,33 @@
  * Define constants to inject across the application
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.core')
         .constant('APP_MEDIAQUERY', {
-            'desktopLG':             1200,
-            'desktop':                992,
-            'tablet':                 768,
-            'mobile':                 480
+            'desktopLG': 1200,
+            'desktop': 992,
+            'tablet': 768,
+            'mobile': 480
         })
     ;
 
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.core')
         .run(appRun);
 
-    appRun.$inject = ['$rootScope', '$state', '$stateParams',  '$window', '$templateCache', 'Colors',"$cookieStore"];
+    appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors', "$cookieStore"];
 
-    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors,$cookieStore) {
+    function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors, $cookieStore) {
         console.log("app.run");
-        console.log($cookieStore.get('user'));
-        $rootScope.rolepurview="ALL";
+        console.log($cookieStore.get('staff'));
+        $rootScope.rolepurview = "ALL";
         // Set reference to access them from any scope
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
@@ -195,7 +195,7 @@
         $rootScope.colorByName = Colors.byName;
 
         // cancel click event easily
-        $rootScope.cancel = function($event) {
+        $rootScope.cancel = function ($event) {
             $event.stopPropagation();
         };
 
@@ -204,19 +204,19 @@
 
         // Hook not found
         $rootScope.$on('$stateNotFound',
-            function(event, unfoundState/*, fromState, fromParams*/) {
+            function (event, unfoundState/*, fromState, fromParams*/) {
                 console.log(unfoundState.to); // "lazy.state"
                 console.log(unfoundState.toParams); // {a:1, b:2}
                 console.log(unfoundState.options); // {inherit:false} + default options
             });
         // Hook error
         $rootScope.$on('$stateChangeError',
-            function(event, toState, toParams, fromState, fromParams, error){
+            function (event, toState, toParams, fromState, fromParams, error) {
                 console.log(error);
             });
         // Hook success
         $rootScope.$on('$stateChangeSuccess',
-            function(/*event, toState, toParams, fromState, fromParams*/) {
+            function (/*event, toState, toParams, fromState, fromParams*/) {
                 // display new view from top
                 $window.scrollTo(0, 0);
                 // Save the route title
@@ -225,17 +225,148 @@
 
         // Load a title dynamically
         $rootScope.currTitle = $state.current.title;
-        $rootScope.pageTitle = function() {
+        $rootScope.pageTitle = function () {
             var title = $rootScope.app.name + ' - ' + ($rootScope.currTitle || $rootScope.app.description);
             document.title = title;
             return title;
         };
 
+        //登录拦截器，跳转登录
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            //如果有cookies
+            if ($cookieStore.get('staff') != undefined) {
+                return;
+            }
+            // 如果是进入登录界面则允许
+            if (toState.name == 'login') {
+                console.log("进入login");
+                return;
+            }
+            if (toState.name == 'register') {
+                console.log("进入register");
+                return;
+            }
+            // 如果用户不存在
+            if (!$rootScope.staff) {
+                console.log("staff为null");
+                event.preventDefault();// 取消默认跳转行为
+                $state.go("login", {from: fromState.name, w: 'notLogin'});//跳转到登录界面
+            }
+        });
     }
-
 })();
 
-(function() {
+/**
+ * 注册controller
+ */
+(function () {
+    'use strict';
+    angular.module("app.core").controller("registerController", ["$scope", "$rootScope", "registerService", "$state",
+        function ($scope, $rootScope, registerService, $state) {
+            $scope.register = {};
+            $scope.doRegister = function () {
+                $scope.register.authMsg = "";
+                registerService.doRegister({
+                    account: $scope.register.account,
+                    password: $scope.register.password
+                }, function (result) {
+                    console.log(result);
+                    if (result.result > 0) {//注册成功
+                        alert("注册成功，请登录");
+                        $state.go("login");//注册成功跳转到用户登录页面
+                    } else if (result.result == 0) {
+                        $scope.register.errormsg = result.errormsg;
+                    }
+                });
+            }
+        }]);
+})();
+/**
+ * 登录controller
+ */
+(function () {
+    'use strict';
+    angular.module("app.core").controller("loginController", ["$scope", "$rootScope", "loginService", "$state", "$cookieStore",
+        function ($scope, $rootScope, loginService, $state, $cookieStore) {
+            $scope.login = {};
+            $scope.doLogin = function () {
+                $scope.login.errormsg = "";
+                loginService.doLogin({
+                    account: $scope.login.account,
+                    password: $scope.login.password
+                }, function (result) {
+                    console.log(result);
+                    if (result.result > 0) {//登录成功
+                        $rootScope.staff = result.data;
+                        $state.go("dynamicboard.premise");//登录成功跳转到主页
+                        // Put cookie
+                        $cookieStore.put("staff",
+                            result.data, {
+                                expires: new Date(new Date().getTime() + 60000)
+                            });
+                        var favoriteCookie = $cookieStore.get('staff').account;
+                        console.log("cook:" + favoriteCookie);
+                    } else {
+                        $scope.login.errormsg = result.errormsg;
+                    }
+                });
+            }
+        }]);
+})();
+/**
+ *解锁controller
+ */
+(function () {
+    'use strict';
+    angular.module("app.core").controller("lockController", ["$scope", "$rootScope", "$state", "$cookieStore",
+        function ($scope, $rootScope, $state, $cookieStore) {
+            $scope.unLock = function () {
+                $scope.lock.errormsg = "";
+                console.log($scope.lock.password);
+                if ($cookieStore.get("staff").password == $scope.lock.password) {
+                    $state.go('dynamicboard.premise');
+                } else {
+                    $scope.lock.errormsg = "密码输入不正确";
+                }
+            }
+        }]);
+})();
+
+/*销控员注册service*/
+(function () {
+    'use strict';
+    angular.module("app.core").service("registerService", ["$http", function ($http) {
+        this.doRegister = function (staff, callback) {
+            console.log(staff);
+            $http({
+                url: "/staff/doRegister",
+                method: "POST",
+                data: staff
+            }).then(function (response) {
+                callback(response.data);
+            })
+        }
+    }]);
+})();
+
+
+/*销控员以上级别PC端登录service*/
+(function () {
+    'use strict';
+    angular.module("app.core").service("loginService", ["$http", function ($http) {
+        this.doLogin = function (staff, callback) {
+            $http({
+                url: "/staff/doLogin",
+                method: "POST",
+                data: staff
+            }).then(function (response) {
+                callback(response.data);
+            })
+        }
+    }]);
+})();
+
+(function () {
     'use strict';
 
     angular
@@ -243,7 +374,7 @@
         .config(lazyloadConfig);
 
     lazyloadConfig.$inject = ['$ocLazyLoadProvider', 'APP_REQUIRES'];
-    function lazyloadConfig($ocLazyLoadProvider, APP_REQUIRES){
+    function lazyloadConfig($ocLazyLoadProvider, APP_REQUIRES) {
 
         // Lazy Load modules configuration
         $ocLazyLoadProvider.config({
@@ -254,7 +385,7 @@
 
     }
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -262,8 +393,8 @@
         .constant('APP_REQUIRES', {
             // jQuery based and standalone scripts
             scripts: {
-                'modernizr':          ['vendor/modernizr/modernizr.custom.js'],
-                'icons':              ['vendor/fontawesome/css/font-awesome.min.css',
+                'modernizr': ['vendor/modernizr/modernizr.custom.js'],
+                'icons': ['vendor/fontawesome/css/font-awesome.min.css',
                     'vendor/simple-line-icons/css/simple-line-icons.css']
             },
             // Angular based script (use the right module name)
@@ -275,28 +406,28 @@
 
 })();
 
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.colors')
         .constant('APP_COLORS', {
-            'primary':                '#5d9cec',
-            'success':                '#27c24c',
-            'info':                   '#23b7e5',
-            'warning':                '#ff902b',
-            'danger':                 '#f05050',
-            'inverse':                '#131e26',
-            'green':                  '#37bc9b',
-            'pink':                   '#f532e5',
-            'purple':                 '#7266ba',
-            'dark':                   '#3a3f51',
-            'yellow':                 '#fad732',
-            'gray-darker':            '#232735',
-            'gray-dark':              '#3a3f51',
-            'gray':                   '#dde6e9',
-            'gray-light':             '#e4eaec',
-            'gray-lighter':           '#edf1f2'
+            'primary': '#5d9cec',
+            'success': '#27c24c',
+            'info': '#23b7e5',
+            'warning': '#ff902b',
+            'danger': '#f05050',
+            'inverse': '#131e26',
+            'green': '#37bc9b',
+            'pink': '#f532e5',
+            'purple': '#7266ba',
+            'dark': '#3a3f51',
+            'yellow': '#fad732',
+            'gray-darker': '#232735',
+            'gray-dark': '#3a3f51',
+            'gray': '#dde6e9',
+            'gray-light': '#e4eaec',
+            'gray-lighter': '#edf1f2'
         })
     ;
 })();
@@ -306,7 +437,7 @@
  * Services to retrieve global colors
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -326,7 +457,7 @@
 
 })();
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -334,14 +465,14 @@
         .config(loadingbarConfig)
     ;
     loadingbarConfig.$inject = ['cfpLoadingBarProvider'];
-    function loadingbarConfig(cfpLoadingBarProvider){
+    function loadingbarConfig(cfpLoadingBarProvider) {
         cfpLoadingBarProvider.includeBar = true;
         cfpLoadingBarProvider.includeSpinner = false;
         cfpLoadingBarProvider.latencyThreshold = 500;
         cfpLoadingBarProvider.parentSelector = '.wrapper > section';
     }
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -349,18 +480,18 @@
         .run(loadingbarRun)
     ;
     loadingbarRun.$inject = ['$rootScope', '$timeout', 'cfpLoadingBar'];
-    function loadingbarRun($rootScope, $timeout, cfpLoadingBar){
+    function loadingbarRun($rootScope, $timeout, cfpLoadingBar) {
 
         // Loading bar transition
         // -----------------------------------
         var thBar;
-        $rootScope.$on('$stateChangeStart', function() {
-            if($('.wrapper > section').length) // check if bar container exists
-                thBar = $timeout(function() {
+        $rootScope.$on('$stateChangeStart', function () {
+            if ($('.wrapper > section').length) // check if bar container exists
+                thBar = $timeout(function () {
                     cfpLoadingBar.start();
                 }, 0); // sets a latency Threshold
         });
-        $rootScope.$on('$stateChangeSuccess', function(event) {
+        $rootScope.$on('$stateChangeSuccess', function (event) {
             event.targetScope.$watch('$viewContentLoaded', function () {
                 $timeout.cancel(thBar);
                 cfpLoadingBar.complete();
@@ -370,121 +501,13 @@
     }
 
 })();
-/**=========================================================
- * Module: navbar-search.js
- * Navbar search toggler * Auto dismiss on ESC key
- =========================================================*/
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.navsearch')
-        .directive('searchOpen', searchOpen)
-        .directive('searchDismiss', searchDismiss);
-
-    //
-    // directives definition
-    //
-
-    function searchOpen () {
-        var directive = {
-            controller: searchOpenController,
-            restrict: 'A'
-        };
-        return directive;
-
-    }
-
-    function searchDismiss () {
-        var directive = {
-            controller: searchDismissController,
-            restrict: 'A'
-        };
-        return directive;
-
-    }
-
-    //
-    // Contrller definition
-    //
-
-    searchOpenController.$inject = ['$scope', '$element', 'NavSearch'];
-    function searchOpenController ($scope, $element, NavSearch) {
-        $element
-            .on('click', function (e) { e.stopPropagation(); })
-            .on('click', NavSearch.toggle);
-    }
-
-    searchDismissController.$inject = ['$scope', '$element', 'NavSearch'];
-    function searchDismissController ($scope, $element, NavSearch) {
-
-        var inputSelector = '.navbar-form input[type="text"]';
-
-        $(inputSelector)
-            .on('click', function (e) { e.stopPropagation(); })
-            .on('keyup', function(e) {
-                if (e.keyCode === 27) // ESC
-                    NavSearch.dismiss();
-            });
-
-        // click anywhere closes the search
-        $(document).on('click', NavSearch.dismiss);
-        // dismissable options
-        $element
-            .on('click', function (e) { e.stopPropagation(); })
-            .on('click', NavSearch.dismiss);
-    }
-
-})();
-
-
-/**=========================================================
- * Module: nav-search.js
- * Services to share navbar search functions
- =========================================================*/
-
-(function() {
-    'use strict';
-
-    angular
-        .module('app.navsearch')
-        .service('NavSearch', NavSearch);
-
-    function NavSearch() {
-        this.toggle = toggle;
-        this.dismiss = dismiss;
-
-        ////////////////
-
-        var navbarFormSelector = 'form.navbar-form';
-
-        function toggle() {
-            var navbarForm = $(navbarFormSelector);
-
-            navbarForm.toggleClass('open');
-
-            var isOpen = navbarForm.hasClass('open');
-
-            navbarForm.find('input')[isOpen ? 'focus' : 'blur']();
-        }
-
-        function dismiss() {
-            $(navbarFormSelector)
-                .removeClass('open') // Close control
-                .find('input[type="text"]').blur() // remove focus
-                .val('') // Empty input
-            ;
-        }
-    }
-})();
 
 /**=========================================================
  * Module: helpers.js
  * Provides helper functions for routes definition
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -501,7 +524,7 @@
             basepath: basepath,
             resolveFor: resolveFor,
             // controller access level
-            $get: function() {
+            $get: function () {
                 return {
                     basepath: basepath,
                     resolveFor: resolveFor
@@ -520,10 +543,10 @@
         function resolveFor() {
             var _args = arguments;
             return {
-                deps: ['$ocLazyLoad','$q', function ($ocLL, $q) {
+                deps: ['$ocLazyLoad', '$q', function ($ocLL, $q) {
                     // Creates a promise chain for each argument
                     var promise = $q.when(1); // empty promise
-                    for(var i=0, len=_args.length; i < len; i ++){
+                    for (var i = 0, len = _args.length; i < len; i++) {
                         promise = andThen(_args[i]);
                     }
                     return promise;
@@ -531,30 +554,32 @@
                     // creates promise to chain dynamically
                     function andThen(_arg) {
                         // also support a function that returns a promise
-                        if(typeof _arg === 'function')
+                        if (typeof _arg === 'function')
                             return promise.then(_arg);
                         else
-                            return promise.then(function() {
+                            return promise.then(function () {
                                 // if is a module, pass the name. If not, pass the array
                                 var whatToLoad = getRequired(_arg);
                                 // simple error check
-                                if(!whatToLoad) return $.error('Route resolve: Bad resource name [' + _arg + ']');
+                                if (!whatToLoad) return $.error('Route resolve: Bad resource name [' + _arg + ']');
                                 // finally, return a promise
-                                return $ocLL.load( whatToLoad );
+                                return $ocLL.load(whatToLoad);
                             });
                     }
+
                     // check and returns required data
                     // analyze module items with the form [name: '', files: []]
                     // and also simple array of script files (for not angular js)
                     function getRequired(name) {
                         if (APP_REQUIRES.modules)
-                            for(var m in APP_REQUIRES.modules)
-                                if(APP_REQUIRES.modules[m].name && APP_REQUIRES.modules[m].name === name)
+                            for (var m in APP_REQUIRES.modules)
+                                if (APP_REQUIRES.modules[m].name && APP_REQUIRES.modules[m].name === name)
                                     return APP_REQUIRES.modules[m];
                         return APP_REQUIRES.scripts && APP_REQUIRES.scripts[name];
                     }
 
-                }]};
+                }]
+            };
         } // resolveFor
 
     }
@@ -569,7 +594,7 @@
  =========================================================*/
 
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -577,14 +602,14 @@
         .config(routesConfig);
 
     routesConfig.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider', 'RouteHelpersProvider'];
-    function routesConfig($stateProvider, $locationProvider, $urlRouterProvider, helper){
+    function routesConfig($stateProvider, $locationProvider, $urlRouterProvider, helper) {
 
         // Set the following to true to enable the HTML5 Mode
         // You may have to set <base> tag in index and a routing configuration in your server
         $locationProvider.html5Mode(false);
 
         // defaults to dashboard
-        $urlRouterProvider.otherwise('/dynamicboard/premise');
+        $urlRouterProvider.otherwise('/login');
 
         //
         // Application Routes
@@ -606,11 +631,34 @@
                 title: 'Submenu',
                 templateUrl: helper.basepath('submenu.html')
             })
-            .state("dynamicboard",{
+            .state("dynamicboard", {
                 url: '/dynamicboard',
                 abstract: true,
                 templateUrl: helper.basepath('app.html'),
                 resolve: helper.resolveFor('modernizr', 'icons')
+            })
+            .state('login', {
+                url: '/login',
+                title: 'Single View',
+                templateUrl: helper.basepath('login.html'),
+                controller: "loginController"
+            })
+            .state('register', {
+                url: '/register',
+                title: 'Single View',
+                templateUrl: helper.basepath('register.html'),
+                controller: "registerController"
+            })
+            .state('lock', {
+                url: '/lock',
+                title: 'Lock',
+                templateUrl: helper.basepath('lock.html'),
+                controller: "lockController"
+            })
+            .state('recover', {
+                url: '/recover',
+                title: 'Recover',
+                templateUrl: helper.basepath('recover.html')
             })
         //
         // CUSTOM RESOLVES
@@ -635,7 +683,7 @@
 })();
 
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -643,12 +691,11 @@
         .directive('preloader', preloader);
 
     preloader.$inject = ['$animate', '$timeout', '$q'];
-    function preloader ($animate, $timeout, $q) {
+    function preloader($animate, $timeout, $q) {
 
         var directive = {
             restrict: 'EAC',
-            template:
-            '<div class="preloader-progress">' +
+            template: '<div class="preloader-progress">' +
             '<div class="preloader-progress-bar" ' +
             'ng-style="{width: loadCounter + \'%\'}"></div>' +
             '</div>'
@@ -663,7 +710,7 @@
 
             scope.loadCounter = 0;
 
-            var counter  = 0,
+            var counter = 0,
                 timeout;
 
             // disables scrollbar
@@ -693,7 +740,7 @@
 
                 scope.loadCounter = 100;
 
-                $timeout(function(){
+                $timeout(function () {
                     // animate preloader hiding
                     $animate.addClass(el, 'preloader-hidden');
                     // retore scrollbar
@@ -707,12 +754,12 @@
                 // if this doesn't sync with the real app ready
                 // a custom event must be used instead
                 var off = scope.$on('$viewContentLoaded', function () {
-                    viewsLoaded ++;
+                    viewsLoaded++;
                     // we know there are at least two views to be loaded
                     // before the app is ready (1-index.html 2-app*.html)
-                    if ( viewsLoaded === 2) {
+                    if (viewsLoaded === 2) {
                         // with resolve this fires only once
-                        $timeout(function(){
+                        $timeout(function () {
                             deferred.resolve();
                         }, 3000);
 
@@ -728,7 +775,7 @@
     }
 
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -737,7 +784,7 @@
 
     settingsRun.$inject = ['$rootScope', '$localStorage'];
 
-    function settingsRun($rootScope, $localStorage){
+    function settingsRun($rootScope, $localStorage) {
 
         // Global Settings
         // -----------------------------------
@@ -758,13 +805,12 @@
             },
             useFullLayout: false,
             hiddenFooter: false,
-            offsidebarOpen: false,
             asideToggled: false,
             viewAnimation: 'ng-fadeInUp'
         };
 
         // Setup the layout mode
-        $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h') ;
+        $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h');
 
         // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
         // if( angular.isDefined($localStorage.layout) )
@@ -777,8 +823,8 @@
         // }, true);
 
         // Close submenu when sidebar change from collapsed to normal
-        $rootScope.$watch('app.layout.isCollapsed', function(newValue) {
-            if( newValue === false )
+        $rootScope.$watch('app.layout.isCollapsed', function (newValue) {
+            if (newValue === false)
                 $rootScope.$broadcast('closeSidebarMenu');
         });
 
@@ -791,7 +837,7 @@
  * Handle sidebar collapsible elements
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -799,7 +845,7 @@
         .controller('SidebarController', SidebarController);
 
     SidebarController.$inject = ['$rootScope', '$scope', '$state', 'SidebarLoader', 'Utils'];
-    function SidebarController($rootScope, $scope, $state, SidebarLoader,  Utils) {
+    function SidebarController($rootScope, $scope, $state, SidebarLoader, Utils) {
 
         activate();
 
@@ -809,8 +855,8 @@
             var collapseList = [];
 
             // demo: when switch from collapse to hover, close all items
-            $rootScope.$watch('app.layout.asideHover', function(oldVal, newVal){
-                if ( newVal === false && oldVal === true) {
+            $rootScope.$watch('app.layout.asideHover', function (oldVal, newVal) {
+                if (newVal === false && oldVal === true) {
                     closeAllBut(-1);
                 }
             });
@@ -828,32 +874,32 @@
             // Handle sidebar and collapse items
             // ----------------------------------
 
-            $scope.getMenuItemPropClasses = function(item) {
+            $scope.getMenuItemPropClasses = function (item) {
                 return (item.heading ? 'nav-heading' : '') +
-                    (isActive(item) ? ' active' : '') ;
+                    (isActive(item) ? ' active' : '');
             };
 
-            $scope.addCollapse = function($index, item) {
+            $scope.addCollapse = function ($index, item) {
                 collapseList[$index] = $rootScope.app.layout.asideHover ? true : !isActive(item);
             };
 
-            $scope.isCollapse = function($index) {
+            $scope.isCollapse = function ($index) {
                 return (collapseList[$index]);
             };
 
-            $scope.toggleCollapse = function($index, isParentItem) {
+            $scope.toggleCollapse = function ($index, isParentItem) {
 
                 // collapsed sidebar doesn't toggle drodopwn
-                if( Utils.isSidebarCollapsed() || $rootScope.app.layout.asideHover ) return true;
+                if (Utils.isSidebarCollapsed() || $rootScope.app.layout.asideHover) return true;
 
                 // make sure the item index exists
-                if( angular.isDefined( collapseList[$index] ) ) {
-                    if ( ! $scope.lastEventFromChild ) {
+                if (angular.isDefined(collapseList[$index])) {
+                    if (!$scope.lastEventFromChild) {
                         collapseList[$index] = !collapseList[$index];
                         closeAllBut($index);
                     }
                 }
-                else if ( isParentItem ) {
+                else if (isParentItem) {
                     closeAllBut(-1);
                 }
 
@@ -869,12 +915,12 @@
             // Check item and children active state
             function isActive(item) {
 
-                if(!item) return;
+                if (!item) return;
 
-                if( !item.sref || item.sref === '#') {
+                if (!item.sref || item.sref === '#') {
                     var foundActive = false;
-                    angular.forEach(item.submenu, function(value) {
-                        if(isActive(value)) foundActive = true;
+                    angular.forEach(item.submenu, function (value) {
+                        if (isActive(value)) foundActive = true;
                     });
                     return foundActive;
                 }
@@ -884,8 +930,8 @@
 
             function closeAllBut(index) {
                 index += '';
-                for(var i in collapseList) {
-                    if(index < 0 || index.indexOf(i) < 0)
+                for (var i in collapseList) {
+                    if (index < 0 || index.indexOf(i) < 0)
                         collapseList[i] = true;
                 }
             }
@@ -905,7 +951,7 @@
  * Wraps the sidebar and handles collapsed state
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -913,7 +959,7 @@
         .directive('sidebar', sidebar);
 
     sidebar.$inject = ['$rootScope', '$timeout', '$window', 'Utils'];
-    function sidebar ($rootScope, $timeout, $window, Utils) {
+    function sidebar($rootScope, $timeout, $window, Utils) {
         var $win = angular.element($window);
         var directive = {
             // bindToController: true,
@@ -933,15 +979,15 @@
             var currentState = $rootScope.$state.current.name;
             var $sidebar = element;
 
-            var eventName = Utils.isTouch() ? 'click' : 'mouseenter' ;
+            var eventName = Utils.isTouch() ? 'click' : 'mouseenter';
             var subNav = $();
 
-            $sidebar.on( eventName, '.nav > li', function() {
+            $sidebar.on(eventName, '.nav > li', function () {
 
-                if( Utils.isSidebarCollapsed() || $rootScope.app.layout.asideHover ) {
+                if (Utils.isSidebarCollapsed() || $rootScope.app.layout.asideHover) {
 
                     subNav.trigger('mouseleave');
-                    subNav = toggleMenuItem( $(this), $sidebar);
+                    subNav = toggleMenuItem($(this), $sidebar);
 
                     // Used to detect click and touch events outside the sidebar
                     sidebarAddBackdrop();
@@ -950,18 +996,18 @@
 
             });
 
-            scope.$on('closeSidebarMenu', function() {
+            scope.$on('closeSidebarMenu', function () {
                 removeFloatingNav();
             });
 
             // Normalize state when resize to mobile
-            $win.on('resize', function() {
-                if( ! Utils.isMobile() )
+            $win.on('resize', function () {
+                if (!Utils.isMobile())
                     asideToggleOff();
             });
 
             // Adjustment on route changes
-            $rootScope.$on('$stateChangeStart', function(event, toState) {
+            $rootScope.$on('$stateChangeStart', function (event, toState) {
                 currentState = toState.name;
                 // Hide sidebar automatically on mobile
                 asideToggleOff();
@@ -970,7 +1016,7 @@
             });
 
             // Autoclose when click outside the sidebar
-            if ( angular.isDefined(attrs.sidebarAnyclickClose) ) {
+            if (angular.isDefined(attrs.sidebarAnyclickClose)) {
 
                 var wrapper = $('.wrapper');
                 var sbclickEvent = 'click.sidebar';
@@ -983,11 +1029,11 @@
 
             function watchExternalClicks(newVal) {
                 // if sidebar becomes visible
-                if ( newVal === true ) {
-                    $timeout(function(){ // render after current digest cycle
-                        wrapper.on(sbclickEvent, function(e){
+                if (newVal === true) {
+                    $timeout(function () { // render after current digest cycle
+                        wrapper.on(sbclickEvent, function (e) {
                             // if not child of sidebar
-                            if( ! $(e.target).parents('.aside').length ) {
+                            if (!$(e.target).parents('.aside').length) {
                                 asideToggleOff();
                             }
                         });
@@ -1001,14 +1047,14 @@
 
             function asideToggleOff() {
                 $rootScope.app.asideToggled = false;
-                if(!scope.$$phase) scope.$apply(); // anti-pattern but sometimes necessary
+                if (!scope.$$phase) scope.$apply(); // anti-pattern but sometimes necessary
             }
         }
 
         ///////
 
         function sidebarAddBackdrop() {
-            var $backdrop = $('<div/>', { 'class': 'dropdown-backdrop'} );
+            var $backdrop = $('<div/>', {'class': 'dropdown-backdrop'});
             $backdrop.insertAfter('.aside-inner').on('click mouseenter', function () {
                 removeFloatingNav();
             });
@@ -1016,7 +1062,7 @@
 
         // Open the collapse sidebar submenu items when on touch devices 
         // - desktop only opens on hover
-        function toggleTouchItem($element){
+        function toggleTouchItem($element) {
             $element
                 .siblings('li')
                 .removeClass('open')
@@ -1032,8 +1078,8 @@
 
             var ul = $listItem.children('ul');
 
-            if( !ul.length ) return $();
-            if( $listItem.hasClass('open') ) {
+            if (!ul.length) return $();
+            if ($listItem.hasClass('open')) {
                 toggleTouchItem($listItem);
                 return $();
             }
@@ -1041,8 +1087,8 @@
             var $aside = $('.aside');
             var $asideInner = $('.aside-inner'); // for top offset calculation
             // float aside uses extra padding on aside
-            var mar = parseInt( $asideInner.css('padding-top'), 0) + parseInt( $aside.css('padding-top'), 0);
-            var subNav = ul.clone().appendTo( $aside );
+            var mar = parseInt($asideInner.css('padding-top'), 0) + parseInt($aside.css('padding-top'), 0);
+            var subNav = ul.clone().appendTo($aside);
 
             toggleTouchItem($listItem);
 
@@ -1053,11 +1099,11 @@
                 .addClass('nav-floating')
                 .css({
                     position: $rootScope.app.layout.isFixed ? 'fixed' : 'absolute',
-                    top:      itemTop,
-                    bottom:   (subNav.outerHeight(true) + itemTop > vwHeight) ? 0 : 'auto'
+                    top: itemTop,
+                    bottom: (subNav.outerHeight(true) + itemTop > vwHeight) ? 0 : 'auto'
                 });
 
-            subNav.on('mouseleave', function() {
+            subNav.on('mouseleave', function () {
                 toggleTouchItem($listItem);
                 subNav.remove();
             });
@@ -1076,7 +1122,7 @@
 })();
 
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1091,9 +1137,11 @@
 
         function getMenu(onReady, onError) {
             var menuJson = 'server/sidebar-menu.json',
-                menuURL  = menuJson + '?v=' + (new Date().getTime()); // jumps cache
+                menuURL = menuJson + '?v=' + (new Date().getTime()); // jumps cache
 
-            onError = onError || function() { alert('Failure loading menu'); };
+            onError = onError || function () {
+                    alert('Failure loading menu');
+                };
 
             $http
                 .get(menuURL)
@@ -1102,46 +1150,113 @@
         }
     }
 })();
-(function() {
+/*个人信息栏controller*/
+(function () {
     'use strict';
-
     angular
         .module('app.sidebar')
         .controller('UserBlockController', UserBlockController);
-
-    UserBlockController.$inject = ['$rootScope', '$scope'];
-    function UserBlockController($rootScope, $scope) {
-
+    UserBlockController.$inject = ['$rootScope', '$scope', '$cookieStore', '$uibModal'];
+    function UserBlockController($rootScope, $scope, $cookieStore, $uibModal) {
         activate();
-
-        ////////////////
-
         function activate() {
-            $rootScope.user = {
-                name:     'John',
-                job:      'ng-developer',
-                picture:  'app/img/user/02.jpg'
-            };
-
-            // Hides/show user avatar on sidebar
-            $rootScope.toggleUserBlock = function(){
+            $rootScope.user = $cookieStore.get("staff");
+            if ($rootScope.user.staffGarde == 1) {
+                $rootScope.staffPosition = "销售员";
+            } else if ($rootScope.user.staffGarde == 2) {
+                $rootScope.staffPosition = "销控员";
+            } else if ($rootScope.user.staffGarde == 3) {
+                $rootScope.staffPosition = "经理";
+            } else if ($rootScope.user.staffGarde == 4) {
+                $rootScope.staffPosition = "总监";
+            }
+            //显示隐藏个人信息
+            $rootScope.toggleUserBlock = function () {
                 $rootScope.$broadcast('toggleUserBlock');
             };
-
             $rootScope.userBlockVisible = true;
-
-            var detach = $rootScope.$on('toggleUserBlock', function(/*event, args*/) {
-
-                $rootScope.userBlockVisible = ! $rootScope.userBlockVisible;
-
+            var detach = $rootScope.$on('toggleUserBlock', function (/*event, args*/) {
+                $rootScope.userBlockVisible = !$rootScope.userBlockVisible;
             });
-
             $scope.$on('$destroy', detach);
+            //显示修改个人信息模态框
+            $rootScope.showUpdateStaff = function () {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'dynamicboard/staffInfo/updateStaffInfo.html',
+                    controller: 'updateStaffInfoController',
+                    bindToController: true,
+                    size: "md",
+                    backdrop: false
+                });
+                modalInstance.result.then(function () {
+                    //修改保存成功
+                }, function () {
+                    //取消修改户型
+                })
+            }
         }
     }
 })();
+/*个人信息修改模态框*/
+(function () {
+    'use strict';
+    angular
+        .module('app.sidebar')
+        .controller('updateStaffInfoController', updateStaffInfoController);
+    updateStaffInfoController.$inject = ['updateStaffInfoService', '$rootScope', '$scope', '$cookieStore', '$uibModalInstance'];
+    function updateStaffInfoController(updateStaffInfoService, $rootScope, $scope, $cookieStore, $uibModalInstance) {
+        $rootScope.user = $cookieStore.get("staff");
+        updateStaffInfoService.getAllPremise(function (data) {
+            $scope.allPremise = data;
+        });
+        $scope.save = function save() {
+            updateStaffInfoService.updateStaffInfo($rootScope.user, function (data) {
+                $scope.newStaffInfo = data;
+                $cookieStore.put("staff",
+                    $scope.newStaffInfo, {
+                        expires: new Date(new Date().getTime() + 60000)
+                    });
+                $uibModalInstance.close(data);
+            });
+        };
+        //取消修改
+        $scope.cancel = function cancel() {
+            $uibModalInstance.dismiss('cancel');
+        }
+    }
+})();
+/*修改个人信息service*/
+(function () {
+    'use strict';
+    angular
+        .module('app.sidebar')
+        .service('updateStaffInfoService', updateStaffInfoService);
+    updateStaffInfoService.$inject = ['$http'];
+    function updateStaffInfoService($http) {
+        //修改个人信息
+        this.updateStaffInfo = function (staffInfo, callback) {
+            $http({
+                url: "/staff/updateStaffInfo",
+                method: "POST",
+                data: staffInfo
+            }).then(function (response) {
+                callback(response.data.data);
+            });
+        };
+        //获得所有楼盘
+        this.getAllPremise = function (callback) {
+            $http({
+                url: '/premise/getAll',
+                method: 'GET'
+            }).then(function (response) {
+                callback(response.data);
+            });
+        };
+    }
+})();
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1149,11 +1264,11 @@
         .config(translateConfig)
     ;
     translateConfig.$inject = ['$translateProvider'];
-    function translateConfig($translateProvider){
+    function translateConfig($translateProvider) {
 
         $translateProvider.useStaticFilesLoader({
-            prefix : 'app/i18n/',
-            suffix : '.json'
+            prefix: 'app/i18n/',
+            suffix: '.json'
         });
 
         $translateProvider.preferredLanguage('en');
@@ -1163,7 +1278,7 @@
 
     }
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1172,7 +1287,7 @@
     ;
     translateRun.$inject = ['$rootScope', '$translate'];
 
-    function translateRun($rootScope, $translate){
+    function translateRun($rootScope, $translate) {
 
         // Internationalization
         // ----------------------
@@ -1182,14 +1297,14 @@
             listIsOpen: false,
             // list of available languages
             available: {
-                'en':       'English',
-                'es_AR':    'Español'
+                'en': 'English',
+                'es_AR': 'Español'
             },
             // display always the current ui language
             init: function () {
                 var proposedLanguage = $translate.proposedLanguage() || $translate.use();
                 var preferredLanguage = $translate.preferredLanguage(); // we know we have set a preferred one in app.config
-                $rootScope.language.selected = $rootScope.language.available[ (proposedLanguage || preferredLanguage) ];
+                $rootScope.language.selected = $rootScope.language.available[(proposedLanguage || preferredLanguage)];
             },
             set: function (localeId) {
                 // Set the new idiom
@@ -1197,7 +1312,7 @@
                 // save a reference for the current language
                 $rootScope.language.selected = $rootScope.language.available[localeId];
                 // finally toggle dropdown
-                $rootScope.language.listIsOpen = ! $rootScope.language.listIsOpen;
+                $rootScope.language.listIsOpen = !$rootScope.language.listIsOpen;
             }
         };
 
@@ -1210,7 +1325,7 @@
  * Enable or disables ngAnimate for element with directive
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1218,7 +1333,7 @@
         .directive('animateEnabled', animateEnabled);
 
     animateEnabled.$inject = ['$animate'];
-    function animateEnabled ($animate) {
+    function animateEnabled($animate) {
         var directive = {
             link: link,
             restrict: 'A'
@@ -1241,7 +1356,7 @@
  * Browser detection
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1260,7 +1375,7 @@
  * Removes a key from the browser storage via element click
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1268,7 +1383,7 @@
         .directive('resetKey', resetKey);
 
     resetKey.$inject = ['$state', '$localStorage'];
-    function resetKey ($state, $localStorage) {
+    function resetKey($state, $localStorage) {
         var directive = {
             link: link,
             restrict: 'A',
@@ -1282,7 +1397,7 @@
             element.on('click', function (e) {
                 e.preventDefault();
 
-                if(scope.resetKey) {
+                if (scope.resetKey) {
                     delete $localStorage[scope.resetKey];
                     $state.go($state.current, {}, {reload: true});
                 }
@@ -1300,7 +1415,7 @@
  * Toggle the fullscreen mode on/off
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1308,7 +1423,7 @@
         .directive('toggleFullscreen', toggleFullscreen);
 
     toggleFullscreen.$inject = ['Browser'];
-    function toggleFullscreen (Browser) {
+    function toggleFullscreen(Browser) {
         var directive = {
             link: link,
             restrict: 'A'
@@ -1317,7 +1432,7 @@
 
         function link(scope, element) {
             // Not supported under IE
-            if( Browser.msie ) {
+            if (Browser.msie) {
                 element.addClass('hide');
             }
             else {
@@ -1329,7 +1444,7 @@
                         screenfull.toggle();
 
                         // Switch icon indicator
-                        if(screenfull.isFullscreen)
+                        if (screenfull.isFullscreen)
                             $(this).children('em').removeClass('fa-expand').addClass('fa-compress');
                         else
                             $(this).children('em').removeClass('fa-compress').addClass('fa-expand');
@@ -1351,14 +1466,14 @@
  * Request and load into the current page a css file
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.utils')
         .directive('loadCss', loadCss);
 
-    function loadCss () {
+    function loadCss() {
         var directive = {
             link: link,
             restrict: 'A'
@@ -1367,13 +1482,13 @@
 
         function link(scope, element, attrs) {
             element.on('click', function (e) {
-                if(element.is('a')) e.preventDefault();
+                if (element.is('a')) e.preventDefault();
                 var uri = attrs.loadCss,
                     link;
 
-                if(uri) {
+                if (uri) {
                     link = createLink(uri);
-                    if ( !link ) {
+                    if (!link) {
                         $.error('Error creating stylesheet link element.');
                     }
                 }
@@ -1386,19 +1501,19 @@
 
         function createLink(uri) {
             var linkId = 'autoloaded-stylesheet',
-                oldLink = $('#'+linkId).attr('id', linkId + '-old');
+                oldLink = $('#' + linkId).attr('id', linkId + '-old');
 
             $('head').append($('<link/>').attr({
-                'id':   linkId,
-                'rel':  'stylesheet',
+                'id': linkId,
+                'rel': 'stylesheet',
                 'href': uri
             }));
 
-            if( oldLink.length ) {
+            if (oldLink.length) {
                 oldLink.remove();
             }
 
-            return $('#'+linkId);
+            return $('#' + linkId);
         }
     }
 
@@ -1409,7 +1524,7 @@
  * Provides a simple way to display the current time formatted
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1417,7 +1532,7 @@
         .directive('now', now);
 
     now.$inject = ['dateFilter', '$interval'];
-    function now (dateFilter, $interval) {
+    function now(dateFilter, $interval) {
         var directive = {
             link: link,
             restrict: 'EA'
@@ -1435,7 +1550,7 @@
             updateTime();
             var intervalPromise = $interval(updateTime, 1000);
 
-            scope.$on('$destroy', function(){
+            scope.$on('$destroy', function () {
                 $interval.cancel(intervalPromise);
             });
 
@@ -1448,14 +1563,13 @@
  * Module: table-checkall.js
  * Tables check all checkbox
  =========================================================*/
-(function() {
+(function () {
     'use strict';
-
     angular
         .module('app.utils')
         .directive('checkAll', checkAll);
 
-    function checkAll () {
+    function checkAll() {
         var directive = {
             link: link,
             restrict: 'A'
@@ -1463,13 +1577,13 @@
         return directive;
 
         function link(scope, element) {
-            element.on('change', function() {
+            element.on('change', function () {
                 var $this = $(this),
-                    index= $this.index() + 1,
+                    index = $this.index() + 1,
                     checkbox = $this.find('input[type="checkbox"]'),
                     table = $this.parents('table');
                 // Make sure to affect only the correct checkbox column
-                table.find('tbody > tr > td:nth-child('+index+') input[type="checkbox"]')
+                table.find('tbody > tr > td:nth-child(' + index + ') input[type="checkbox"]')
                     .prop('checked', checkbox[0].checked);
 
             });
@@ -1482,7 +1596,7 @@
  * Module: trigger-resize.js
  * Triggers a window resize event from any element
  =========================================================*/
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1490,7 +1604,7 @@
         .directive('triggerResize', triggerResize);
 
     triggerResize.$inject = ['$window', '$timeout'];
-    function triggerResize ($window, $timeout) {
+    function triggerResize($window, $timeout) {
         var directive = {
             link: link,
             restrict: 'A'
@@ -1498,8 +1612,8 @@
         return directive;
 
         function link(scope, element, attributes) {
-            element.on('click', function(){
-                $timeout(function(){
+            element.on('click', function () {
+                $timeout(function () {
                     // all IE friendly dispatchEvent
                     var evt = document.createEvent('UIEvents');
                     evt.initUIEvent('resize', true, false, $window, 0);
@@ -1518,7 +1632,7 @@
  * Utility library to use across the theme
  =========================================================*/
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1529,14 +1643,14 @@
     function Utils($window, APP_MEDIAQUERY) {
 
         var $html = angular.element('html'),
-            $win  = angular.element($window),
+            $win = angular.element($window),
             $body = angular.element('body');
 
         return {
             // DETECTION
             support: {
-                transition: (function() {
-                    var transitionEnd = (function() {
+                transition: (function () {
+                    var transitionEnd = (function () {
 
                         var element = document.body || document.documentElement,
                             transEndEventNames = {
@@ -1551,11 +1665,11 @@
                         }
                     }());
 
-                    return transitionEnd && { end: transitionEnd };
+                    return transitionEnd && {end: transitionEnd};
                 })(),
-                animation: (function() {
+                animation: (function () {
 
-                    var animationEnd = (function() {
+                    var animationEnd = (function () {
 
                         var element = document.body || document.documentElement,
                             animEndEventNames = {
@@ -1570,18 +1684,20 @@
                         }
                     }());
 
-                    return animationEnd && { end: animationEnd };
+                    return animationEnd && {end: animationEnd};
                 })(),
                 requestAnimationFrame: window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
                 window.mozRequestAnimationFrame ||
                 window.msRequestAnimationFrame ||
                 window.oRequestAnimationFrame ||
-                function(callback){ window.setTimeout(callback, 1000/60); },
+                function (callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                },
                 /*jshint -W069*/
                 touch: (
                     ('ontouchstart' in window && navigator.userAgent.toLowerCase().match(/mobile|tablet/)) ||
-                    (window.DocumentTouch && document instanceof window.DocumentTouch)  ||
+                    (window.DocumentTouch && document instanceof window.DocumentTouch) ||
                     (window.navigator['msPointerEnabled'] && window.navigator['msMaxTouchPoints'] > 0) || //IE 10
                     (window.navigator['pointerEnabled'] && window.navigator['maxTouchPoints'] > 0) || //IE >=11
                     false
@@ -1589,7 +1705,7 @@
                 mutationobserver: (window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver || null)
             },
             // UTILITIES
-            isInView: function(element, options) {
+            isInView: function (element, options) {
                 /*jshint -W106*/
                 var $element = $(element);
 
@@ -1598,12 +1714,12 @@
                 }
 
                 var window_left = $win.scrollLeft(),
-                    window_top  = $win.scrollTop(),
-                    offset      = $element.offset(),
-                    left        = offset.left,
-                    top         = offset.top;
+                    window_top = $win.scrollTop(),
+                    offset = $element.offset(),
+                    left = offset.left,
+                    top = offset.top;
 
-                options = $.extend({topoffset:0, leftoffset:0}, options);
+                options = $.extend({topoffset: 0, leftoffset: 0}, options);
 
                 if (top + $element.height() >= window_top && top - options.topoffset <= window_top + $win.height() &&
                     left + $element.width() >= window_left && left - options.leftoffset <= window_left + $win.width()) {
@@ -1635,7 +1751,7 @@
     }
 })();
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -1653,7 +1769,7 @@
 // html data-ng-app attribute from angle to myAppName
 // ----------------------------------------------------------------------
 
-(function() {
+(function () {
     'use strict';
 
     angular

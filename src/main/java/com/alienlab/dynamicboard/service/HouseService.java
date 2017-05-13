@@ -23,7 +23,7 @@ public class HouseService {
     private BuildingRepository buildingRepository;
     @Autowired
     private HouseStyleRepository houseStyleRepository;
-    //增加房源
+    //增加顶层，新建一层楼的房源，也是按规则命名，之后与输入的房源名对比，不同的都不是房源
     public List<House> addHouse(House house){
         Integer newFloorNu = house.getBuilding().getFloorNu()+1;
         house.getBuilding().setFloorNu(newFloorNu);

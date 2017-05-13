@@ -1,6 +1,7 @@
 package com.alienlab.dynamicboard.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * 员工账户
@@ -14,6 +15,8 @@ public class Staff {
     private String staffPhone;//号码
     private Integer staffGarde;//权限等级
     private String staffStatus;//账户状态
+    private String account;//PC端登录帐号
+    private String password;//PC端登录密码
     private String openid;
     private String nickName;
     private String icon;
@@ -69,6 +72,25 @@ public class Staff {
     public void setStaffStatus(String staffStatus) {
         this.staffStatus = staffStatus;
     }
+    @Basic
+    @Column(name = "account")
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+    @Basic
+    @Column(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Basic
     @Column(name = "openid")
     public String getOpenid() {

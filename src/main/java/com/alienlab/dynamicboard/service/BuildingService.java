@@ -30,16 +30,17 @@ public class BuildingService {
     private HouseStyleRepository houseStyleRepository;
     @Autowired
     private PremiseRepository premiseRepository;
+
     //添加楼栋
-    public Building addBuilding(Building building){
+    public Building addBuilding(Building building) {
         Building saveBuilding = buildingRepository.save(building);
         Premise premise = building.getPremise();
-        premise.setBuildingNu(premise.getBuildingNu()+1);
-        int i,j,k,a,b;
+        premise.setBuildingNu(premise.getBuildingNu() + 1);
+        int i, j, k, a, b;
         List<String> houseNos = new ArrayList<>();
         List<Integer> unitNos = new ArrayList<>();
         List<Integer> floorNos = new ArrayList<>();
-        for (i=0;i<building.getFloorNu();i++) {
+        for (i = 0; i < building.getFloorNu(); i++) {
             for (a = 0; a < building.getUnitNu() * building.getUnitHouseNu(); a++) {
                 if (a + 1 < 10) {
                     String houseNo = String.valueOf(i + 1) + "0" + String.valueOf(a + 1);
@@ -49,53 +50,55 @@ public class BuildingService {
                     houseNos.add(houseNo);
                 }
             }
-            for (j=0;j<building.getUnitNu();j++){
-                for (k=0;k<building.getUnitHouseNu();k++){
-                    int unitNo = j+1;
+            for (j = 0; j < building.getUnitNu(); j++) {
+                for (k = 0; k < building.getUnitHouseNu(); k++) {
+                    int unitNo = j + 1;
                     unitNos.add(unitNo);
-                    int floorNo = i+1;
+                    int floorNo = i + 1;
                     floorNos.add(floorNo);
                 }
             }
         }
-        for (b=0;b<building.getFloorNu()*building.getUnitNu()*building.getUnitHouseNu();b++){
-            House house = new House(houseNos.get(b),null,0,0,"销控",building, unitNos.get(b),floorNos.get(b),building.getPremise());
+        for (b = 0; b < building.getFloorNu() * building.getUnitNu() * building.getUnitHouseNu(); b++) {
+            House house = new House(houseNos.get(b), null, 0, 0, "销控", building, unitNos.get(b), floorNos.get(b), building.getPremise());
             houseRepository.save(house);
         }
         return saveBuilding;
     }
+
     //删除楼栋
-    public boolean deleteBuilding(Long id){
-        try{
+    public boolean deleteBuilding(Long id) {
+        try {
             Building building = buildingRepository.getOne(id);
-            List<House> houses= houseRepository.findByBuilding(building);
-            for (House house:houses){
+            List<House> houses = houseRepository.findByBuilding(building);
+            for (House house : houses) {
                 houseRepository.delete(house);
             }
             Premise premise = building.getPremise();
-            premise.setBuildingNu(premise.getBuildingNu()-1);
+            premise.setBuildingNu(premise.getBuildingNu() - 1);
             buildingRepository.delete(id);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+
     //新修改楼栋信息(重新生成房源)
-    public Building newUpdateBuilding(Building building){
-        try{
-            List<House> houses= houseRepository.findByBuilding(building);
-            for (House house:houses){
+    public Building newUpdateBuilding(Building building) {
+        try {
+            List<House> houses = houseRepository.findByBuilding(building);
+            for (House house : houses) {
                 houseRepository.delete(house);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        int i,j,k,a,b;
+        int i, j, k, a, b;
         List<String> houseNos = new ArrayList<>();
         List<Integer> unitNos = new ArrayList<>();
         List<Integer> floorNos = new ArrayList<>();
-        for (i=0;i<building.getFloorNu();i++) {
+        for (i = 0; i < building.getFloorNu(); i++) {
             for (a = 0; a < building.getUnitNu() * building.getUnitHouseNu(); a++) {
                 if (a + 1 < 10) {
                     String houseNo = String.valueOf(i + 1) + "0" + String.valueOf(a + 1);
@@ -105,55 +108,62 @@ public class BuildingService {
                     houseNos.add(houseNo);
                 }
             }
-            for (j=0;j<building.getUnitNu();j++){
-                for (k=0;k<building.getUnitHouseNu();k++){
-                    int unitNo = j+1;
+            for (j = 0; j < building.getUnitNu(); j++) {
+                for (k = 0; k < building.getUnitHouseNu(); k++) {
+                    int unitNo = j + 1;
                     unitNos.add(unitNo);
-                    int floorNo = i+1;
+                    int floorNo = i + 1;
                     floorNos.add(floorNo);
                 }
             }
         }
-        for (b=0;b<building.getFloorNu()*building.getUnitNu()*building.getUnitHouseNu();b++){
-            House house = new House(houseNos.get(b),null,0,0,"销控",building, unitNos.get(b),floorNos.get(b),building.getPremise());
+        for (b = 0; b < building.getFloorNu() * building.getUnitNu() * building.getUnitHouseNu(); b++) {
+            House house = new House(houseNos.get(b), null, 0, 0, "销控", building, unitNos.get(b), floorNos.get(b), building.getPremise());
             houseRepository.save(house);
         }
         return buildingRepository.save(building);
     }
+
     //旧修改楼栋信息
-    public Building oldUpdateBuilding(Building building){
+    public Building oldUpdateBuilding(Building building) {
 
         Premise premise = building.getPremise();
         List<House> houses = houseRepository.findByBuilding(building);
-        for (House house:houses){
+        for (House house : houses) {
             house.setPremise(premise);
         }
         return buildingRepository.save(building);
     }
+
     //查所有楼栋
-    public List<Building> getAll(){
+    public List<Building> getAll() {
         return buildingRepository.findAll();
     }
+
     //根据id查楼栋
-    public Building getBuildingById(Long id){
+    public Building getBuildingById(Long id) {
         return buildingRepository.findOne(id);
     }
+
     //根据buildingName查楼栋
-    public Building getBuildingByBuildingName(String buildingName){
+    public Building getBuildingByBuildingName(String buildingName) {
         return buildingRepository.findByBuildingName(buildingName);
     }
+
     //根据premise查楼栋
-    public List<Building> getBuildingByPremise(String premiseName){
+    public List<Building> getBuildingByPremise(String premiseName) {
         Premise premise = premiseRepository.findByPremiseName(premiseName);
         return buildingRepository.findByPremise(premise);
     }
+
     //building分页查询
-    public Page<Building> getBuildingPage(Integer index,Integer size){
-        return buildingRepository.findAll(new PageRequest(index,size));
+    public Page<Building> getBuildingPage(Integer index, Integer size) {
+        return buildingRepository.findAll(new PageRequest(index, size));
     }
+
     //buildingByPremise分页查询
-    public Page<Building> getBuildingByPremisePage(String premiseName,Integer index,Integer size){
+    public Page<Building> getBuildingByPremisePage(String premiseName, Integer index, Integer size) {
         Premise premise = premiseRepository.findByPremiseName(premiseName);
-        return buildingRepository.findBuildingByPremise(premise,new PageRequest(index,size));
+        return buildingRepository.findBuildingByPremise(premise, new PageRequest(index, size));
     }
 }

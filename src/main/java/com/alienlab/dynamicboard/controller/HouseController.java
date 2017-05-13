@@ -36,7 +36,7 @@ public class HouseController {
     private HouseStyleService houseStyleService;
     @Autowired
     private HouseService houseService;
-    //添加房源
+    //添加顶层
     @RequestMapping(value = "/addHouse",method = RequestMethod.POST)
     public String addHouse(HttpServletRequest request){
         try {
@@ -48,7 +48,6 @@ public class HouseController {
             house.setUnitPrice(form.getDoubleValue("unitPrice"));
             house.setHouseStatus(form.getString("houseStatus"));
             house.setFloorNo(form.getInteger("floorNo"));
-            house.setUnitNo(form.getInteger("unitNo"));
             JSONObject premiseJSON = form.getJSONObject("premise");
             String premiseName = premiseJSON.getString("premiseName");
             Premise premise = premiseService.getPremiseByPremiseName(premiseName);

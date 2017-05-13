@@ -1,24 +1,26 @@
 <style>
     .premiseOption {
-        width: 8%;
+        width: 14%;
         float: right;
     }
 </style>
 <h3>户型管理
     <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)">
-        <option value="所有">所有</option>
+        <option value="所有">显示所有户型</option>
         <option ng-repeat="premise in premises" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
     </select>
 </h3>
 <div class="row">
     <div class="col-md-8">
-        <button class="btn btn-labeled btn-success" type="button" ng-click="showAddHousestyle()" tabindex="0">
+        <button class="btn btn-labeled btn-success" type="button" ng-click="showAddHousestyle()"
+                ng-disabled="user.staffGarde<3" tabindex="0">
             <span class="btn-label">
                 <i class="fa fa-plus"></i>
             </span>
             新增户型
         </button>
-        <button class="btn btn-labeled btn-danger" type="button" ng-click="deleteHousestyles()" tabindex="0">
+        <button class="btn btn-labeled btn-danger" type="button" ng-click="deleteHousestyles()"
+                ng-disabled="user.staffGarde<3" tabindex="0">
             <span class="btn-label">
                 <i class="fa fa-minus"></i>
             </span>
@@ -32,7 +34,9 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" id="gridselectall" ng-model="$isselectall" ng-click="selectAll()" class="ng-valid ng-dirty ng-valid-parse ng-empty ng-touched" tabindex="0" aria-checked="false" aria-invalid="false" style=""></th>
+                    <th><input type="checkbox" id="gridselectall" ng-model="$isselectall" ng-click="selectAll()"
+                               class="ng-valid ng-dirty ng-valid-parse ng-empty ng-touched" tabindex="0"
+                               aria-checked="false" aria-invalid="false" style=""></th>
                     <th>户型代码</th>
                     <th>户型名</th>
                     <th>面积/m<sup>2</sup></th>
@@ -43,25 +47,36 @@
                 <tbody>
                 <tr ng-repeat="housestyle in housestyle_data.content">
                     <td>
-                        <input type="checkbox" pno="{{housestyle.id}}" ng-model="housestyle.$isselected" class="ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" tabindex="0" aria-checked="false" aria-invalid="false" style="">
+                        <input type="checkbox" pno="{{housestyle.id}}" ng-model="housestyle.$isselected"
+                               class="ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" tabindex="0"
+                               aria-checked="false" aria-invalid="false" style="">
                     </td>
                     <td>{{housestyle.hsCode}}</td>
                     <td>{{housestyle.hsName}}</td>
                     <td>{{housestyle.hsSquare}}</td>
                     <td>{{housestyle.premise.premiseName}}</td>
                     <td>
-                        <button type="button" class="mb-sm btn btn-primary" ng-click="showUpdateHousestyle(housestyle)">更新</button>
-                        <button type="button" class="mb-sm btn btn-danger" ng-click="deleteHousestyle(housestyle.id)">删除</button>
-                        <button type="button" class="mb-sm btn btn-primary" ng-click="toHousestyleItem(housestyle)">查看详情</button>
+                        <button type="button" class="mb-sm btn btn-primary" ng-click="showUpdateHousestyle(housestyle)"
+                                ng-disabled="user.staffGarde<3">更新
+                        </button>
+                        <button type="button" class="mb-sm btn btn-danger" ng-click="deleteHousestyle(housestyle.id)"
+                                ng-disabled="user.staffGarde<3">删除
+                        </button>
+                        <button type="button" class="mb-sm btn btn-primary" ng-click="toHousestyleItem(housestyle)">
+                            查看详情
+                        </button>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <ul class="pagination pagination-sm" style="float: right;">
-            <li ng-disabled="housestyle_data.first" ng-click="changePage(housestyle_data.number-1,housestyle_data.size)"><a href="javascript:void(0)">上一页</a></li>
+            <li ng-disabled="housestyle_data.first"
+                ng-click="changePage(housestyle_data.number-1,housestyle_data.size)"><a
+                    href="javascript:void(0)">上一页</a></li>
             <li><a href="javascript:void(0)">{{housestyle_data.number+1}}/{{housestyle_data.totalPages}}</a></li>
-            <li ng-disabled="housestyle_data.last" ng-click="changePage(housestyle_data.number+1,housestyle_data.size)"><a href="javascript:void(0)">下一页</a></li>
+            <li ng-disabled="housestyle_data.last" ng-click="changePage(housestyle_data.number+1,housestyle_data.size)">
+                <a href="javascript:void(0)">下一页</a></li>
         </ul>
     </div>
 </div>

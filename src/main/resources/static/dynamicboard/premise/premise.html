@@ -1,13 +1,15 @@
 <h3>{{pagetitle}}</h3>
 <div class="row">
     <div class="col-md-8">
-        <button class="btn btn-labeled btn-success" type="button" ng-click="showAddPremise()" tabindex="0">
+        <button class="btn btn-labeled btn-success" type="button" ng-click="showAddPremise()"
+                ng-disabled="user.staffGarde<3" tabindex="0">
             <span class="btn-label">
                 <i class="fa fa-plus"></i>
             </span>
             新增楼盘
         </button>
-        <button class="btn btn-labeled btn-danger" type="button" ng-click="deletePremises()" tabindex="0">
+        <button class="btn btn-labeled btn-danger" type="button" ng-click="deletePremises()"
+                ng-disabled="user.staffGarde<3" tabindex="0">
             <span class="btn-label">
                 <i class="fa fa-minus"></i>
             </span>
@@ -21,7 +23,9 @@
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" id="gridselectall" ng-model="$isselectall" ng-click="selectAll()" class="ng-valid ng-dirty ng-valid-parse ng-empty ng-touched" tabindex="0" aria-checked="false" aria-invalid="false" style=""></th>
+                    <th><input type="checkbox" id="gridselectall" ng-model="$isselectall" ng-click="selectAll()"
+                               class="ng-valid ng-dirty ng-valid-parse ng-empty ng-touched" tabindex="0"
+                               aria-checked="false" aria-invalid="false" style=""></th>
                     <th>楼盘名</th>
                     <th>地点</th>
                     <th>楼栋数</th>
@@ -35,27 +39,37 @@
                 <tbody>
                 <tr ng-repeat="premise in premise_data.content">
                     <td>
-                        <input type="checkbox" pno="{{premise.id}}" ng-model="premise.$isselected" class="ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" tabindex="0" aria-checked="false" aria-invalid="false" style="">
+                        <input type="checkbox" pno="{{premise.id}}" ng-model="premise.$isselected"
+                               class="ng-valid ng-dirty ng-valid-parse ng-touched ng-empty" tabindex="0"
+                               aria-checked="false" aria-invalid="false" style="">
                     </td>
                     <td>{{premise.premiseName}}</td>
                     <td>{{premise.premiseAddress}}</td>
                     <td>{{premise.buildingNu}}</td>
                     <td>{{premise.premiseSquare}}</td>
-                    <td><span ng-if="premise.premiseFar!=0">{{premise.premiseFar}}</span><span ng-if="premise.premiseFar==0">（待录入）</span></td>
-                    <td><span ng-if="premise.premiseGsp!=0">{{premise.premiseGsp}}</span><span ng-if="premise.premiseGsp==0">（待录入）</span></td>
+                    <td><span ng-if="premise.premiseFar!=0">{{premise.premiseFar}}</span><span
+                            ng-if="premise.premiseFar==0">（待录入）</span></td>
+                    <td><span ng-if="premise.premiseGsp!=0">{{premise.premiseGsp}}</span><span
+                            ng-if="premise.premiseGsp==0">（待录入）</span></td>
                     <td>{{premise.premisePhone}}</td>
                     <td>
-                        <button type="button" class="mb-sm btn btn-primary" ng-click="showUpdatePremise(premise)">更新</button>
-                        <button type="button" class="mb-sm btn btn-danger" ng-click="deletePremise(premise.id)">删除</button>
+                        <button type="button" class="mb-sm btn btn-primary" ng-click="showUpdatePremise(premise)"
+                                ng-disabled="user.staffGarde<3">更新
+                        </button>
+                        <button type="button" class="mb-sm btn btn-danger" ng-click="deletePremise(premise.id)"
+                                ng-disabled="user.staffGarde<3">删除
+                        </button>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <ul class="pagination pagination-sm" style="float: right;">
-            <li ng-disabled="premise_data.first" ng-click="loadData(premise_data.number-1,premise_data.size)"><a href="javascript:void(0)">上一页</a></li>
+            <li ng-disabled="premise_data.first" ng-click="loadData(premise_data.number-1,premise_data.size)"><a
+                    href="javascript:void(0)">上一页</a></li>
             <li><a href="javascript:void(0)">{{premise_data.number+1}}/{{premise_data.totalPages}}</a></li>
-            <li ng-disabled="premise_data.last" ng-click="loadData(premise_data.number+1,premise_data.size)"><a href="javascript:void(0)">下一页</a></li>
+            <li ng-disabled="premise_data.last" ng-click="loadData(premise_data.number+1,premise_data.size)"><a
+                    href="javascript:void(0)">下一页</a></li>
         </ul>
     </div>
 </div>

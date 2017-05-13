@@ -16,8 +16,10 @@ import java.util.List;
  * Created by Administrator on 2017/2/22.
  */
 @Repository
-public interface BuildingRepository extends PagingAndSortingRepository<Building,Long>,JpaRepository<Building,Long>{
+public interface BuildingRepository extends PagingAndSortingRepository<Building, Long>, JpaRepository<Building, Long> {
     public List<Building> findByPremise(Premise premise);
+
     public Building findByBuildingName(String buildingName);
-    public Page<Building> findBuildingByPremise(Premise premise,Pageable Pageable);
+
+    public Page<Building> findBuildingByPremise(Premise premise, Pageable Pageable);
 }
