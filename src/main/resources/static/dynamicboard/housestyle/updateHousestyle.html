@@ -2,24 +2,34 @@
     <h3 class="modal-title">{{pagetitle}}</h3>
 </div>
 <div class="modal-body">
-    <form role="form" name="updateHousestyleform" novalidate="novalidate" action="" method="post" enctype="multipart/form-data">
+    <form role="form" name="updateHousestyleform" novalidate="novalidate" action="" method="post"
+          enctype="multipart/form-data">
         <div class="form-group col-md-12">
             <label>户型名称</label>
-            <input type="text" class="form-control" placeholder="请输入户型名称" ng-model="form.hsName" name="hsName" id="input-hsName" required />
+            <input type="text" class="form-control" placeholder="请输入户型名称" ng-model="form.hsName" name="hsName"
+                   id="input-hsName" required/>
         </div>
         <div class="form-group col-md-12">
             <label>户型代码</label>
-            <input type="text" class="form-control" placeholder="请输入户型代码" ng-model="form.hsCode" name="hsCode" id="input-hsCode" required />
+            <input type="text" class="form-control" placeholder="请输入户型代码" ng-model="form.hsCode" name="hsCode"
+                   id="input-hsCode" required/>
         </div>
         <div class="form-group col-md-12">
             <label>户型面积</label>
-            <input type="number" class="form-control" placeholder="请输入户型面积" ng-model="form.hsSquare" name="hsSquare" id="input-hsSquare" required />
+            <input type="number" class="form-control" placeholder="请输入户型面积" ng-model="form.hsSquare" name="hsSquare"
+                   id="input-hsSquare" required/>
         </div>
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-12" ng-if="user.staffGarde>4">
             <label>所属楼盘</label>
-            <select class="dropdown form-control" ng-model="form.premise.premiseName">
+            <select class="dropdown form-control" ng-model="form.premise.premiseName" required>
                 <option ng-repeat="premise_name in premise_names" value="{{premise_name}}">{{premise_name}}</option>
             </select>
+        </div>
+        <div class="form-group col-md-12" ng-if="user.staffGarde<5">
+            <label>所属楼盘</label>
+            <input type="text" class="form-control" ng-value="user.premise.premiseName"
+                   name="premise"
+                   id="input-premise" readOnly="true" required/>
         </div>
         <div class="form-group col-md-12">
             <label>户型介绍</label>
@@ -35,12 +45,15 @@
             <img ng-src="{{image}}" class="img-rounded thumb64 center-block" onclick="imageloader.click()"/>
         </div>
         <div class="form-group col-md-12" ng-if="image != 'app/img/addimage.jpg'">
-            <img ng-src="{{image}}" class="img-rounded center-block" style="width: 256px;height: 160px;" onclick="imageloader.click()"/>
+            <img ng-src="{{image}}" class="img-rounded center-block" style="width: 256px;height: 160px;"
+                 onclick="imageloader.click()"/>
         </div>
         <div style="clear:both;"></div>
     </form>
 </div>
 <div class="modal-footer">
-    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="updateHousestyleform.$invalid" ng-click="save()">保存</button>
+    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="updateHousestyleform.$invalid" ng-click="save()">
+        保存
+    </button>
     <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
 </div>

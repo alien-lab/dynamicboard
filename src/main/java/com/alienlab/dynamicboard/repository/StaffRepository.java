@@ -20,4 +20,6 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
     public Page<Staff> findStaffByPremise(Premise premise, Pageable pageable);
 
     public Page<Staff> findByStaffNameContaining(String likeName, Pageable pageable);
+
+    public Page<Staff> findByStaffNameContainingAndPremise(String likeName, Premise premise, Pageable pageable);
 }

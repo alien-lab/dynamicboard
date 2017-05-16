@@ -4,11 +4,6 @@
     "heading": "true"
   },
   {
-    "text": "楼盘管理",
-    "sref": "dynamicboard.premise",
-    "icon": "fa fa-tty"
-  },
-  {
     "text": "户型管理",
     "sref": "dynamicboard.housestyle",
     "icon": "fa fa-superscript"

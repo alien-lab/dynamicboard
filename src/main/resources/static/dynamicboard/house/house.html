@@ -99,7 +99,8 @@
         <option value="请选择楼栋">楼栋</option>
         <option ng-repeat="building in buildings" value="{{building.buildingName}}">{{building.buildingName}}</option>
     </select>
-    <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)">
+    <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)"
+            ng-if="user.staffGarde>4">
         <option value="请选择楼盘">请选择楼盘</option>
         <option ng-repeat="premise in allPremise" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
     </select>
@@ -263,4 +264,5 @@
     </div>
 </div>
 <div class="warning" ng-if="pagePremise=='no'">还未添加任何楼盘</div>
-<div class="warning" ng-if="pagePremise=='yes'&&selectedAll=='no'">请选择楼盘和楼栋</div>
+<div class="warning" ng-if="pagePremise=='yes'&&selectedAll=='no'&&user.staffGarde>4">请选择楼盘和楼栋</div>
+<div class="warning" ng-if="pagePremise=='yes'&&selectedAll=='no'&&user.staffGarde<5">请先选择楼栋</div>

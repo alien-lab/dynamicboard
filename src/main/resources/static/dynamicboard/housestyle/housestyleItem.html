@@ -13,7 +13,7 @@
                 <label ng-model="form.hsPicture" value="{{form.hsPicture}}">{{form.hsPicture}}</label>
             </div>
             <div ng-if="form.hsPicture!='（待录入）'">
-                <img class="img-rounded center-block" style="width: 256px;height: 160px;" src="{{form.hsPicture}}"/>
+                <img class="img-rounded center-block" style="width: 256px;height: 160px;" ng-src="{{form.hsPicture}}"/>
             </div>
         </div>
         <div style="clear:both;"></div>

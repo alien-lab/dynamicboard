@@ -5,22 +5,26 @@
     <form role="form" name="updateStaffInfoForm" novalidate="novalidate">
         <div class="form-group col-md-12">
             <label>姓名</label>
-            <input type="text" class="form-control" placeholder="请输入姓名" ng-model="user.staffName" name="staffName" id="input-staffName" required />
+            <input type="text" class="form-control" placeholder="请输入姓名" ng-model="user.staffName" name="staffName"
+                   id="input-staffName" required/>
         </div>
         <div class="form-group col-md-12">
             <label>号码</label>
-            <input type="text" class="form-control" placeholder="请输入号码" ng-model="user.staffPhone" name="staffPhone" id="input-staffPhone" required />
+            <input type="text" class="form-control" placeholder="请输入号码" ng-model="user.staffPhone" name="staffPhone"
+                   id="input-staffPhone" required/>
         </div>
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-12" ng-if="user.staffGarde!=5">
             <label>所属楼盘</label>
-            <select class="dropdown form-control" ng-model="user.premise.premiseName" required>
-                <option ng-repeat="premise in allPremise" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
-            </select>
+            <input type="text" class="form-control" ng-value="user.premise.premiseName"
+                   name="premise"
+                   id="input-premise" readOnly="true" required/>
         </div>
         <div style="clear:both;"></div>
     </form>
 </div>
 <div class="modal-footer">
-    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="updateStaffInfoForm.$invalid" ng-click="save()">保存</button>
+    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="updateStaffInfoForm.$invalid" ng-click="save()">
+        保存
+    </button>
     <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
 </div>

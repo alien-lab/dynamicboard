@@ -18,15 +18,34 @@
     houseModule.value("houseValue", {"buildingName": ""}, {"premiseName": ""}, {"selects": ""}, {"selectsOld": ""}, {"houseStyles": ""});
     houseModule.controller("houseController", ["$scope", "houseService", "$uibModal", "houseInstance", "houseValue", "$cookieStore", function ($scope, houseService, $uibModal, houseInstance, houseValue, $cookieStore) {
         $scope.user = $cookieStore.get("staff");
+        $scope.pagePremise = "yes";//是否存在楼盘，初始值
+        $scope.pageBuilding = "yes";//是否存在楼栋，初始值
+        $scope.selectedAll = "no";//是否已都选择，初始值
+        $scope.editable = "no";//是否可编辑，初始值
         $scope.premiseName = "请选择楼盘";
-        houseValue.premiseName = $scope.premiseName;
         $scope.buildingName = "请选择楼栋";
-        houseValue.buildingName = $scope.buildingName;
-        $scope.pagePremise = "yes";//是否存在楼盘
-        $scope.pageBuilding = "yes";//是否存在楼栋
-        $scope.selectedAll = "no";//是否已都选择
-        $scope.editable = "no";//是否可编辑
-        //获取所有楼盘
+        //判断登录者的身份并给houseValue.premiseName赋初始值
+        $scope.ifAdmin = ifAdmin;
+        function ifAdmin() {
+            if ($scope.user.staffGarde > 4) {//此时管理员登录
+                houseValue.premiseName = $scope.premiseName;
+            } else {//其余人登录
+                houseValue.premiseName = $scope.user.premise.premiseName;
+                houseService.getBuildingByPremise(houseValue.premiseName, function (data) {
+                    $scope.buildings = data;
+                    if ($scope.buildings.length > 0) {
+                        $scope.pageBuilding = "yes";
+                    } else {
+                        $scope.pageBuilding = "no";
+                    }
+                })
+            }
+        }
+
+        ifAdmin();
+
+        houseValue.buildingName = $scope.buildingName;//给houseValue.buildingName赋初始值
+        //获取所有楼盘并给$scope.pagePremise赋值
         houseService.getAllPremise(function (data) {
             $scope.allPremise = data;
             if ($scope.allPremise.length == 0) {
@@ -35,7 +54,7 @@
                 $scope.pagePremise = "yes";
             }
         });
-        //premise下拉框ng-change事件
+        //premise下拉框ng-change事件（admin用）
         $scope.premiseChanged = premiseChanged;
         function premiseChanged(premiseName) {
             $scope.premiseName = premiseName;

@@ -15,30 +15,43 @@
             controller: "housestyleController"
         });
     }]);
-    housestyleModule.value("housestyleValue", {"thisPage": ""});
+    housestyleModule.value("housestyleValue", {"thisPage": ""}, {"premiseName": ""});
     housestyleModule.controller("housestyleController", ["$scope", "housestyleService", "$uibModal", "housestyleInstance", "housestyleValue", "$cookieStore", function ($scope, housestyleService, $uibModal, housestyleInstance, housestyleValue, $cookieStore) {
         $scope.user = $cookieStore.get("staff");
         $scope.image = null;//当前图片
         $scope.housestyle_data = [];
         $scope.housestyle_data.content = [];
         $scope.premiseName = "所有";
+        housestyleValue.premiseName = "所有";//初始值
         // $scope.page=true;
         //显示所有户型（不分页）
         // housestyleService.getAllHousestyle(function (data) {
         //     $scope.housestyle_data=data;
         //     console.log(data);
         // });
-        //获得所有楼盘
+
+        //判断登录者的身份
+        $scope.ifAdmin = ifAdmin;
+        function ifAdmin() {
+            if ($scope.user.staffGarde > 4) {//此时管理员登录
+                loadAllData(0, 5);//可以看到所有楼盘的户型
+            } else {//其余人登录
+                loadData($scope.user.premise.premiseName, 0, 5);//只能看到自己楼盘户型
+            }
+        }
+
+        ifAdmin();
+
+        //获得所有楼盘（admin用）
         housestyleService.getAllPremise(function (data) {
             $scope.premises = data;
         });
-        //所有户型的分页显示
+        //所有户型的分页显示（admin用）
         $scope.loadAllData = loadAllData;
         function loadAllData(index, size) {
             if (index > 0 && index < $scope.housestyle_data.totalPages) {
                 housestyleService.getHouseStylePage(index, size, function (data) {
                     $scope.housestyle_data = data;
-                    console.log($scope.housestyle_data);
                     housestyleValue.thisPage = $scope.housestyle_data.number;
                     $scope.$isselectall = false;
                     // if ($scope.housestyle_data.content.length==0){
@@ -50,7 +63,6 @@
             } else if (index == 0) {
                 housestyleService.getHouseStylePage(index, size, function (data) {
                     $scope.housestyle_data = data;
-                    console.log($scope.housestyle_data);
                     housestyleValue.thisPage = $scope.housestyle_data.number;
                     $scope.$isselectall = false;
                     // if ($scope.housestyle_data.content.length==0){
@@ -62,14 +74,12 @@
             }
         }
 
-        loadAllData(0, 5);
         //分页显示指定楼盘的户型
         $scope.loadData = loadData;
         function loadData(premiseName, index, size) {
             if (index > 0 && index < $scope.housestyle_data.totalPages) {
                 housestyleService.getHouseStyleByPremisePage(premiseName, index, size, function (data) {
                     $scope.housestyle_data = data;
-                    console.log($scope.housestyle_data);
                     housestyleValue.thisPage = $scope.housestyle_data.number;
                     $scope.$isselectall = false;
                     // if ($scope.housestyle_data.content.length==0){
@@ -81,7 +91,6 @@
             } else if (index == 0) {
                 housestyleService.getHouseStyleByPremisePage(premiseName, index, size, function (data) {
                     $scope.housestyle_data = data;
-                    console.log($scope.housestyle_data);
                     housestyleValue.thisPage = $scope.housestyle_data.number;
                     $scope.$isselectall = false;
                     // if ($scope.housestyle_data.content.length==0){
@@ -93,11 +102,11 @@
             }
         }
 
-        //premise的ng-change事件
+        //premise的ng-change事件（admin登录才显示）
         $scope.premiseChanged = premiseChanged;
         function premiseChanged(premiseName) {
-            console.log(premiseName);
-            if ($scope.premiseName == "所有") {
+            housestyleValue.premiseName = premiseName;
+            if (premiseName == "所有") {
                 loadAllData(0, 5);
             } else {
                 loadData(premiseName, 0, 5);
@@ -107,10 +116,14 @@
         //上一页，下一页
         $scope.changePage = changePage;
         function changePage(index, size) {
-            if ($scope.premiseName == "所有") {
-                loadAllData(index, size);
-            } else {
-                loadData($scope.premiseName, index, size);
+            if ($scope.user.staffGarde > 4) {//admin
+                if (housestyleValue.premiseName == "所有") {
+                    loadAllData(index, size);
+                } else {
+                    loadData(housestyleValue.premiseName, index, size);
+                }
+            } else {//其余
+                loadData($scope.user.premise.premiseName, index, size);
             }
         }
 
@@ -140,10 +153,14 @@
                 console.log("正常关闭添加户型模态框");
                 // var housestyle = data;
                 // $scope.housestyle_data.push(housestyle);
-                if ($scope.premiseName == "所有") {
-                    loadAllData(housestyleValue.thisPage, 5);
-                } else {
-                    loadData($scope.premiseName, housestyleValue.thisPage, 5);
+                if ($scope.user.staffGarde > 4) {//admin
+                    if (housestyleValue.premiseName == "所有") {
+                        loadAllData(housestyleValue.thisPage, 5);
+                    } else {
+                        loadData(housestyleValue.premiseName, housestyleValue.thisPage, 5);
+                    }
+                } else {//其余
+                    loadData($scope.user.premise.premiseName, housestyleValue.thisPage, 5);
                 }
             }, function () {
                 console.log("取消添加户型");
@@ -187,7 +204,6 @@
                             $scope.hsdata = data;
                             housestyleService.getHouseByHouseStyle($scope.hsdata.hsName, function (data) {
                                 $scope.housedata = data;
-                                console.log($scope.housedata.length);
                                 if ($scope.housedata.length > 0) {
                                     var warningInstance = $uibModal.open({
                                         animation: true,
@@ -223,10 +239,14 @@
                         //         break;
                         //     }
                         // }
-                        if ($scope.premiseName == "所有") {
-                            loadAllData(housestyleValue.thisPage, 5);
-                        } else {
-                            loadData($scope.premiseName, housestyleValue.thisPage, 5);
+                        if ($scope.user.staffGarde > 4) {//admin
+                            if (housestyleValue.premiseName == "所有") {
+                                loadAllData(housestyleValue.thisPage, 5);
+                            } else {
+                                loadData(housestyleValue.premiseName, housestyleValue.thisPage, 5);
+                            }
+                        } else {//其余
+                            loadData($scope.user.premise.premiseName, housestyleValue.thisPage, 5);
                         }
                     }
                 });
@@ -276,10 +296,14 @@
                                 //         }
                                 //     }
                                 // }
-                                if ($scope.premiseName == "所有") {
-                                    loadAllData(housestyleValue.thisPage, 5);
-                                } else {
-                                    loadData($scope.premiseName, housestyleValue.thisPage, 5);
+                                if ($scope.user.staffGarde > 4) {//admin
+                                    if (housestyleValue.premiseName == "所有") {
+                                        loadAllData(housestyleValue.thisPage, 5);
+                                    } else {
+                                        loadData(housestyleValue.premiseName, housestyleValue.thisPage, 5);
+                                    }
+                                } else {//其余
+                                    loadData($scope.user.premise.premiseName, housestyleValue.thisPage, 5);
                                 }
                             }
                         });
@@ -326,7 +350,9 @@
             } else {
                 $scope.form.hsPicture = $scope.image;
             }
-            console.log($scope.form);//所需的数据
+            if ($scope.form.premise == null) {//非admin操作
+                $scope.form.premise = $scope.user.premise.premiseName;
+            }
             housestyleService.addHousestyle($scope.form, function (data) {
                 if (data != null) {
                     console.log("添加成功");
@@ -363,6 +389,9 @@
             $scope.image = "app/img/addimage.jpg";
         } else {
             $scope.image = $scope.form.hsPicture;
+        }
+        if ($scope.form.premise == null) {
+            $scope.form.premise = $scope.user.premise;
         }
         console.log($scope.form);
         //保存修改

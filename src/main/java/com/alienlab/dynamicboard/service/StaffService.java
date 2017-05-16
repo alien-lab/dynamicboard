@@ -110,4 +110,15 @@ public class StaffService {
             return null;
         }
     }
+
+    //根据staffName和premise分页模糊查
+    public Page<Staff> findByLikeNameAndPremisePage(String likeName, String premiseName, Integer index, Integer size) {
+        try {
+            Premise premise = premiseRepository.findByPremiseName(premiseName);
+            return staffRepository.findByStaffNameContainingAndPremise("%" + likeName + "%", premise, new PageRequest(index, size));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

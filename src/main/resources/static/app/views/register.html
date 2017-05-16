@@ -10,7 +10,6 @@
             <p class="text-center pv">欢迎您，请注册</p>
             <form role="form" novalidate="" name="reg.registerForm" class="form-validate mb-lg">
                 <div class="form-group has-feedback">
-                    <label class="text-muted">用户名</label>
                     <input type="text" name="account_email" placeholder="请输入您的用户名" autocomplete="false"
                            ng-model="register.account" required class="form-control"/>
                     <!--<span class="fa fa-envelope form-control-feedback text-muted"></span>-->
@@ -18,7 +17,6 @@
                           class="text-danger">用户名必填</span>
                 </div>
                 <div class="form-group has-feedback">
-                    <label class="text-muted">密码</label>
                     <input id="id-password" type="password" name="account_password" placeholder="请输入您的密码"
                            ng-model="register.password" ng-pattern="/^[a-zA-Z0-9]{6,10}$/" required=""
                            class="form-control"/>
@@ -29,7 +27,6 @@
                           class="text-danger">密码需含有 'a-zA-Z0-9' ，长度为 6-10 位</span>
                 </div>
                 <div class="form-group has-feedback">
-                    <label class="text-muted">确认密码</label>
                     <input type="password" name="account_password_confirm" placeholder="请再次输入您的密码"
                            ng-model="register.password_confirm" ui-validate="'$value==register.password'"
                            ui-validate-watch="'password'" class="form-control"/>
@@ -37,8 +34,22 @@
                     <span ng-show="reg.registerForm.account_password.$dirty &amp;&amp; reg.registerForm.account_password_confirm.$dirty &amp;&amp; reg.registerForm.account_password_confirm.$error.validator"
                           class="text-danger">两次密码输入不一致</span>
                 </div>
+                <div class="form-group has-feedback">
+                    <input type="text" name="account_name" placeholder="请输入您的姓名" autocomplete="false"
+                           ng-model="register.name" required class="form-control"/>
+                    <!--<span class="fa fa-envelope form-control-feedback text-muted"></span>-->
+                    <span ng-show="reg.registerForm.account_name.$dirty &amp;&amp; reg.registerForm.account_name.$error.required"
+                          class="text-danger">姓名必填，便于管理员匹配信息</span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="text" name="account_phone" placeholder="请输入您的手机号" autocomplete="false"
+                           ng-model="register.phone" required class="form-control"/>
+                    <!--<span class="fa fa-envelope form-control-feedback text-muted"></span>-->
+                    <span ng-show="reg.registerForm.account_phone.$dirty &amp;&amp; reg.registerForm.account_phone.$error.required"
+                          class="text-danger">姓名必填，便于管理员匹配信息</span>
+                </div>
                 <button type="submit" class="btn btn-block btn-primary mt-lg" ng-click="doRegister()"
-                        ng-disabled="!(register.password_confirm &amp;&amp; register.password &amp;&amp; register.account)">
+                        ng-disabled="!(register.password_confirm &amp;&amp; register.password &amp;&amp; register.account &amp;&amp; register.name &amp;&amp; register.phone)">
                     立即注册
                 </button>
             </form>

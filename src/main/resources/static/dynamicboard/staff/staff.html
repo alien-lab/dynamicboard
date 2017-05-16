@@ -9,9 +9,14 @@
         text-align: center;
         font-weight: bold;
     }
+
+    .textBgColor {
+        color: #1aacda;
+    }
 </style>
 <h3>员工管理
-    <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)">
+    <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)"
+            ng-if="user.staffGarde>4">
         <option value="所有">显示所有员工</option>
         <option ng-repeat="premise in premises" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
     </select>
@@ -52,14 +57,16 @@
                     </td>
                     <td>{{staff.staffName}}</td>
                     <td>{{staff.staffPhone}}</td>
-                    <td ng-if="staff.staffGarde==1">销售员</td>
-                    <td ng-if="staff.staffGarde==2">销控员</td>
-                    <td ng-if="staff.staffGarde==3">经理</td>
+                    <td ng-if="staff.staffGarde==1" ng-class="setTextColor()" ng-click="ifHighGarde(staff)">销售员</td>
+                    <td ng-if="staff.staffGarde==2" ng-class="setTextColor()" ng-click="ifHighGarde(staff)">销控员</td>
+                    <td ng-if="staff.staffGarde==3" ng-class="setTextColor()" ng-click="ifHighGarde(staff)">经理</td>
                     <td ng-if="staff.staffGarde==4">总监</td>
                     <td ng-if="staff.staffGarde==''||staff.staffGarde==null">未知</td>
                     <td ng-if="staff.staffStatus=='1'">启用</td>
                     <td ng-if="staff.staffStatus=='0'">停用</td>
-                    <td>{{staff.premise.premiseName}}</td>
+                    <td ng-if="staff.premise!=null" style="color: #1aacda" ng-click="">{{staff.premise.premiseName}}
+                    </td>
+                    <td ng-if="staff.premise==null" style="color: #1aacda" ng-click="">未安排</td>
                     <td>
                         <button type="button" ng-class="setBtnColor(staff.staffStatus)"
                                 ng-click="updateStaffStatus(staff)" ng-disabled="user.staffGarde<3"><span

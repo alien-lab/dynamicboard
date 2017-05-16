@@ -268,7 +268,9 @@
                 $scope.register.authMsg = "";
                 registerService.doRegister({
                     account: $scope.register.account,
-                    password: $scope.register.password
+                    password: $scope.register.password,
+                    name: $scope.register.name,
+                    phone: $scope.register.phone
                 }, function (result) {
                     console.log(result);
                     if (result.result > 0) {//注册成功
@@ -1121,23 +1123,31 @@
 
 })();
 
-
+//sidebar-menu.json配置
 (function () {
     'use strict';
-
     angular
         .module('app.sidebar')
         .service('SidebarLoader', SidebarLoader);
-
-    SidebarLoader.$inject = ['$http'];
-    function SidebarLoader($http) {
+    SidebarLoader.$inject = ['$http', "$cookieStore", "$rootScope"];
+    function SidebarLoader($http, $cookieStore, $rootScope) {
         this.getMenu = getMenu;
-
-        ////////////////
-
+        $rootScope.user = $cookieStore.get("staff");
         function getMenu(onReady, onError) {
-            var menuJson = 'server/sidebar-menu.json',
-                menuURL = menuJson + '?v=' + (new Date().getTime()); // jumps cache
+            if ($rootScope.user.staffGarde == 1) {//楼盘销售员权限
+                var menuJson = 'server/sidebar-menu-one.json';
+            } else if ($rootScope.user.staffGarde == 2) {//楼盘销控员权限
+                var menuJson = 'server/sidebar-menu-two.json';
+            }
+            else if ($rootScope.user.staffGarde == 3) {//楼盘经理权限
+                var menuJson = 'server/sidebar-menu-three.json';
+            }
+            else if ($rootScope.user.staffGarde == 4) {//楼盘总监权限
+                var menuJson = 'server/sidebar-menu-four.json';
+            } else {//后台管理员权限
+                var menuJson = 'server/sidebar-menu.json';
+            }
+            var menuURL = menuJson + '?v=' + (new Date().getTime()); // jumps cache
 
             onError = onError || function () {
                     alert('Failure loading menu');
@@ -1169,6 +1179,8 @@
                 $rootScope.staffPosition = "经理";
             } else if ($rootScope.user.staffGarde == 4) {
                 $rootScope.staffPosition = "总监";
+            } else {
+                $rootScope.staffPosition = "后台管理员";
             }
             //显示隐藏个人信息
             $rootScope.toggleUserBlock = function () {

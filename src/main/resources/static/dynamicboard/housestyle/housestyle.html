@@ -3,16 +3,22 @@
         width: 14%;
         float: right;
     }
+
+    .warning {
+        text-align: center;
+        font-weight: bold;
+    }
 </style>
 <h3>户型管理
-    <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)">
+    <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)"
+            ng-if="user.staffGarde>4">
         <option value="所有">显示所有户型</option>
         <option ng-repeat="premise in premises" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
     </select>
 </h3>
 <div class="row">
     <div class="col-md-8">
-        <button class="btn btn-labeled btn-success" type="button" ng-click="showAddHousestyle()"
+        <button class="btn btn-labeled btn-primary" type="button" ng-click="showAddHousestyle()"
                 ng-disabled="user.staffGarde<3" tabindex="0">
             <span class="btn-label">
                 <i class="fa fa-plus"></i>
@@ -70,13 +76,18 @@
                 </tbody>
             </table>
         </div>
-        <ul class="pagination pagination-sm" style="float: right;">
-            <li ng-disabled="housestyle_data.first"
-                ng-click="changePage(housestyle_data.number-1,housestyle_data.size)"><a
-                    href="javascript:void(0)">上一页</a></li>
-            <li><a href="javascript:void(0)">{{housestyle_data.number+1}}/{{housestyle_data.totalPages}}</a></li>
-            <li ng-disabled="housestyle_data.last" ng-click="changePage(housestyle_data.number+1,housestyle_data.size)">
-                <a href="javascript:void(0)">下一页</a></li>
-        </ul>
+        <nav aria-label="Page navigation" ng-if="housestyle_data.content.length>0">
+            <ul class="pagination pagination-sm" style="float: right;">
+                <li ng-disabled="housestyle_data.first"
+                    ng-click="changePage(housestyle_data.number-1,housestyle_data.size)"><a
+                        href="javascript:void(0)">上一页</a></li>
+                <li><a href="javascript:void(0)">{{housestyle_data.number+1}}/{{housestyle_data.totalPages}}</a></li>
+                <li ng-disabled="housestyle_data.last"
+                    ng-click="changePage(housestyle_data.number+1,housestyle_data.size)">
+                    <a href="javascript:void(0)">下一页</a></li>
+            </ul>
+        </nav>
     </div>
 </div>
+<div ng-if="housestyle_data.content.length==0&&user.staffGarde>4" class="warning">该楼盘还未添加任何户型</div>
+<div ng-if="housestyle_data.content.length==0&&user.staffGarde<5" class="warning">您还未添加任何户型</div>

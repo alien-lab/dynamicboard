@@ -5,40 +5,54 @@
     <form role="form" name="addBuildingform" novalidate="novalidate">
         <div class="form-group col-md-12">
             <label>楼栋名</label>
-            <input type="text" class="form-control" placeholder="请输入楼栋名" ng-model="form.buildingName" name="buildingName" id="input-buildingName" required />
+            <input type="text" class="form-control" placeholder="请输入楼栋名" ng-model="form.buildingName"
+                   name="buildingName" id="input-buildingName" required/>
         </div>
         <div class="form-group col-md-12">
             <label>楼栋号</label>
-            <input type="text" class="form-control" placeholder="请输入楼栋号" ng-model="form.buildingNo" name="buildingNo" id="input-buildingNo" required />
+            <input type="text" class="form-control" placeholder="请输入楼栋号" ng-model="form.buildingNo" name="buildingNo"
+                   id="input-buildingNo" required/>
         </div>
         <div class="form-group col-md-12">
             <label>楼层数</label>
-            <input type="number" class="form-control" placeholder="请输入楼层数" ng-model="form.floorNu" name="floorNu" id="input-floorNu" required />
+            <input type="number" class="form-control" placeholder="请输入楼层数" ng-model="form.floorNu" name="floorNu"
+                   id="input-floorNu" required/>
         </div>
         <div class="form-group col-md-12">
             <label>单元数</label>
-            <input type="number" class="form-control" placeholder="请输入单元数" ng-model="form.unitNu" name="unitNu" id="input-unitNu" required />
+            <input type="number" class="form-control" placeholder="请输入单元数" ng-model="form.unitNu" name="unitNu"
+                   id="input-unitNu" required/>
         </div>
         <div class="form-group col-md-12">
             <label>每单元户数</label>
-            <input type="number" class="form-control" placeholder="请输入每单元户数" ng-model="form.unitHouseNu" name="unitHouseNu" id="input-unitHouseNu" required />
+            <input type="number" class="form-control" placeholder="请输入每单元户数" ng-model="form.unitHouseNu"
+                   name="unitHouseNu" id="input-unitHouseNu" required/>
         </div>
         <div class="form-group col-md-12">
             <label>楼栋状态</label>
             <select class="dropdown form-control" ng-model="form.buildingStatus" required>
-                <option ng-repeat="building_status in building_statuss" value="{{building_status}}">{{building_status}}</option>
+                <option ng-repeat="building_status in building_statuss" value="{{building_status}}">
+                    {{building_status}}
+                </option>
             </select>
         </div>
-        <div class="form-group col-md-12">
+        <div class="form-group col-md-12" ng-if="user.staffGarde>4">
             <label>所属楼盘</label>
             <select class="dropdown form-control" ng-model="form.premise.premiseName" required>
                 <option ng-repeat="premise_name in premise_names" value="{{premise_name}}">{{premise_name}}</option>
             </select>
         </div>
+        <div class="form-group col-md-12" ng-if="user.staffGarde<5">
+            <label>所属楼盘</label>
+            <input type="text" class="form-control" ng-value="user.premise.premiseName"
+                   name="premise"
+                   id="input-premise" readOnly="true" required/>
+        </div>
         <div style="clear:both;"></div>
     </form>
 </div>
 <div class="modal-footer">
-    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="addBuildingform.$invalid" ng-click="save()">保存</button>
+    <button class="mb-sm btn btn-primary" type="submit" ng-disabled="addBuildingform.$invalid" ng-click="save()">保存
+    </button>
     <button class="mb-sm btn btn-danger" type="button" ng-click="cancel()">取消</button>
 </div>

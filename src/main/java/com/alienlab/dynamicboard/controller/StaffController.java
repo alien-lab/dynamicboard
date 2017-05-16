@@ -46,13 +46,17 @@ public class StaffController {
             } else if (staff == loginStaff) {
                 return new ExecResult(false, "密码错误").toString();
             } else {
-                System.out.println(staff);
-                JSONObject staffJSON = (JSONObject) JSONObject.toJSON(staff);
-                request.getSession().setAttribute("staff", staffJSON);//当前用户进入session
-                ExecResult er = new ExecResult();
-                er.setResult(true);
-                er.setData(staffJSON);
-                return er.toString();
+                if (staff.getPremise() == null && staff.getStaffGarde() < 5) {
+                    return new ExecResult(false, "请等待管理员匹配信息").toString();
+                } else {
+                    System.out.println(staff);
+                    JSONObject staffJSON = (JSONObject) JSONObject.toJSON(staff);
+                    request.getSession().setAttribute("staff", staffJSON);//当前用户进入session
+                    ExecResult er = new ExecResult();
+                    er.setResult(true);
+                    er.setData(staffJSON);
+                    return er.toString();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,8 +74,10 @@ public class StaffController {
             Staff newStaff = new Staff();
             newStaff.setAccount(form.getString("account"));
             newStaff.setPassword(form.getString("password"));
+            newStaff.setStaffName(form.getString("name"));
+            newStaff.setStaffPhone(form.getString("phone"));
             newStaff.setStaffStatus("1");
-            newStaff.setStaffGarde(2);
+            newStaff.setStaffGarde(2);//默认注册销控员
             Staff result = staffService.register(newStaff);
             if (result == newStaff) {
                 ExecResult er = new ExecResult();
@@ -100,9 +106,13 @@ public class StaffController {
             Staff staff = staffService.findStaffById(staffId);
             staff.setStaffName(form.getString("staffName"));
             staff.setStaffPhone(form.getString("staffPhone"));
-            JSONObject premiseJSON = form.getJSONObject("premise");
-            Premise premise = premiseService.getPremiseByPremiseName(premiseJSON.getString("premiseName"));
-            staff.setPremise(premise);
+            if (form.getJSONObject("premise") == null) {
+                staff.setPremise(null);
+            } else {
+                JSONObject premiseJSON = form.getJSONObject("premise");
+                Premise premise = premiseService.getPremiseByPremiseName(premiseJSON.getString("premiseName"));
+                staff.setPremise(premise);
+            }
             Staff result = staffService.updateStaffInfo(staff);
             if (result == null) {
                 return new ExecResult(false, "个人信息修改失败").toString();
@@ -131,7 +141,7 @@ public class StaffController {
     }
 
     //根据likeName分页模糊查staff
-    @RequestMapping(value = "/findByLikeNamePage/{likeName}-{index}-{size}")
+    @RequestMapping(value = "/findByLikeNamePage/{likeName}-{index}-{size}", method = RequestMethod.GET)
     public Page<Staff> findByLikeNamePage(@PathVariable("likeName") String likeName, @PathVariable("index") String index, @PathVariable("size") String size) {
         return staffService.findByLikeNamePage(likeName, Integer.parseInt(index), Integer.parseInt(size));
     }
@@ -159,5 +169,39 @@ public class StaffController {
             e.printStackTrace();
             return new ExecResult(false, "操作发生异常").toString();
         }
+    }
+
+    //匹配员工所在楼盘
+    @RequestMapping(value = "/setStaffPremiseOrGarde", method = RequestMethod.POST)
+    public String setStaffPremiseOrGarde(HttpServletRequest request) {
+        try {
+            String jsonBody = IOUtils.toString(request.getInputStream(), "UTF-8");
+            JSONObject form = JSONObject.parseObject(jsonBody);
+            System.out.println(form);
+            Long staffId = form.getLong("id");
+            Staff staff = staffService.findStaffById(staffId);
+            JSONObject premiseJSON = form.getJSONObject("premise");
+            Premise premise = premiseService.getPremiseByPremiseName(premiseJSON.getString("premiseName"));
+            staff.setPremise(premise);
+            staff.setStaffGarde(form.getInteger("staffGarde"));
+            Staff result = staffService.updateStaffInfo(staff);
+            if (result == null) {
+                return new ExecResult(false, "员工所在楼盘匹配失败").toString();
+            } else {
+                ExecResult er = new ExecResult();
+                er.setResult(true);
+                er.setData((JSON) JSON.toJSON(result));
+                return er.toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ExecResult(false, "员工所在楼盘匹配发生异常").toString();
+        }
+    }
+
+    //根据staffName和premise分页模糊查
+    @RequestMapping(value = "/findByLikeNamePremisePage/{likeName}-{premiseName}-{index}-{size}", method = RequestMethod.GET)
+    public Page<Staff> findByLikeNamePremisePage(@PathVariable("likeName") String likeName, @PathVariable("premiseName") String premiseName, @PathVariable("index") String index, @PathVariable("size") String size) {
+        return staffService.findByLikeNameAndPremisePage(likeName, premiseName, Integer.parseInt(index), Integer.parseInt(size));
     }
 }

@@ -3,16 +3,22 @@
         width: 14%;
         float: right;
     }
+
+    .warning {
+        text-align: center;
+        font-weight: bold;
+    }
 </style>
 <h3>楼栋管理
-    <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)">
+    <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)"
+            ng-if="user.staffGarde>4">
         <option value="所有">显示所有楼栋</option>
         <option ng-repeat="premise in premises" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
     </select>
 </h3>
 <div class="row">
     <div class="col-md-8">
-        <button class="btn btn-labeled btn-success" type="button" ng-click="showAddBuilding()"
+        <button class="btn btn-labeled btn-primary" type="button" ng-click="showAddBuilding()"
                 ng-disabled="user.staffGarde<3" tabindex="0">
             <span class="btn-label">
                 <i class="fa fa-plus"></i>
@@ -73,8 +79,8 @@
                 </tbody>
             </table>
         </div>
-        <nav aria-label="Page navigation">
-            <ul class="pagination" style="float: right;">
+        <nav aria-label="Page navigation" ng-if="building_data.content.length>0">
+            <ul class="pagination pagination-sm" style="float: right;">
                 <li ng-disabled="building_data.first" ng-click="changePage(building_data.number-1,building_data.size)">
                     <a href="javascript:void(0)">上一页</a></li>
                 <li><a href="javascript:void(0)">{{building_data.number+1}}/{{building_data.totalPages}}</a></li>
@@ -84,3 +90,5 @@
         </nav>
     </div>
 </div>
+<div ng-if="building_data.content.length==0&&user.staffGarde>4" class="warning">该楼盘还未添加任何楼栋</div>
+<div ng-if="building_data.content.length==0&&user.staffGarde<5" class="warning">您还未添加任何楼栋</div>
