@@ -115,12 +115,12 @@
         //likeName是否为''
         $scope.ifLike = function () {
             staffValue.realLikeName = $scope.likeName;
-            $scope.premiseName = "重置";//重置下拉框选项
+            $scope.premiseName = "所有";//重置下拉框选项
+            staffValue.premiseName = $scope.premiseName;
             if ($scope.user.staffGarde > 4) {//admin
                 if (staffValue.realLikeName != "" && staffValue.realLikeName != null) {
                     getStaffByLikeNamePage(staffValue.realLikeName, 0, 5);
                 } else {
-                    $scope.premiseName = "所有";
                     loadAllData(0, 5);
                 }
             } else {//其余
@@ -135,6 +135,7 @@
         //premise的ng-change事件
         $scope.premiseChanged = premiseChanged;
         function premiseChanged(premiseName) {
+            staffValue.premiseName = premiseName;
             $scope.likeName = '';//清空输入框likeName
             if (staffValue.premiseName == "所有") {
                 loadAllData(0, 5);

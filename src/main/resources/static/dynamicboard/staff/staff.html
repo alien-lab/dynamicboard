@@ -16,7 +16,7 @@
 </style>
 <h3>员工管理
     <select class="form-control premiseOption" ng-model="premiseName" ng-change="premiseChanged(premiseName)"
-            ng-if="user.staffGarde>4">
+            ng-show="user.staffGarde>4">
         <option value="所有">显示所有员工</option>
         <option ng-repeat="premise in premises" value="{{premise.premiseName}}">{{premise.premiseName}}</option>
     </select>
@@ -64,12 +64,13 @@
                     <td ng-if="staff.staffGarde==''||staff.staffGarde==null">未知</td>
                     <td ng-if="staff.staffStatus=='1'">启用</td>
                     <td ng-if="staff.staffStatus=='0'">停用</td>
-                    <td ng-if="staff.premise!=null" style="color: #1aacda" ng-click="">{{staff.premise.premiseName}}
+                    <td ng-if="staff.premise!=null">{{staff.premise.premiseName}}
                     </td>
-                    <td ng-if="staff.premise==null" style="color: #1aacda" ng-click="">未安排</td>
+                    <td ng-if="staff.premise==null">未安排</td>
                     <td>
                         <button type="button" ng-class="setBtnColor(staff.staffStatus)"
-                                ng-click="updateStaffStatus(staff)" ng-disabled="user.staffGarde<3"><span
+                                ng-click="updateStaffStatus(staff)" ng-disabled="user.staffGarde<3"
+                                ng-if="staff.staffGarde<user.staffGarde"><span
                                 ng-if="staff.staffStatus=='1'">停用</span><span
                                 ng-if="staff.staffStatus=='0'">启用</span>
                         </button>

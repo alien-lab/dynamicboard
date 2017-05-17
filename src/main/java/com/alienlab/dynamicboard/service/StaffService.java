@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 /**
  * Created by 鸠小浅 on 2017/5/10.
@@ -80,10 +79,10 @@ public class StaffService {
         }
     }
 
-    //分页查staff
+    //分页查staff（去除管理员账号）
     public Page<Staff> findStaffPage(Integer index, Integer size) {
         try {
-            return staffRepository.findAll(new PageRequest(index, size));
+            return staffRepository.findByStaffGardeLessThan(5, new PageRequest(index, size));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
