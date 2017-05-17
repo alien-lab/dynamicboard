@@ -221,6 +221,7 @@
     premiseModule.controller("updatePremiseController", ["$scope", "premiseService", "$uibModalInstance", "premiseInstance", function ($scope, premiseService, $uibModalInstance, premiseInstance) {
         $scope.pagetitle = "修改楼盘信息";
         $scope.form = premiseInstance.modify;
+        var oldForm = angular.copy($scope.form);
         //保存修改
         $scope.save = function save() {
             premiseService.updatePremise($scope.form, function (data) {
@@ -236,6 +237,12 @@
         };
         //取消修改
         $scope.cancel = function cancel() {
+            $scope.form.premiseName = oldForm.premiseName;
+            $scope.form.premiseAddress = oldForm.premiseAddress;
+            $scope.form.premiseSquare = oldForm.premiseSquare;
+            $scope.form.premiseFar = oldForm.premiseFar;
+            $scope.form.premiseGsp = oldForm.premiseGsp;
+            $scope.form.premisePhone = oldForm.premisePhone;
             $uibModalInstance.dismiss('cancel');
         }
     }]);

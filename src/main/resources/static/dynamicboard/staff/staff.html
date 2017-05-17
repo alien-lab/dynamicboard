@@ -66,7 +66,7 @@
                     <td ng-if="staff.staffStatus=='0'">停用</td>
                     <td ng-if="staff.premise!=null">{{staff.premise.premiseName}}
                     </td>
-                    <td ng-if="staff.premise==null">未安排</td>
+                    <td ng-if="staff.premise==null" style="color: #1aacda;" ng-click="setStaffPremise(staff)">未安排</td>
                     <td>
                         <button type="button" ng-class="setBtnColor(staff.staffStatus)"
                                 ng-click="updateStaffStatus(staff)" ng-disabled="user.staffGarde<3"

@@ -432,6 +432,7 @@
         $scope.pagetitle = "修改房源信息";
         $scope.house_statuss = ["可售", "意向", "认购", "成交", "抵押", "退房", "销控"];
         $scope.form = houseInstance.modify;
+        var oldForm = angular.copy($scope.form);
         houseService.getHouseStyleByPremise($scope.form.premise.premiseName, function (data) {
             $scope.housestyles = data;
             console.log($scope.housestyles);
@@ -465,6 +466,9 @@
         };
         //取消修改
         $scope.cancel = function cancel() {
+            $scope.form.unitPrice = oldForm.unitPrice;
+            $scope.form.houseStatus = oldForm.houseStatus;
+            $scope.form.houseStyle = oldForm.houseStyle;
             $uibModalInstance.dismiss('cancel');
         }
     }]);

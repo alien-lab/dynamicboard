@@ -1234,6 +1234,7 @@
         };
         //取消修改
         $scope.cancel = function cancel() {
+            $rootScope.user = $cookieStore.get("staff");
             $uibModalInstance.dismiss('cancel');
         }
     }

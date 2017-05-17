@@ -382,6 +382,7 @@
             }
         });
         $scope.form = housestyleInstance.modify;
+        var oldForm = angular.copy($scope.form);
         if ($scope.form.hsIntroduction == "（待录入）") {
             $scope.form.hsIntroduction = null;
         }
@@ -393,7 +394,6 @@
         if ($scope.form.premise == null) {
             $scope.form.premise = $scope.user.premise;
         }
-        console.log($scope.form);
         //保存修改
         $scope.save = function save() {
             if ($scope.form.hsIntroduction == null || $scope.form.hsIntroduction == "") {
@@ -421,6 +421,11 @@
         //取消修改
         $scope.cancel = function cancel() {
             $uibModalInstance.dismiss('cancel');
+            $scope.form.hsName = oldForm.hsName;
+            $scope.form.hsCode = oldForm.hsCode;
+            $scope.form.hsSquare = oldForm.hsSquare;
+            $scope.form.premise = oldForm.premise;
+            $scope.form.hsIntroduction = oldForm.hsIntroduction;
             if ($scope.form.hsIntroduction == null || $scope.form.hsIntroduction == "") {
                 $scope.form.hsIntroduction = "（待录入）";
             }

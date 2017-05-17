@@ -24,10 +24,7 @@
         $scope.likeName = '';
         staffValue.realLikeName = '';//重置realLikeName的值
         staffValue.premiseName = "所有";
-        //获得所有楼盘
-        staffService.getAllPremise(function (data) {
-            $scope.premises = data;
-        });
+
         //staffGarde转化成staffPosition
         // $scope.toStaffPosition = function (data) {
         //     for (var i = 0; i < data.length; i++) {
@@ -213,7 +210,8 @@
 
         //匹配员工所在楼盘
         $scope.setStaffPremise = setStaffPremise;
-        function setStaffPremise() {
+        function setStaffPremise(staff) {
+            staffInstance.modify = staff;
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'dynamicboard/staff/setStaffPremise.html',
@@ -309,11 +307,14 @@
     //匹配员工所在楼盘controller
     staffModule.controller("setStaffPremiseController", ["$scope", "staffService", "staffInstance", "$uibModalInstance", function ($scope, staffService, staffInstance, $uibModalInstance) {
         $scope.staff = staffInstance.modify;
+        var oldStaff = angular.copy($scope.staff);
+        //获得所有楼盘
+        staffService.getAllPremise(function (data) {
+            $scope.premises = data;
+        });
         //保存修改
         $scope.save = function save() {
-            console.log($scope.staff);
             staffService.setStaffPremiseOrGarde($scope.staff, function (data) {
-                console.log(data);
                 if (data != null) {
                     $uibModalInstance.close(data);
                 } else {
@@ -326,6 +327,7 @@
         };
         //取消修改
         $scope.cancel = function cancel() {
+            $scope.staff.premise = oldStaff.premise;
             $uibModalInstance.dismiss('cancel');
         }
     }]);

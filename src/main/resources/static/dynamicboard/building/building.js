@@ -392,7 +392,7 @@
             }
         });
         $scope.form = buildingInstance.modify;
-        var oldform = angular.copy($scope.form);
+        var oldForm = angular.copy($scope.form);
         //保存修改
         $scope.save = function save() {
             buildingService.getByPremiseName($scope.form.premise.premiseName, function (data) {
@@ -402,9 +402,7 @@
             if ($scope.form.premise == null) {
                 $scope.form.premise = $scope.user.premise;
             }
-            console.log(oldform);
-            console.log($scope.form);
-            if ((oldform.floorNu != $scope.form.floorNu) || (oldform.unitNu != $scope.form.unitNu) || (oldform.unitHouseNu != $scope.form.unitHouseNu)) {
+            if ((oldForm.floorNu != $scope.form.floorNu) || (oldForm.unitNu != $scope.form.unitNu) || (oldForm.unitHouseNu != $scope.form.unitHouseNu)) {
                 var promitInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'system/common/promit.html',
@@ -449,6 +447,13 @@
         };
         //取消修改
         $scope.cancel = function cancel() {
+            $scope.form.buildingName = oldForm.buildingName;
+            $scope.form.buildingNo = oldForm.buildingNo;
+            $scope.form.floorNu = oldForm.floorNu;
+            $scope.form.unitNu = oldForm.unitNu;
+            $scope.form.unitHouseNu = oldForm.unitHouseNu;
+            $scope.form.buildingStatus = oldForm.buildingStatus;
+            $scope.form.premise = oldForm.premise;
             $uibModalInstance.dismiss('cancel');
         }
     }]);
