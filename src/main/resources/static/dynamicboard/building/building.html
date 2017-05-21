@@ -91,4 +91,5 @@
     </div>
 </div>
 <div ng-if="building_data.content.length==0&&user.staffGarde>4" class="warning">该楼盘还未添加任何楼栋</div>
-<div ng-if="building_data.content.length==0&&user.staffGarde<5" class="warning">您还未添加任何楼栋</div>
+<div ng-if="building_data.content.length==0&&user.staffGarde<5&&user.staffGarde>2" class="warning">您还未添加任何楼栋</div>
+<div ng-if="building_data.content.length==0&&user.staffGarde<3" class="warning">没有找到任何楼栋</div>

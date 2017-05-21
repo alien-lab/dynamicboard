@@ -9,7 +9,6 @@ import com.alienlab.dynamicboard.service.BuildingService;
 import com.alienlab.dynamicboard.service.PremiseService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

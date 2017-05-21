@@ -1,7 +1,6 @@
 package com.alienlab.dynamicboard.entity;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 /**
  * 员工账户
@@ -27,7 +26,7 @@ public class Staff {
 
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Long getId() {
         return id;
@@ -36,6 +35,7 @@ public class Staff {
     public void setId(Long id) {
         this.id = id;
     }
+
     @Basic
     @Column(name = "staffname")
     public String getStaffName() {
@@ -45,6 +45,7 @@ public class Staff {
     public void setStaffName(String staffName) {
         this.staffName = staffName;
     }
+
     @Basic
     @Column(name = "staffphone")
     public String getStaffPhone() {
@@ -54,6 +55,7 @@ public class Staff {
     public void setStaffPhone(String staffPhone) {
         this.staffPhone = staffPhone;
     }
+
     @Basic
     @Column(name = "staffgrade")
     public Integer getStaffGarde() {
@@ -63,6 +65,7 @@ public class Staff {
     public void setStaffGarde(Integer staffGarde) {
         this.staffGarde = staffGarde;
     }
+
     @Basic
     @Column(name = "staffstatus")
     public String getStaffStatus() {
@@ -72,6 +75,7 @@ public class Staff {
     public void setStaffStatus(String staffStatus) {
         this.staffStatus = staffStatus;
     }
+
     @Basic
     @Column(name = "account")
     public String getAccount() {
@@ -81,6 +85,7 @@ public class Staff {
     public void setAccount(String account) {
         this.account = account;
     }
+
     @Basic
     @Column(name = "password")
     public String getPassword() {
@@ -100,6 +105,7 @@ public class Staff {
     public void setOpenid(String openid) {
         this.openid = openid;
     }
+
     @Basic
     @Column(name = "nickname")
     public String getNickName() {
@@ -109,6 +115,7 @@ public class Staff {
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
+
     @Basic
     @Column(name = "icon")
     public String getIcon() {
@@ -118,6 +125,7 @@ public class Staff {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
     @ManyToOne
     @JoinColumn(name = "premise")
     public Premise getPremise() {
@@ -128,4 +136,20 @@ public class Staff {
         this.premise = premise;
     }
 
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "id=" + id +
+                ", staffName='" + staffName + '\'' +
+                ", staffPhone='" + staffPhone + '\'' +
+                ", staffGarde=" + staffGarde +
+                ", staffStatus='" + staffStatus + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", openid='" + openid + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", icon='" + icon + '\'' +
+                ", premise=" + premise +
+                '}';
+    }
 }

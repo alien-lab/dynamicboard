@@ -1,7 +1,6 @@
 package com.alienlab.dynamicboard.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -10,13 +9,13 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "tb_house_salectrl")
-public class HouseSaleCtrl implements Serializable {
+public class HouseSaleCtrl {
     private Long id;
     private House house;//房号
     private Staff salerStatusStaff;//销售员状态操作员工
     private String salerStatus;//销售员状态
     private Timestamp salerStatusTime;//销售员状态操作时间
-    private Staff salectrlStatusStaff;//后台状态操作员工
+//    private Staff salectrlStatusStaff;//后台状态操作员工
     private String salectrlStatus;//后台状态
     private Timestamp salectrlStatusTime;//后台状态操作时间
 
@@ -25,7 +24,7 @@ public class HouseSaleCtrl implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Long getId() {
         return id;
@@ -34,6 +33,7 @@ public class HouseSaleCtrl implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     @ManyToOne
     @JoinColumn(name = "house")
     public House getHouse() {
@@ -43,6 +43,7 @@ public class HouseSaleCtrl implements Serializable {
     public void setHouse(House house) {
         this.house = house;
     }
+
     @ManyToOne
     @JoinColumn(name = "salerstatusstaff")
     public Staff getSalerStatusStaff() {
@@ -52,6 +53,7 @@ public class HouseSaleCtrl implements Serializable {
     public void setSalerStatusStaff(Staff salerStatusStaff) {
         this.salerStatusStaff = salerStatusStaff;
     }
+
     @Basic
     @Column(name = "salerstatus")
     public String getSalerStatus() {
@@ -62,6 +64,7 @@ public class HouseSaleCtrl implements Serializable {
         this.salerStatus = salerStatus;
     }
 
+    @Basic
     @Column(name = "salerstatustime")
     public Timestamp getSalerStatusTime() {
         return salerStatusTime;
@@ -70,15 +73,17 @@ public class HouseSaleCtrl implements Serializable {
     public void setSalerStatusTime(Timestamp salerStatusTime) {
         this.salerStatusTime = salerStatusTime;
     }
-    @ManyToOne
-    @JoinColumn(name = "salectrlstatusstaff")
-    public Staff getSalectrlStatusStaff() {
-        return salectrlStatusStaff;
-    }
 
-    public void setSalectrlStatusStaff(Staff salectrlStatusStaff) {
-        this.salectrlStatusStaff = salectrlStatusStaff;
-    }
+//    @ManyToOne
+//    @JoinColumn(name = "salectrlstatusstaff")
+//    public Staff getSalectrlStatusStaff() {
+//        return salectrlStatusStaff;
+//    }
+//
+//    public void setSalectrlStatusStaff(Staff salectrlStatusStaff) {
+//        this.salectrlStatusStaff = salectrlStatusStaff;
+//    }
+
     @Basic
     @Column(name = "salectrlstatus")
     public String getSalectrlStatus() {
@@ -88,6 +93,7 @@ public class HouseSaleCtrl implements Serializable {
     public void setSalectrlStatus(String salectrlStatus) {
         this.salectrlStatus = salectrlStatus;
     }
+
     @Basic
     @Column(name = "salectrlstatustime")
     public Timestamp getSalectrlStatusTime() {
@@ -98,4 +104,17 @@ public class HouseSaleCtrl implements Serializable {
         this.salectrlStatusTime = salectrlStatusTime;
     }
 
+//    @Override
+//    public String toString() {
+//        return "HouseSaleCtrl{" +
+//                "id=" + id +
+//                ", house=" + house +
+//                ", salerStatusStaff=" + salerStatusStaff +
+//                ", salerStatus='" + salerStatus + '\'' +
+//                ", salerStatusTime=" + salerStatusTime +
+//                ", salectrlStatusStaff=" + salectrlStatusStaff +
+//                ", salectrlStatus='" + salectrlStatus + '\'' +
+//                ", salectrlStatusTime=" + salectrlStatusTime +
+//                '}';
+//    }
 }

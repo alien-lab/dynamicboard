@@ -2,7 +2,6 @@ package com.alienlab.dynamicboard.service;
 
 import com.alienlab.dynamicboard.entity.Building;
 import com.alienlab.dynamicboard.entity.House;
-import com.alienlab.dynamicboard.entity.HouseStyle;
 import com.alienlab.dynamicboard.entity.Premise;
 import com.alienlab.dynamicboard.repository.BuildingRepository;
 import com.alienlab.dynamicboard.repository.HouseRepository;
@@ -11,7 +10,6 @@ import com.alienlab.dynamicboard.repository.PremiseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
