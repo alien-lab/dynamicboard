@@ -1,0 +1,40 @@
+<h3>{{pagetitle}}</h3>
+<div class="row">
+    <div class="col-md-8">
+    </div>
+</div>
+<div class="col-md-12" ng-if="loading==false">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>操作时间</th>
+                    <th>具体操作内容</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="houseSaleCtrl in houseSaleCtrl_data">
+                    <td>{{$index+1}}</td>
+                    <td ng-if="houseSaleCtrl.salerStatusStaff!=null">{{houseSaleCtrl.salerStatusTime}}</td>
+                    <td ng-if="houseSaleCtrl.salectrlStatusStaff!=null">{{houseSaleCtrl.salectrlStatusTime}}</td>
+                    <td ng-if="houseSaleCtrl.salerStatusStaff!=null">
+                        {{houseSaleCtrl.salerStatusStaff}} 申请了
+                        {{houseSaleCtrl.house.premise.premiseName}}-{{houseSaleCtrl.house.building.buildingName}}-{{houseSaleCtrl.house.houseNo}}
+                        状态为 {{houseSaleCtrl.salerStatus}}
+                    </td>
+                    <td ng-if="houseSaleCtrl.salectrlStatusStaff!=null">
+                        {{houseSaleCtrl.salectrlStatusStaff}} 修改了
+                        {{houseSaleCtrl.house.premise.premiseName}}-{{houseSaleCtrl.house.building.buildingName}}-{{houseSaleCtrl.house.houseNo}}
+                        状态为 {{houseSaleCtrl.salectrlStatus}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-md-12" ng-if="loading==true" style="align-content: center;font-weight: bold;">
+    数据加载中...
+</div>

@@ -28,7 +28,7 @@ public class House {
         this.houseStyle = houseStyle;
         this.houseSquare = houseSquare;
         this.unitPrice = unitPrice;
-        this.totalPrice = this.unitPrice*this.houseSquare;
+        this.totalPrice = this.unitPrice * this.houseSquare;
         this.houseStatus = houseStatus;
         this.building = building;
         this.unitNo = unitNo;
@@ -37,7 +37,7 @@ public class House {
     }
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Long getId() {
         return id;
@@ -46,6 +46,7 @@ public class House {
     public void setId(Long id) {
         this.id = id;
     }
+
     @Basic
     @Column(name = "houseno")
     public String getHouseNo() {
@@ -55,6 +56,7 @@ public class House {
     public void setHouseNo(String houseNo) {
         this.houseNo = houseNo;
     }
+
     @Basic
     @Column(name = "housesquare")
     public float getHouseSquare() {
@@ -64,6 +66,7 @@ public class House {
     public void setHouseSquare(float houseSquare) {
         this.houseSquare = houseSquare;
     }
+
     @ManyToOne
     @JoinColumn(name = "housestyle")
     public HouseStyle getHouseStyle() {
@@ -73,6 +76,7 @@ public class House {
     public void setHouseStyle(HouseStyle houseStyle) {
         this.houseStyle = houseStyle;
     }
+
     @Basic
     @Column(name = "unitprice")
     public double getUnitPrice() {
@@ -82,6 +86,7 @@ public class House {
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
+
     @Basic
     @Column(name = "totalprice")
     public double getTotalPrice() {
@@ -91,6 +96,7 @@ public class House {
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
+
     @Basic
     @Column(name = "housestatus")
     public String getHouseStatus() {
@@ -102,7 +108,7 @@ public class House {
     }
 
     @ManyToOne
-    @JoinColumn(name="building")
+    @JoinColumn(name = "building")
     public Building getBuilding() {
         return building;
     }
@@ -110,6 +116,7 @@ public class House {
     public void setBuilding(Building building) {
         this.building = building;
     }
+
     @Basic
     @Column(name = "unitno")
     public Integer getUnitNo() {
@@ -119,6 +126,7 @@ public class House {
     public void setUnitNo(Integer unitNo) {
         this.unitNo = unitNo;
     }
+
     @Basic
     @Column(name = "floorno")
     public Integer getFloorNo() {
@@ -128,8 +136,9 @@ public class House {
     public void setFloorNo(Integer floorNo) {
         this.floorNo = floorNo;
     }
+
     @ManyToOne
-    @JoinColumn(name="premise")
+    @JoinColumn(name = "premise")
     public Premise getPremise() {
         return premise;
     }

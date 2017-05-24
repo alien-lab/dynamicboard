@@ -12,10 +12,10 @@ import java.sql.Timestamp;
 public class HouseSaleCtrl {
     private Long id;
     private House house;//房号
-    private Staff salerStatusStaff;//销售员状态操作员工
+    private String salerStatusStaff;//销售员状态操作员工
     private String salerStatus;//销售员状态
     private Timestamp salerStatusTime;//销售员状态操作时间
-//    private Staff salectrlStatusStaff;//后台状态操作员工
+    private String salectrlStatusStaff;//后台状态操作员工
     private String salectrlStatus;//后台状态
     private Timestamp salectrlStatusTime;//后台状态操作时间
 
@@ -44,15 +44,34 @@ public class HouseSaleCtrl {
         this.house = house;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "salerstatusstaff")
-    public Staff getSalerStatusStaff() {
+    @Basic
+    @Column(name = "salerstatusstaff")
+    public String getSalerStatusStaff() {
         return salerStatusStaff;
     }
 
-    public void setSalerStatusStaff(Staff salerStatusStaff) {
+    public void setSalerStatusStaff(String salerStatusStaff) {
         this.salerStatusStaff = salerStatusStaff;
     }
+
+    @Basic
+    @Column(name = "salectrlstatusstaff")
+    public String getSalectrlStatusStaff() {
+        return salectrlStatusStaff;
+    }
+
+    public void setSalectrlStatusStaff(String salectrlStatusStaff) {
+        this.salectrlStatusStaff = salectrlStatusStaff;
+    }
+    //    @ManyToOne
+//    @JoinColumn(name = "salerstatusstaff")
+//    public Staff getSalerStatusStaff() {
+//        return salerStatusStaff;
+//    }
+//
+//    public void setSalerStatusStaff(Staff salerStatusStaff) {
+//        this.salerStatusStaff = salerStatusStaff;
+//    }
 
     @Basic
     @Column(name = "salerstatus")
@@ -104,17 +123,17 @@ public class HouseSaleCtrl {
         this.salectrlStatusTime = salectrlStatusTime;
     }
 
-//    @Override
-//    public String toString() {
-//        return "HouseSaleCtrl{" +
-//                "id=" + id +
-//                ", house=" + house +
-//                ", salerStatusStaff=" + salerStatusStaff +
-//                ", salerStatus='" + salerStatus + '\'' +
-//                ", salerStatusTime=" + salerStatusTime +
-//                ", salectrlStatusStaff=" + salectrlStatusStaff +
-//                ", salectrlStatus='" + salectrlStatus + '\'' +
-//                ", salectrlStatusTime=" + salectrlStatusTime +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "HouseSaleCtrl{" +
+                "id=" + id +
+                ", house=" + house +
+                ", salerStatusStaff='" + salerStatusStaff + '\'' +
+                ", salerStatus='" + salerStatus + '\'' +
+                ", salerStatusTime=" + salerStatusTime +
+                ", salectrlStatusStaff='" + salectrlStatusStaff + '\'' +
+                ", salectrlStatus='" + salectrlStatus + '\'' +
+                ", salectrlStatusTime=" + salectrlStatusTime +
+                '}';
+    }
 }

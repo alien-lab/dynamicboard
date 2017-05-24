@@ -155,8 +155,10 @@
                 return "mortgage";
             } else if ("退房" == houseStatus) {
                 return "out";
-            } else if ("销控" == houseStatus) {
+            } else if ("销控" == houseStatus && $scope.user.staffGarde > 1) {
                 return "saleCtrl";
+            } else if ("销控" == houseStatus && $scope.user.staffGarde < 2) {
+                return "deal";
             } else if ("选中" == houseStatus) {
                 return "choose";
             } else {
@@ -448,10 +450,21 @@
         var oldForm = angular.copy($scope.form);
         houseService.getHouseStyleByPremise($scope.form.premise.premiseName, function (data) {
             $scope.housestyles = data;
-            console.log($scope.housestyles);
         });
         //保存修改
         $scope.save = function save() {
+            if (oldForm.houseStatus == "申请中") {
+                houseService.addHouseSaleCtrl({
+                    house: $scope.form,
+                    saleCtrlStatusStaff: $scope.user.staffName,
+                    saleCtrlStatus: $scope.form.houseStatus
+                }, function (data) {
+                    console.log(data);
+                    if (data.data != null) {
+                        $uibModalInstance.close("ok");
+                    }
+                });
+            }
             houseService.getByPremiseName($scope.form.premise.premiseName, function (data) {
                 $scope.premise = data;
                 $scope.form.premise = $scope.premise;
@@ -487,9 +500,17 @@
     }]);
     houseModule.controller("houseInfoController", ["$scope", "houseService", "$uibModalInstance", "houseInstance", "$uibModal", function ($scope, houseService, $uibModalInstance, houseInstance, $uibModal) {
         $scope.form = houseInstance.modify;
-        //销售员申请
+        houseService.getLastHouseSaleCtrl($scope.form.id, function (data) {
+            if (data != null) {
+                // $scope.form.saler = data.salerStatusStaff;
+                $scope.form.application = data.salerStatus;
+            }
+        });
+        //销售员申请意向
         $scope.setIntention = setIntention;
         function setIntention(house) {
+            console.log(house);
+            $scope.form.application = "意向";
             var promitInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'system/common/promit.html',
@@ -500,10 +521,9 @@
                         $uibModalInstance.dismiss('cancel');
                     };
                     $scope.save = function () {
-                        console.log("1111111111");
                         houseService.addHouseSaleCtrl({
                             house: house,
-                            salerStatusStaff: $scope.user,
+                            salerStatusStaff: $scope.user.staffName,
                             salerStatus: "意向"
                         }, function (data) {
                             console.log(data);
@@ -520,7 +540,139 @@
             });
         }
 
-        //取消修改
+        //销售员申请认购
+        $scope.setSubscribe = setSubscribe;
+        function setSubscribe(house) {
+            $scope.form.application = "认购";
+            var promitInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'system/common/promit.html',
+                controller: function ($scope, $uibModalInstance) {
+                    $scope.title = "操作提示";
+                    $scope.text = "确定提出该申请吗？";
+                    $scope.cancel = function () {
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                    $scope.save = function () {
+                        houseService.addHouseSaleCtrl({
+                            house: house,
+                            salerStatusStaff: $scope.user.staffName,
+                            salerStatus: "认购"
+                        }, function (data) {
+                            console.log(data);
+                            if (data != null) {
+                                $uibModalInstance.close("ok");
+                            }
+                        });
+                        house.houseStatus = "申请中";
+                    };
+                },
+                backdrop: true
+            });
+            promitInstance.result.then(function () {
+            });
+        }
+
+        //销售员申请抵押
+        $scope.setMortgage = setMortgage;
+        function setMortgage(house) {
+            $scope.form.application = "抵押";
+            var promitInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'system/common/promit.html',
+                controller: function ($scope, $uibModalInstance) {
+                    $scope.title = "操作提示";
+                    $scope.text = "确定提出该申请吗？";
+                    $scope.cancel = function () {
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                    $scope.save = function () {
+                        houseService.addHouseSaleCtrl({
+                            house: house,
+                            salerStatusStaff: $scope.user.staffName,
+                            salerStatus: "抵押"
+                        }, function (data) {
+                            console.log(data);
+                            if (data != null) {
+                                $uibModalInstance.close("ok");
+                            }
+                        });
+                        house.houseStatus = "申请中";
+                    };
+                },
+                backdrop: true
+            });
+            promitInstance.result.then(function () {
+            });
+        }
+
+        //销售员申请退房
+        $scope.setCheckOut = setCheckOut;
+        function setCheckOut(house) {
+            $scope.form.application = "退房";
+            var promitInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'system/common/promit.html',
+                controller: function ($scope, $uibModalInstance) {
+                    $scope.title = "操作提示";
+                    $scope.text = "确定提出该申请吗？";
+                    $scope.cancel = function () {
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                    $scope.save = function () {
+                        houseService.addHouseSaleCtrl({
+                            house: house,
+                            salerStatusStaff: $scope.user.staffName,
+                            salerStatus: "退房"
+                        }, function (data) {
+                            console.log(data);
+                            if (data != null) {
+                                $uibModalInstance.close("ok");
+                            }
+                        });
+                        house.houseStatus = "申请中";
+                    };
+                },
+                backdrop: true
+            });
+            promitInstance.result.then(function () {
+            });
+        }
+
+        //销售员申请成交
+        $scope.setDeal = setDeal;
+        function setDeal(house) {
+            $scope.form.application = "成交";
+            var promitInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'system/common/promit.html',
+                controller: function ($scope, $uibModalInstance) {
+                    $scope.title = "操作提示";
+                    $scope.text = "确定提出该申请吗？";
+                    $scope.cancel = function () {
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                    $scope.save = function () {
+                        houseService.addHouseSaleCtrl({
+                            house: house,
+                            salerStatusStaff: $scope.user.staffName,
+                            salerStatus: "成交"
+                        }, function (data) {
+                            console.log(data);
+                            if (data != null) {
+                                $uibModalInstance.close("ok");
+                            }
+                        });
+                        house.houseStatus = "申请中";
+                    };
+                },
+                backdrop: true
+            });
+            promitInstance.result.then(function () {
+            });
+        }
+
+        //确定
         $scope.cancel = function cancel() {
             $uibModalInstance.dismiss('cancel');
         }
@@ -796,8 +948,18 @@
                 method: "POST",
                 data: houseSaleCtrl
             }).then(function (response) {
+                callback(response.data.data);
+            });
+        };
+        //根据房源获取最新申请记录
+        this.getLastHouseSaleCtrl = function (houseId, callback) {
+            $http({
+                url: "/houseSaleCtrl/findLastHouseSaleCtrlByHouse/" + houseId,
+                method: "GET",
+                houseId: houseId
+            }).then(function (response) {
                 callback(response.data);
             });
-        }
+        };
     }]);
 })();

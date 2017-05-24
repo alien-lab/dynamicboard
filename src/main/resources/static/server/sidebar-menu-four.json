@@ -4,6 +4,11 @@
     "heading": "true"
   },
   {
+    "text": "操作记录",
+    "sref": "dynamicboard.houseSaleCtrl",
+    "icon": "icon-note"
+  },
+  {
     "text": "户型管理",
     "sref": "dynamicboard.housestyle",
     "icon": "fa fa-superscript"

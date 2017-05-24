@@ -18,7 +18,7 @@
 
     /*普通房源*/
     .house {
-        width: 240px;
+        width: 260px;
         height: 68px;
         font-weight: bold;
     }
@@ -159,9 +159,10 @@
             <span>退房</span>
             <div class="out"
                  style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
-            <span>销控</span>
+            <span ng-if="user.staffGarde>1">销控</span>
             <div class="saleCtrl"
-                 style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>
+                 style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"
+                 ng-if="user.staffGarde>1"></div>
             <span>申请中</span>
             <div class="null"
                  style="width: 10px;height: 10px;display: inline-block;margin-right: 6px;margin-left: 2px;"></div>

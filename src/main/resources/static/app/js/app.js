@@ -29,7 +29,8 @@
             'dynamicboard.building',
             'dynamicboard.house',
             'dynamicboard.housestyle',
-            'dynamicboard.staff'
+            'dynamicboard.staff',
+            'dynamicboard.houseSaleCtrl'
         ]);
 })();
 
@@ -175,8 +176,6 @@
     appRun.$inject = ['$rootScope', '$state', '$stateParams', '$window', '$templateCache', 'Colors', "$cookieStore"];
 
     function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors, $cookieStore) {
-        console.log("app.run");
-        console.log($cookieStore.get('staff'));
         $rootScope.rolepurview = "ALL";
         // Set reference to access them from any scope
         $rootScope.$state = $state;
@@ -253,6 +252,11 @@
                 $state.go("login", {from: fromState.name, w: 'notLogin'});//跳转到登录界面
             }
         });
+        //退出登录
+        $rootScope.unLogin = function () {
+            $cookieStore.put("staff", null);
+            $window.location.reload();
+        };
     }
 })();
 
@@ -272,7 +276,6 @@
                     name: $scope.register.name,
                     phone: $scope.register.phone
                 }, function (result) {
-                    console.log(result);
                     if (result.result > 0) {//注册成功
                         alert("注册成功，请登录");
                         $state.go("login");//注册成功跳转到用户登录页面
@@ -297,17 +300,14 @@
                     account: $scope.login.account,
                     password: $scope.login.password
                 }, function (result) {
-                    console.log(result);
                     if (result.result > 0) {//登录成功
                         $rootScope.staff = result.data;
-                        $state.go("dynamicboard.premise");//登录成功跳转到主页
+                        $state.go("dynamicboard.houseSaleCtrl");//登录成功跳转到主页
                         // Put cookie
                         $cookieStore.put("staff",
                             result.data, {
                                 expires: new Date(new Date().getTime() + 60000)
                             });
-                        var favoriteCookie = $cookieStore.get('staff').account;
-                        console.log("cook:" + favoriteCookie);
                     } else {
                         $scope.login.errormsg = result.errormsg;
                     }
@@ -324,9 +324,8 @@
         function ($scope, $rootScope, $state, $cookieStore) {
             $scope.unLock = function () {
                 $scope.lock.errormsg = "";
-                console.log($scope.lock.password);
                 if ($cookieStore.get("staff").password == $scope.lock.password) {
-                    $state.go('dynamicboard.premise');
+                    $state.go('dynamicboard.houseSaleCtrl');
                 } else {
                     $scope.lock.errormsg = "密码输入不正确";
                 }
@@ -339,7 +338,6 @@
     'use strict';
     angular.module("app.core").service("registerService", ["$http", function ($http) {
         this.doRegister = function (staff, callback) {
-            console.log(staff);
             $http({
                 url: "/staff/doRegister",
                 method: "POST",

@@ -24,6 +24,8 @@ public class DynamicboardApplicationTests {
     private HouseService houseService;
     @Autowired
     private StaffService staffService;
+    @Autowired
+    private HouseSaleCtrlService houseSaleCtrlService;
 
     @Test
     //添加楼盘测试
@@ -159,8 +161,24 @@ public class DynamicboardApplicationTests {
 //		System.out.println(building);
 //	}
     //根据staffName和premise分页模糊查
-    public void TestFindByLikeNameAndPremisePage() {
-        Page<Staff> result = staffService.findByLikeNameAndPremisePage("6", "恒盛金陵湾", 0, 5);
-        System.out.println(result);
+//    public void TestFindByLikeNameAndPremisePage() {
+//        Page<Staff> result = staffService.findByLikeNameAndPremisePage("6", "恒盛金陵湾", 0, 5);
+//        System.out.println(result);
+//    }
+
+    //根据house查最新houseSaleCtrl
+//    public void TestFindTop1ByHouse() {
+//        House house = houseService.getHouseById((long) 383);
+//        HouseSaleCtrl houseSaleCtrl = houseSaleCtrlService.findLast1ByHouse(house);
+//        System.out.println(houseSaleCtrl);
+//    }
+
+    //根据premise查所有操作记录
+    public void TestFindByPremise() {
+        Premise premise = premiseService.getPremiseById((long) 4);
+        List<HouseSaleCtrl> houseSaleCtrls = houseSaleCtrlService.findByPremise(premise);
+        for (HouseSaleCtrl houseSaleCtrl : houseSaleCtrls) {
+            System.out.println(houseSaleCtrl);
+        }
     }
 }

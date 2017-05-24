@@ -39,8 +39,15 @@
 </div>
 <div class="modal-body">
     <form role="form" name="houseInfoForm" novalidate="novalidate">
-        <div style="font-size: 20px;text-align: center;" ng-if="form.houseStatus=='申请中'">申请中···</div>
-        <div style="font-size: 20px;text-align: center;" ng-if="form.houseStatus!='申请中'">可申请</div>
+        <div style="font-size: 20px;text-align: center;" ng-if="form.houseStatus=='申请中'">
+            {{form.application}}申请中···
+        </div>
+        <div style="font-size: 20px;text-align: center;" ng-if="form.houseStatus!='申请中'&&form.houseStatus!='销控'">该房源处于
+            {{form.houseStatus}} 状态
+        </div>
+        <div style="font-size: 20px;text-align: center;" ng-if="form.houseStatus=='销控'">该房源处于
+            成交 状态
+        </div>
         <div class="houseI" style="display: inline;">
             <div class="houseNoI">房号:{{form.houseNo}}</div>
             <div>
@@ -63,12 +70,12 @@
                 </div>
             </div>
         </div>
-        <div style="text-align: center;">
+        <div style="text-align: center;" ng-if="form.houseStatus=='可售'">
             <button class="mb-sm btn btn-primary" type="button" ng-click="setIntention(form)">意向</button>
-            <button class="mb-sm btn btn-success" type="button" ng-click="setHouseInfo(form)">认购</button>
-            <button class="mb-sm btn btn-primary" type="button" ng-click="setHouseInfo(form)">抵押</button>
-            <button class="mb-sm btn btn-success" type="button" ng-click="setHouseInfo(form)">退房</button>
-            <button class="mb-sm btn btn-primary" type="button" ng-click="setHouseInfo(form)">成交</button>
+            <button class="mb-sm btn btn-success" type="button" ng-click="setSubscribe(form)">认购</button>
+            <button class="mb-sm btn btn-primary" type="button" ng-click="setMortgage(form)">抵押</button>
+            <button class="mb-sm btn btn-success" type="button" ng-click="setCheckOut(form)">退房</button>
+            <button class="mb-sm btn btn-primary" type="button" ng-click="setDeal(form)">成交</button>
         </div>
         <div style="clear:both;"></div>
     </form>
